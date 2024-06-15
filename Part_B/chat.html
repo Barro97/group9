@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="chat.css">
+</head>
+<body>
+<header>
+    <nav class="nav">
+        <h1>WorkFolio</h1>
+        <div class="search">
+            <form>
+                <input type="text" placeholder="Search..."/>
+                <input type="submit" value="Go"/>
+            </form>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-item">
+                <a class="nav-link">messages</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link">home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link">notification</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link">profile</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <div class="chat">
+
+         <div class="user-container" id="user-container">
+            <div class="profile-picture">
+                <img id="user-picture" src="https://www.creativefabrica.com/wp-content/uploads/2023/05/23/Bearded-man-avatar-Generic-male-profile-Graphics-70342414-1-1-580x387.png" alt="generic profile picture"/>
+            </div>
+            <div class="name">
+                <h1 id="user-name">Bar Rosenthal</h1>
+                <h3 id="user-title">Software Engineer</h3>
+            </div>
+            <div class="profile-link">
+                <a href="profile.html"><img src="https://static-00.iconduck.com/assets.00/profile-user-icon-2048x2048-m41rxkoe.png" alt="User Profile"></a>
+            </div>
+        </div>
+
+
+        <div class="chat-container">
+            <div class="chat-header">
+                Chat with Bar Rosenthal
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <!-- Messages will be displayed here -->
+            </div>
+            <div class="chat-input">
+                <textarea id="message-input" placeholder="Type a message..."></textarea>
+                <label for="file-input" class="custom-file-upload">
+                    <img src="https://static.thenounproject.com/png/59103-200.png" alt="Upload Files Icon">
+                </label>
+                <input type="file" id="file-input" multiple>
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+
+        <div class="chat-sidebar">
+            <div class="chat-sidebar-header">
+                Previous Chats
+            </div>
+            <div class="chat-sidebar-users">
+                <div class="chat-sidebar-user" data-user-id="1" onclick="selectUser('Adi Cohen', 'Software Engineer', 'https://cdn-icons-png.flaticon.com/512/3135/3135823.png')">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135823.png" alt="Adi Cohen">
+                    <div class="chat-sidebar-user-info">
+                        <div class="chat-sidebar-user-name">Adi Cohen</div>
+                    </div>
+                </div>
+                <div class="chat-sidebar-user" data-user-id="2" onclick="selectUser('Shalom Levi', 'Project Manager', 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png')">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Shalom Levi">
+                    <div class="chat-sidebar-user-info">
+                        <div class="chat-sidebar-user-name">Shalom Levi</div>
+                    </div>
+                </div>
+                <!-- Add more users as needed -->
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+<script src="chat.js"></script>
+</html>

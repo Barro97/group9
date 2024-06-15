@@ -1,0 +1,247 @@
+body {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.project-page {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 40px;
+    background-color: #222;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.user-container {
+    /*background-color: blue;*/
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.user-container img {
+    height: 100px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.user-container h1 {
+    color: #45d49d;
+    margin: 0;
+    width: 430px;
+}
+
+.user-container h3 {
+    color: white;
+    font-size: small;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.social {
+    display: flex;
+    width: 180px;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+    right: -200px;
+    /*top: -20px;*/
+}
+
+.social img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: brightness(1.2);
+    transition: filter 0.3s;
+}
+
+.social a:hover img {
+    filter: brightness(1.3);
+}
+
+.social a:hover {
+    transform: scale(1.1);
+}
+
+.social a {
+    height: 40px;
+    width: 40px;
+}
+
+.project-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    position: relative;
+}
+
+.project {
+    width: 50%;
+    background-color: #444444;
+    padding: 20px;
+    border-radius: 10%;
+}
+
+.project h2 {
+    color: #45d49d;
+}
+
+.project img {
+    height: auto;
+    width: 100%;
+    border-radius: 10%;
+    object-fit: cover;
+    filter: brightness(1.1);
+    transition: filter 0.3s, transform 0.3s;
+}
+
+.project a:hover img {
+    filter: brightness(1.2);
+    transform: scale(1.05);
+}
+
+.comments {
+    width: 50%;
+    margin: 20px;
+}
+
+.comments h3 {
+    color: #45d49d;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.comment-form textarea {
+    resize: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #333;
+    color: white;
+}
+
+.comment-form button {
+    align-self: flex-end;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #45d49d;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.comment-form button:hover {
+    background-color: #36a785;
+}
+
+.comment-list {
+    margin-top: 20px;
+    max-height: 300px; /* Set the max height for the comment list */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.comment {
+    display: flex;
+    background-color: #333;
+    padding: 5px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.comments img {
+    height: 50px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.comment-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+}
+
+.user-name {
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.new-comment {
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+}
+
+.like-container {
+    width: 80px;
+    display: flex;
+    align-items: center;
+    /*justify-content: space-around;*/
+    position: relative;
+    margin-top: 10px;
+    /*background-color: blue;*/
+
+}
+
+.like-button {
+    cursor: pointer;
+    margin-right: 10px;
+    transition: transform 0.1s ease;
+    filter: opacity(50%);
+    padding: 5px;
+}
+
+.like-button img {
+    height: 30px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/*.like-button:hover {*/
+/*    background-color: rgba(101, 100, 100, 0.18);*/
+/*    border-radius: 50%;*/
+/*}*/
+
+
+.like-button.pressed {
+    filter: opacity(100%);
+}
+
+.like-count {
+    font-size: 1.2rem;
+}
+
+
+.like-count {
+    /*margin-left: 10px;*/
+    font-size: 18px;
+}
+
+.project-header {
+    width: 300px;
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+
+}
+
+
+
