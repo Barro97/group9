@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <link rel="stylesheet" href="nav.css" />
+    <link rel="stylesheet" href="home.css" />
+    <link
+      rel="stylesheet"
+      href="uicons-regular-rounded/css/uicons-regular-rounded.css"
+    />
+  </head>
+  <body>
+    <header>
+      <nav class="nav">
+        <h1>WorkFolio</h1>
+        <div class="search">
+          <form>
+            <input type="text" placeholder="Search..." />
+            <input type="submit" value="Go" />
+          </form>
+        </div>
+        <ul class="nav-links">
+          <li class="nav-item">
+            <a class="nav-link"><i class="fi fi-rr-house-chimney"></i></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"><i class="fi fi-rr-comment-dots"></i></i></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"><i class="fi fi-rr-bell"></i></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"><i class="fi fi-rr-user"></i></a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <div class="posts">
+        <div class="post-box">
+          <div class="post-input">
+            <img
+              src="https://www.creativefabrica.com/wp-content/uploads/2023/05/23/Bearded-man-avatar-Generic-male-profile-Graphics-70342414-1-1-580x387.png"
+              alt="User Avatar"
+              class="avatar"
+            />
+            <textarea placeholder="What's on your mind, User?"></textarea>
+          </div>
+          <div class="post-options">
+            <button class="action-btn to-post proj">
+              Upload a New Project
+              <i class="fi fi-rr-add-folder"></i>
+            </button>
+            <button class="action-btn to-post">
+              Upload Image/Video
+              <i class="fi fi-rr-add-image"></i>
+            </button>
+
+            <button class="option-btn" id="post-button">post</button>
+          </div>
+        </div>
+        <div class="post-box">
+          <div class="post-header">
+            <img
+              src="https://cdn.mos.cms.futurecdn.net/3f8ff38c50a1ebb8045c180b7fce9b5b-1200-80.jpg"
+              alt="Profile Picture"
+              class="profile-pic"
+            />
+            <div class="post-info">
+              <div class="user-name">Steve Jobs</div>
+              <div class="post-time">2 days ago</div>
+            </div>
+          </div>
+          <div class="post-content">
+            <p>
+              Worked alongside <a href="#">Bill Gates</a> to create this amazing
+              app
+            </p>
+            <div class="project-box">
+              <div class="project-content">
+                <div class="project-overlay"></div>
+                <div class="project-title">Give me your money</div>
+              </div>
+            </div>
+          </div>
+          <div class="post-footer">
+            <div class="reaction-bar">
+              <span class="like">👍 5.1K</span>
+              <span class="comments">804 Comments</span>
+              <span class="shares">409 Shares</span>
+            </div>
+            <div class="action-buttons">
+              <button class="action-btn like">
+                <div class="action-Type">Like</div>
+                <i class="fi-post fi-rr-social-network"></i>
+              </button>
+              <button class="action-btn comment">
+                <div class="action-Type">Comment</div>
+
+                <i class="fi-post fi-rr-comment-alt"></i>
+              </button>
+              <button class="action-btn share">
+                <div class="action-Type">Share</div>
+                <i class="fi-post fi-rr-share-square"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

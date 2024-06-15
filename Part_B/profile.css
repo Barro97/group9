@@ -1,0 +1,328 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: 600px 600px;
+  height: 700px;
+  /* grid-auto-rows: minmax(150px, auto); */
+  grid-gap: 20px;
+  grid-column-gap: 200px;
+  justify-content: center;
+  position: relative;
+  bottom: -3rem;
+  align-items: center;
+}
+
+/* .left-section {
+  display: flex; */
+/* height: 400px; */
+/* flex-direction: column;
+  justify-content: space-between;
+} */
+.left-section {
+  display: grid;
+  grid-template-columns: 600px;
+  grid-auto-rows: minmax(150px, auto);
+  align-items: center;
+  justify-items: center;
+  grid-gap: 40px;
+}
+.section {
+  padding: 20px;
+  background-color: #555;
+  border-radius: 20px;
+  border: 3px solid #45d49d;
+}
+#top-section {
+  display: flex;
+  /* height: 150px; */
+
+  width: 600px;
+  justify-content: space-between;
+  align-items: center;
+  /* position: absolute; */
+  /* bottom: -100px;
+  right: -100px; */
+}
+
+#top-section img {
+  height: 150px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+#follow-button {
+  position: relative;
+  left: -20px;
+  background: linear-gradient(
+    to bottom right,
+    #45d49d,
+    #34b68c
+  ); /* Gradient background */
+  border: 2px solid black;
+  border-radius: 20px; /* Rounded corners */
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.2); /* Inner shadow for depth */
+  color: black; /* Text color */
+  font-weight: bold; /* Bold text */
+  font-family: Arial, sans-serif; /* Font family */
+  padding: 10px 20px; /* Padding */
+  text-align: center; /* Center text */
+  text-decoration: none; /* No underline */
+  display: inline-block;
+  transition: background 0.3s, transform 0.2s, box-shadow 0.2s; /* Smooth transition */
+  cursor: pointer; /* Pointer cursor */
+}
+
+#follow-button:hover {
+  background: linear-gradient(
+    to bottom,
+    #37b986,
+    #4ddf9e
+  ); /* Hover effect on background */
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.2); /* Inner shadow */
+}
+#follow-button:active {
+  transform: translateY(0); /* Push back to normal */
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2); /* Inner shadow */
+  background: linear-gradient(
+    to bottom,
+    #34b68c,
+    #45d49d
+  ); /* Active background */
+}
+
+.name {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  left: -0.5rem;
+}
+.name h1 {
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+#about {
+  /* width: 600px;
+  position: relative;
+  left: -40px; */
+  height: 173px;
+  overflow-y: auto;
+}
+
+#about h1 {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+  margin-top: 0px;
+}
+
+h1 {
+  color: #45d49d;
+}
+
+#background img {
+  height: 110px;
+  width: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.description {
+  display: flex;
+  align-items: center;
+}
+
+.description--text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  right: -20px;
+  bottom: -7px;
+}
+.description--text h1 {
+  display: flex;
+  justify-content: start;
+  margin: 0;
+  color: #ffffff;
+}
+
+.description--text h3 {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  color: #abadc7;
+  font-weight: normal;
+}
+
+.description--text h5 {
+  display: flex;
+  justify-content: start;
+  margin-top: 10px;
+  font-weight: normal;
+}
+
+.right-section {
+  display: grid;
+  /* grid-gap: 125px; */
+  grid-gap: 40px;
+
+  grid-template-columns: minmax(150px, 800px);
+  grid-auto-rows: minmax(150px, auto);
+  place-items: center;
+}
+
+#links {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 90px;
+  width: 400px;
+  position: relative;
+}
+
+#links h1 {
+  margin-top: 0px;
+  margin-bottom: 15px;
+}
+
+#projects {
+  height: 550px;
+  /* width: 700px; */
+  position: relative;
+  /* left: -50px; */
+}
+
+footer {
+  height: 100px;
+  width: auto;
+}
+
+.social img {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.social {
+  display: flex;
+  justify-content: space-around;
+  width: 250px;
+  margin-bottom: 0px;
+}
+
+#projects h1 {
+  margin: 0px;
+}
+
+#projects {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 10px;
+}
+/* Add transition for smooth scaling */
+.project-box {
+  display: block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+}
+
+.project-content {
+  position: relative;
+  background: url("your-image-url") no-repeat center center;
+  background-size: cover;
+  height: 150px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+/* Scale up and add shadow on hover */
+.project-box:hover .project-content {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Add transition for the overlay */
+.project-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  transition: background 0.3s ease;
+}
+
+/* Make the overlay lighter on hover */
+.project-box:hover .project-overlay {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.project-title {
+  position: relative;
+  background: rgba(51, 51, 51, 0.8);
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  font-size: 1.2em;
+  color: white;
+}
+
+#projects::-webkit-scrollbar {
+  width: 18px;
+}
+
+#projects::-webkit-scrollbar-track {
+  background: #555;
+}
+
+#projects::-webkit-scrollbar-thumb {
+  background: linear-gradient(#10bd87, #8bd2b3);
+  border: 3px solid #555;
+  border-radius: 10px;
+}
+
+#projects::-webkit-scrollbar-button:start:increment {
+  height: 2.5%;
+}
+
+#projects::-webkit-scrollbar-button:end:decrement {
+  height: 2.5%;
+}
+
+#about::-webkit-scrollbar {
+  width: 18px;
+}
+
+#about::-webkit-scrollbar-track {
+  background: #555;
+}
+
+#about::-webkit-scrollbar-thumb {
+  background: linear-gradient(#10bd87, #8bd2b3);
+  border: 3px solid #555;
+  border-radius: 10px;
+}
+
+#about::-webkit-scrollbar-button:start:increment {
+  height: 2.5%;
+}
+
+#about::-webkit-scrollbar-button:end:decrement {
+  height: 2.5%;
+}
