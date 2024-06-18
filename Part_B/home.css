@@ -314,3 +314,13 @@ main {
 .project-overlay:hover {
   background: rgba(0, 0, 0, 0.4);
 }
+
+.all-posts {
+  display: grid;
+  grid-template-columns: 800px;
+  grid-gap: 20px;
+  justify-content: center;
+  justify-content: space-around;
+  position: relative;
+  bottom: -20px;
+}

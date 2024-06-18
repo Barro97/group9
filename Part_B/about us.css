@@ -1,0 +1,147 @@
+body {
+    background: url(https://as2.ftcdn.net/v2/jpg/03/66/42/27/1000_F_366422741_BM88DLRBWz9NOdrwTLzryVVIAoDB946A.jpg) repeat; /* Specifies the image and sets it to repeat */
+    background-size: auto; /* Ensures the image is displayed at its original size */
+    color: white;
+    font-family: Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    height: 3rem;
+    width: 100%;
+    padding: 0 1rem;
+    z-index: 100;
+    background-color: #333; /* Dark-grey background for the nav */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+    color: white;
+}
+
+.nav h1 {
+    color: #45d49d; /* White color for the brand title */
+    /*margin-right: 1rem;*/
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin-right: 1rem;
+}
+
+.nav-links .nav-item {
+    margin-right: 4rem; /* Adjust as needed for spacing between items */
+}
+
+.nav-link:hover {
+    transform: scale(1.1); /* Slightly enlarge on hover */
+    color: #45d49d; /* Change color to make it pop-out */
+    cursor: pointer;
+}
+
+.search {
+    /* margin-right: 37rem; */
+    position: absolute;
+    left: 80px;
+    margin-left: 5rem;
+    margin-right: 5rem;
+}
+
+.search form {
+    display: flex;
+    align-items: center;
+}
+
+.search input[type="text"] {
+    padding: 0.5rem 1rem;
+    border: 1px solid #555;
+    border-radius: 5px 0 0 5px; /* Rounded corners */
+    background-color: #444; /* Darker background */
+    color: white; /* White text */
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+.search input[type="text"]::placeholder {
+    color: #bbb; /* Lighter placeholder text */
+}
+
+.search input[type="text"]:focus {
+    border-color: #45d49d; /* Border color on focus */
+}
+
+.search input[type="submit"] {
+    padding: 0.5rem 1rem;
+    border: 1px solid #555;
+    border-radius: 0 5px 5px 0; /* Rounded corners */
+    background-color: #45d49d; /* Button background */
+    color: white; /* Button text */
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search input[type="submit"]:hover {
+    background-color: #37b486; /* Darker green on hover */
+}
+
+section {
+    margin: 40px auto;
+    width: 60%;
+    text-align: center;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border: 1px solid #ccc;
+}
+
+
+section h1 {
+    color: #37b486;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+section h2 {
+    color: #37b486;
+    font-size: 2em;
+    margin-bottom: 15px;
+}
+
+section p {
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+}
+
+aside {
+    margin: 20px auto;
+    width: 80%;
+    padding: 20px;
+    background-color: #333;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+aside h2 {
+
+    color: #37b486;
+    font-size: 1.8em;
+    margin-bottom: 15px;
+}
+
+aside h3 {
+    font-size: 1.2em;
+    margin-top: 15px;
+}
+
+aside p {
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-size: 1em;
+}

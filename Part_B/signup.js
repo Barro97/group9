@@ -15,8 +15,36 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Simulate a successful form submission
-    alert("Form submitted successfully!");
+    //  Successful form submission
+    else {
+      alert("Form submitted successfully!");
+      const user = {
+        firstName: formData.get("first-name"),
+        lastName: formData.get("last-name"),
+        email: formData.get("email"),
+        phoneNumber: formData.get("phone-number"),
+        dob: {
+          day: formData.get("dob-day"),
+          month: formData.get("dob-month"),
+          year: formData.get("dob-year"),
+        },
+        country: formData.get("country"),
+        city: formData.get("city"),
+        password: formData.get("password"),
+        follows: [],
+        posts: [],
+        pic: "https://www.creativefabrica.com/wp-content/uploads/2023/05/23/Bearded-man-avatar-Generic-male-profile-Graphics-70342414-1-1-580x387.png",
+      };
+      // Retrieve existing users array from localStorage
+      let users = JSON.parse(localStorage.getItem("users")) || []; //Either an existing array of users or an empty array
+
+      // Add the new user to the users array
+      users.push(user);
+      console.log(user);
+      // Save the updated users array to localStorage
+      localStorage.setItem("users", JSON.stringify(users));
+      window.location.href = "login.html";
+    }
   });
 
   function validateFormData(formData) {
@@ -41,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Validate password
     if (password !== verifyPassword) {
+      // We will create a better password security in part C using flask!
       errors.push("Passwords do not match.");
     } else if (password.length < 6) {
       errors.push("Password must be at least 6 characters long.");
