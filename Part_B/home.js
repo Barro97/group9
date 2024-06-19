@@ -1,10 +1,10 @@
 "use strict";
 const user = JSON.parse(localStorage.getItem("activeUser"));
-console.log(user);
 const postButton = document.getElementById("post-button");
 const postsContainer = document.querySelector(".all-posts");
+let tryingToComment = false;
 
-postsContainer.innerHTML = "";
+// postsContainer.innerHTML = "";
 
 document.addEventListener("DOMContentLoaded", function () {
   postButton.addEventListener("click", function (e) {
@@ -21,7 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Create a new post element
     const newPost = document.createElement("div");
     newPost.className = "post-box";
-    console.log(user.pic);
 
     // Set up the inner HTML of the new post
     newPost.innerHTML = `
@@ -95,7 +94,56 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("You already liked this post");
       }
     });
+
+    // Attach comment button functionality
+    const commentButton = newPost.querySelector(".action-btn.comment");
+    commentButton.addEventListener("click", function () {
+      if (tryingToComment === true) {
+        // alert("You are already trying to comment!")
+        removeCommentBox();
+      } else {
+        tryingToComment = true;
+        const html = `<div class="comment-box">
+            <div class="post-input comment-input">
+              <img
+                src="https://www.creativefabrica.com/wp-content/uploads/2023/05/23/Bearded-man-avatar-Generic-male-profile-Graphics-70342414-1-1-580x387.png"
+                alt="User Avatar"
+                class="avatar"
+              />
+              <textarea placeholder="Insert comment here"></textarea>
+            </div>
+            <button class="option-btn post-comment" >post</button>
+          </div>`;
+
+        newPost.insertAdjacentHTML("afterend", html);
+
+        const commentBox = document.querySelector(".comment-box");
+        const postComment = commentBox.querySelector(".post-comment");
+        postComment.addEventListener("click", function () {
+          const comment = document.querySelector(
+            ".comment-input textarea"
+          ).value;
+          const commentCountSpan = newPost.querySelector(".comments");
+
+          if (!comment) {
+            alert("Please enter some text to post.");
+          } else {
+            post.comments.amount += 1;
+            commentCountSpan.textContent = `${post.comments.amount} Comments`;
+            post.comments.list.push({ commenter: user, text: comment });
+            removeCommentBox();
+          }
+        });
+      }
+    });
+
     // Clear the textarea after posting
     document.querySelector("textarea").value = "";
   });
 });
+
+const removeCommentBox = function () {
+  const remove = document.querySelector(".comment-box");
+  remove.parentNode.removeChild(remove);
+  tryingToComment = false;
+};

@@ -84,7 +84,8 @@ main {
   bottom: -20px;
 }
 
-#post-button {
+#post-button,
+.post-comment {
   position: relative;
   right: -20px;
   background: linear-gradient(
@@ -323,4 +324,27 @@ main {
   justify-content: space-around;
   position: relative;
   bottom: -20px;
+}
+
+.comment-input {
+  border: none;
+}
+
+.comment-input textarea {
+  height: 40px;
+}
+
+.comment-box {
+  background-color: #555;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border: 3px solid #45d49d;
+  height: 93px;
+}
+
+.post-comment {
+  position: relative;
+  top: -25px;
+  right: -700px;
 }
