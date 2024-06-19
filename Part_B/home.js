@@ -74,13 +74,28 @@ document.addEventListener("DOMContentLoaded", function () {
         list: [],
       },
       shares: 0,
-      liked: function () {},
     };
     user.posts.push(post);
 
+    // Attach like button functionality
+    const likeButton = newPost.querySelector(".action-btn.like");
+    likeButton.addEventListener("click", function () {
+      let didLike = false;
+      post.likes.users.forEach((usr) => {
+        console.log(usr);
+        if (usr.email === user.email) didLike = true;
+      });
+
+      if (didLike === false) {
+        const likeCountSpan = newPost.querySelector(".like");
+        post.likes.amount += 1;
+        likeCountSpan.textContent = `👍 ${post.likes.amount}`;
+        post.likes.users.push(user);
+      } else {
+        alert("You already liked this post");
+      }
+    });
     // Clear the textarea after posting
     document.querySelector("textarea").value = "";
   });
 });
-
-const likeFunc = function () {};
