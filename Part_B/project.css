@@ -8,6 +8,11 @@ body {
     width: 100%;
 }
 
+.name{
+    margin-right: 10px;
+    width: 600px;
+}
+
 .project-page {
     max-width: 1000px;
     margin: 20px auto;
@@ -18,10 +23,10 @@ body {
 }
 
 .user-container {
-    /*background-color: blue;*/
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
 }
 
 .user-container img {
@@ -35,7 +40,7 @@ body {
 .user-container h1 {
     color: #45d49d;
     margin: 0;
-    width: 430px;
+    width: auto; /* Change from fixed width */
 }
 
 .user-container h3 {
@@ -48,11 +53,11 @@ body {
 .social {
     display: flex;
     width: 180px;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
+    margin-top: 10px; /* Add margin for spacing on smaller screens */
     position: relative;
-    right: -200px;
-    /*top: -20px;*/
+
 }
 
 .social img {
@@ -82,13 +87,16 @@ body {
     flex-direction: row;
     align-items: flex-start;
     position: relative;
+    /*flex-wrap: wrap; !* Allow wrapping for smaller screens *!*/
 }
 
 .project {
+    overflow: hidden;
     width: 50%;
     background-color: #444444;
     padding: 20px;
     border-radius: 10%;
+    box-sizing: border-box; /* Ensure padding is included in width */
 }
 
 .project h2 {
@@ -112,6 +120,7 @@ body {
 .comments {
     width: 50%;
     margin: 20px;
+    box-sizing: border-box; /* Ensure margin is included in width */
 }
 
 .comments h3 {
@@ -151,8 +160,8 @@ body {
 
 .comment-list {
     margin-top: 20px;
-    max-height: 300px; /* Set the max height for the comment list */
-    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 .comment {
@@ -178,6 +187,13 @@ body {
     position: relative;
 }
 
+.comment-time{
+    font-weight: lighter;
+    font-size: 12px;
+    margin-top: 2px;
+    color: #abadc7;
+}
+
 .user-name {
     font-weight: bold;
     margin-bottom: 2px;
@@ -190,49 +206,38 @@ body {
 }
 
 .like-container {
-    width: 80px;
+    width: 90px;
     display: flex;
     align-items: center;
-    /*justify-content: space-around;*/
     position: relative;
-    margin-top: 10px;
-    /*background-color: blue;*/
-
 }
 
 .like-button {
+    width: 40px;
+    height: 40px;
+    background-color: white;
     cursor: pointer;
     margin-right: 10px;
     transition: transform 0.1s ease;
     filter: opacity(50%);
-    padding: 5px;
-}
-
-.like-button img {
-    height: 30px;
-    aspect-ratio: 1/1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px;
     border-radius: 50%;
-    object-fit: cover;
 }
 
-/*.like-button:hover {*/
-/*    background-color: rgba(101, 100, 100, 0.18);*/
-/*    border-radius: 50%;*/
-/*}*/
-
+.like-button:hover {
+    background-color: rgba(158, 156, 156, 0.18);
+}
 
 .like-button.pressed {
     filter: opacity(100%);
+    transform: scale(0.9);
 }
 
 .like-count {
     font-size: 1.2rem;
-}
-
-
-.like-count {
-    /*margin-left: 10px;*/
-    font-size: 18px;
 }
 
 .project-header {
@@ -240,8 +245,44 @@ body {
     display: flex;
     justify-content: space-around;
     position: relative;
-
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+    .project-container {
+        flex-direction: column; /* Stack the projects and comments */
+    }
 
+    .project, .comments {
+        width: 100%; /* Full width for both project and comments */
+        margin-bottom: 20px; /* Add space between sections */
+    }
 
+    .social {
+        right: 0; /* Reset position for smaller screens */
+        justify-content: flex-start; /* Align icons to the start */
+    }
+
+    .user-container {
+        justify-content: center; /* Center the user container */
+        text-align: center; /* Center the text */
+    }
+
+    .user-container img {
+        margin-bottom: 10px; /* Add space below the image */
+    }
+}
+
+@media (max-width: 480px) {
+    .project-page {
+        padding: 20px; /* Reduce padding for smaller screens */
+    }
+
+    .like-container {
+        width: auto; /* Adjust width for smaller screens */
+    }
+
+    .like-count {
+        font-size: 1rem; /* Reduce font size for like count */
+    }
+}

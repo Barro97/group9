@@ -4,8 +4,35 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="project.css">
+    <link rel="stylesheet" href="nav.css"/>
+    <link rel="stylesheet" href="uicons-regular-rounded/css/uicons-regular-rounded.css"/>
 </head>
 <body>
+<header>
+    <nav class="nav">
+        <h1>WorkFolio</h1>
+        <div class="search">
+            <form>
+                <input type="text" placeholder="Search..."/>
+                <input type="submit" value="Go"/>
+            </form>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-item">
+                <a class="nav-link"><i class="fi fi-rr-house-chimney"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"><i class="fi fi-rr-comment-dots"></i></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"><i class="fi fi-rr-bell"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"><i class="fi fi-rr-user"></i></a>
+            </li>
+        </ul>
+    </nav>
+</header>
 <section class="project-page">
     <div class="user-container">
         <img src="https://www.creativefabrica.com/wp-content/uploads/2023/05/23/Bearded-man-avatar-Generic-male-profile-Graphics-70342414-1-1-580x387.png"
@@ -38,22 +65,18 @@
                         <img src="https://cdn-icons-png.flaticon.com/512/169/169778.png"
                              alt="like"/>
                     </div>
-                    <!--                    <span class="like-button">👍</span>-->
                     <div class="like-count">0</div>
                 </div>
             </div>
-            <!-- Representing downloadable file with an image -->
             <a href="stam.docx" download>
                 <img src="https://searchengineland.com/wp-content/seloads/2020/03/code-SS_634574354-1920x1080-1.jpg"
                      alt="Download Project File"/>
             </a>
         </div>
 
-
         <div class="comments">
             <h3>Comments</h3>
             <div class="comment-list">
-                <!-- Sample comment -->
                 <div class="comment">
                     <div class="profile-picture">
                         <a href="profile.html">
@@ -63,6 +86,34 @@
                     <div class="comment-details">
                         <div class="user-name">Adi Cohen</div>
                         <div class="comment-content">Great project!</div>
+                        <div class="comment-time" data-time="2024-06-17T10:00:00Z">2 hours ago</div>
+                    </div>
+                </div>
+
+
+                <div class="comment">
+                    <div class="profile-picture">
+                        <a href="profile.html">
+                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User Profile">
+                        </a>
+                    </div>
+                    <div class="comment-details">
+                        <div class="user-name">Shalom Levi</div>
+                        <div class="comment-content">Excellent project!</div>
+                        <div class="comment-time" data-time="2024-06-17T09:00:00Z">3 hours ago</div>
+                    </div>
+                </div>
+
+                <div class="comment">
+                    <div class="profile-picture">
+                        <a href="profile.html">
+                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135823.png" alt="User Profile">
+                        </a>
+                    </div>
+                    <div class="comment-details">
+                        <div class="user-name">Adi Cohen</div>
+                        <div class="comment-content">Great project!</div>
+                        <div class="comment-time" data-time="2024-06-17T08:00:00Z">5 hours ago</div>
                     </div>
                 </div>
 
@@ -75,6 +126,7 @@
                     <div class="comment-details">
                         <div class="user-name">Shalom Levi</div>
                         <div class="comment-content">Excellent project!</div>
+                        <div class="comment-time" data-time="2024-06-17T07:00:00Z">5 hours ago</div>
                     </div>
                 </div>
 
@@ -87,28 +139,7 @@
                     <div class="comment-details">
                         <div class="user-name">Adi Cohen</div>
                         <div class="comment-content">Great project!</div>
-                    </div>
-                </div>
-                <div class="comment">
-                    <div class="profile-picture">
-                        <a href="profile.html">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User Profile">
-                        </a>
-                    </div>
-                    <div class="comment-details">
-                        <div class="user-name">Shalom Levi</div>
-                        <div class="comment-content">Excellent project!</div>
-                    </div>
-                </div>
-                <div class="comment">
-                    <div class="profile-picture">
-                        <a href="profile.html">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135823.png" alt="User Profile">
-                        </a>
-                    </div>
-                    <div class="comment-details">
-                        <div class="user-name">Adi Cohen</div>
-                        <div class="comment-content">Great project!</div>
+                        <div class="comment-time" data-time="2024-06-17T06:00:00Z">7 hours ago</div>
                     </div>
                 </div>
 
@@ -121,11 +152,11 @@
                     <div class="comment-details">
                         <div class="user-name">Shalom Levi</div>
                         <div class="comment-content">Excellent project!</div>
+                        <div class="comment-time" data-time="2024-06-17T05:00:00Z">8 hours ago</div>
                     </div>
                 </div>
             </div>
 
-            <!-- More comments will be added here dynamically -->
             <div class="new-comment">
                 <div class="profile-picture">
                     <a href="profile.html">
