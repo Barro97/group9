@@ -2,148 +2,280 @@
 const user = JSON.parse(localStorage.getItem("activeUser"));
 const postButton = document.getElementById("post-button");
 const postsContainer = document.querySelector(".all-posts");
-let tryingToComment = false;
+const UploadImageBtn = document.querySelector(".image-upload");
+const UploadProjBtn = document.querySelector(".proj");
+const userPostBox = document.querySelector(".post-box");
+const Modal = document.querySelector(".modal");
+const overlay = document.querySelector(".overlay");
+const content = Modal.querySelector(".modal-content");
+const closeBtn = document.querySelector(".close-modal");
 
-// postsContainer.innerHTML = "";
+let tryingToComment = false;
+let uploadingImage = false;
+let uploadingProj = false;
 
 document.addEventListener("DOMContentLoaded", function () {
+  attachImageUploadFunctionality();
+  attachProjectUploadFunctionality();
+  closeBtn.addEventListener("click", closeModal);
+  overlay.addEventListener("click", closeModal);
   postButton.addEventListener("click", function (e) {
     e.preventDefault();
-
-    // Get the value of the textarea
-    const postContent = document.querySelector("textarea").value;
-
-    if (postContent.trim() === "") {
-      alert("Please enter some text to post.");
-      return;
-    }
-
-    // Create a new post element
-    const newPost = document.createElement("div");
-    newPost.className = "post-box";
-
-    // Set up the inner HTML of the new post
-    newPost.innerHTML = `
-        <div class="post-header">
-          <img
-            src="${user.pic}"
-            alt="Profile Picture"
-            class="profile-pic"
-          />
-          <div class="post-info">
-            <div class="user-name">${user.firstName} ${user.lastName}</div>
-            <div class="post-time">Just now</div>
-          </div>
-        </div>
-        <div class="post-content">
-          <p>${postContent}</p>
-        </div>
-        <div class="post-footer">
-          <div class="reaction-bar">
-            <span class="like">👍 0</span>
-            <span class="comments">0 Comments</span>
-            <span class="shares">0 Shares</span>
-          </div>
-          <div class="action-buttons">
-            <button class="action-btn like">
-              <div class="action-Type">Like</div>
-              <i class="fi-post fi-rr-social-network"></i>
-            </button>
-            <button class="action-btn comment">
-              <div class="action-Type">Comment</div>
-              <i class="fi-post fi-rr-comment-alt"></i>
-            </button>
-            <button class="action-btn share">
-              <div class="action-Type">Share</div>
-              <i class="fi-post fi-rr-share-square"></i>
-            </button>
-          </div>
-        </div>
-      `;
-
-    // Append the new post to the posts container
-    postsContainer.insertBefore(newPost, postsContainer.firstChild);
-
-    //Create new post object
-    const post = {
-      content: postContent,
-      likes: { amount: 0, users: [] },
-      comments: {
-        amount: 0,
-        list: [],
-      },
-      shares: 0,
-    };
-    user.posts.push(post);
-
-    // Attach like button functionality
-    const likeButton = newPost.querySelector(".action-btn.like");
-    likeButton.addEventListener("click", function () {
-      let didLike = false;
-      post.likes.users.forEach((usr) => {
-        console.log(usr);
-        if (usr.email === user.email) didLike = true;
-      });
-
-      if (didLike === false) {
-        const likeCountSpan = newPost.querySelector(".like");
-        post.likes.amount += 1;
-        likeCountSpan.textContent = `👍 ${post.likes.amount}`;
-        post.likes.users.push(user);
-      } else {
-        alert("You already liked this post");
-      }
-    });
-
-    // Attach comment button functionality
-    const commentButton = newPost.querySelector(".action-btn.comment");
-    commentButton.addEventListener("click", function () {
-      if (tryingToComment === true) {
-        // alert("You are already trying to comment!")
-        removeCommentBox();
-      } else {
-        tryingToComment = true;
-        const html = `<div class="comment-box">
-            <div class="post-input comment-input">
-              <img
-                src="https://www.creativefabrica.com/wp-content/uploads/2023/05/23/Bearded-man-avatar-Generic-male-profile-Graphics-70342414-1-1-580x387.png"
-                alt="User Avatar"
-                class="avatar"
-              />
-              <textarea placeholder="Insert comment here"></textarea>
-            </div>
-            <button class="option-btn post-comment" >post</button>
-          </div>`;
-
-        newPost.insertAdjacentHTML("afterend", html);
-
-        const commentBox = document.querySelector(".comment-box");
-        const postComment = commentBox.querySelector(".post-comment");
-        postComment.addEventListener("click", function () {
-          const comment = document.querySelector(
-            ".comment-input textarea"
-          ).value;
-          const commentCountSpan = newPost.querySelector(".comments");
-
-          if (!comment) {
-            alert("Please enter some text to post.");
-          } else {
-            post.comments.amount += 1;
-            commentCountSpan.textContent = `${post.comments.amount} Comments`;
-            post.comments.list.push({ commenter: user, text: comment });
-            removeCommentBox();
-          }
-        });
-      }
-    });
-
-    // Clear the textarea after posting
-    document.querySelector("textarea").value = "";
+    createPost(user, postsContainer);
   });
 });
 
-const removeCommentBox = function () {
-  const remove = document.querySelector(".comment-box");
-  remove.parentNode.removeChild(remove);
+function createPost(user, postsContainer, shareContent = "") {
+  let postContent = "";
+  console.log(shareContent);
+  if (!shareContent) {
+    postContent = document.querySelector("textarea").value.trim();
+  } else {
+    postContent = shareContent;
+  }
+
+  if (!postContent) {
+    alert("Please enter some text to post.");
+    return;
+  }
+  const newPost = createPostElement(user, postContent);
+  postsContainer.insertBefore(newPost, postsContainer.firstChild);
+
+  const post = {
+    content: postContent,
+    likes: { amount: 0, users: [] },
+    comments: { amount: 0, list: [] },
+    shares: 0,
+  };
+  user.posts.push(post);
+
+  attachLikeButtonFunctionality(newPost, user, post);
+  attachCommentButtonFunctionality(newPost, user, post);
+  attachShareButtonFunctionality(newPost, user, post);
+  attachLikesModalFunctionality(newPost, post);
+  document.querySelector("textarea").value = "";
+}
+
+function createPostElement(user, postContent) {
+  const newPost = document.createElement("div");
+  let image = "";
+  let proj = "";
+  if (uploadingImage) {
+    image = document.querySelector(".up-img-container").innerHTML;
+    removeImageForUpload();
+  }
+  if (uploadingProj) {
+    proj = document.querySelector(".project-box").innerHTML;
+    removeProjectForUpload();
+  }
+  newPost.className = "post-box";
+  newPost.innerHTML = `
+        <div class="post-header">
+            <img src="${user.pic}" alt="Profile Picture" class="profile-pic" />
+            <div class="post-info">
+                <div class="user-name">${user.firstName} ${user.lastName}</div>
+                <div class="post-time">Just now</div>
+            </div>
+        </div>
+        <div class="post-content">
+            <p>${postContent}</p>
+            ${
+              uploadingImage
+                ? `<div class="up-img-container">${image}</div>`
+                : ""
+            }
+             ${uploadingProj ? `<div class="project-box">${proj}</div>` : ""}
+        </div>
+        <div class="post-footer">
+            <div class="reaction-bar">
+                <span class="like">👍 0</span>
+                <span class="comments">0 Comments</span>
+                <span class="shares">0 Shares</span>
+            </div>
+            <div class="action-buttons">
+                <button class="action-btn like">
+                    <div class="action-type">Like</div>
+                    <i class="fi-post fi-rr-social-network"></i>
+                </button>
+                <button class="action-btn comment">
+                    <div class="action-type">Comment</div>
+                    <i class="fi-post fi-rr-comment-alt"></i>
+                </button>
+                <button class="action-btn share">
+                    <div class="action-type">Share</div>
+                    <i class="fi-post fi-rr-share-square"></i>
+                </button>
+            </div>
+        </div>`;
+  uploadingImage = false;
+  uploadingProj = false;
+  return newPost;
+}
+
+function attachLikeButtonFunctionality(newPost, user, post) {
+  const likeButton = newPost.querySelector(".action-btn.like");
+  likeButton.addEventListener("click", function () {
+    if (!post.likes.users.some((usr) => usr.email === user.email)) {
+      post.likes.amount += 1;
+      newPost.querySelector(".like").textContent = `👍 ${post.likes.amount}`;
+      post.likes.users.push(user);
+    } else {
+      alert("You already liked this post");
+    }
+  });
+}
+
+function attachCommentButtonFunctionality(newPost, user, post) {
+  const commentButton = newPost.querySelector(".action-btn.comment");
+  commentButton.addEventListener("click", function () {
+    if (tryingToComment) {
+      removeCommentBox();
+    } else {
+      tryingToComment = true;
+      addCommentBox(newPost, user, post);
+    }
+  });
+}
+
+function attachShareButtonFunctionality(newPost, user, post) {
+  //   const shareButton = newPost.querySelector(".action-btn.share");
+  //   shareButton.addEventListener("click", function (e) {
+  //     const postToShare = e.target.closest(".post-box");
+  //     console.log(postToShare);
+  //     console.log(postToShare.innerHTML);
+  //     createPost(user, postsContainer, postToShare.innerHTML);
+  //   });
+}
+
+function addCommentBox(newPost, user, post) {
+  const commentBoxHTML = `
+        <div class="comment-box">
+            <div class="post-input comment-input">
+                <img src="https://www.creativefabrica.com/wp-content/uploads/2023/05/23/Bearded-man-avatar-Generic-male-profile-Graphics-70342414-1-1-580x387.png"
+                     alt="User Avatar" class="avatar" />
+                <textarea placeholder="Insert comment here"></textarea>
+            </div>
+            <button class="option-btn post-comment">Post</button>
+        </div>`;
+  newPost.insertAdjacentHTML("afterend", commentBoxHTML);
+
+  const commentBox = document.querySelector(".comment-box");
+  commentBox
+    .querySelector(".post-comment")
+    .addEventListener("click", function () {
+      const commentText = document
+        .querySelector(".comment-input textarea")
+        .value.trim();
+      if (commentText) {
+        post.comments.amount += 1;
+        newPost.querySelector(
+          ".comments"
+        ).textContent = `${post.comments.amount} Comments`;
+        post.comments.list.push({ commenter: user, text: commentText });
+        removeCommentBox();
+      } else {
+        alert("Please enter some text to post.");
+      }
+    });
+}
+
+function removeCommentBox() {
+  const commentBox = document.querySelector(".comment-box");
+  commentBox.parentNode.removeChild(commentBox);
   tryingToComment = false;
-};
+}
+
+function attachImageUploadFunctionality() {
+  UploadImageBtn.addEventListener("click", function () {
+    if (uploadingImage) {
+      //   alert("You are already trying to upload an image!");
+      removeImageForUpload();
+      uploadingImage = false;
+    } else {
+      prepareImageForUpload();
+    }
+  });
+}
+
+function prepareImageForUpload() {
+  const postInput = userPostBox.querySelector(".post-input");
+  const html = `
+  <div class="up-img-container"><img
+            src="https://www.training.com.au/wp-content/uploads/science-stem-feature.png"
+            alt="Picture To Upload"
+            class="Upload-img"
+          /></div>`;
+  postInput.insertAdjacentHTML("afterend", html);
+  uploadingImage = true;
+}
+
+function removeImageForUpload() {
+  const remove = userPostBox.querySelector(".up-img-container");
+  remove.parentNode.removeChild(remove);
+}
+
+function attachProjectUploadFunctionality() {
+  UploadProjBtn.addEventListener("click", function () {
+    if (uploadingProj) {
+      removeProjectForUpload();
+      uploadingProj = false;
+    } else {
+      prepareProjectForUpload();
+    }
+  });
+}
+
+function removeProjectForUpload() {
+  const remove = userPostBox.querySelector(".project-box");
+  remove.parentNode.removeChild(remove);
+}
+
+function prepareProjectForUpload() {
+  const postInput = userPostBox.querySelector(".post-input");
+  const html = `
+        <div class="project-box">
+                    <div class="project-content">
+                      <div class="project-overlay"></div>
+                      <div class="project-title">My new project</div>
+                    </div>
+                  </div>
+                </div>`;
+  postInput.insertAdjacentHTML("afterend", html);
+  uploadingProj = true;
+}
+
+function attachLikesModalFunctionality(newPost, post) {
+  const likes = newPost.querySelector(".like");
+  likes.addEventListener("click", function () {
+    content.innerHTML = "";
+    post.likes.users.forEach((usr) => {
+      userThatLiked(usr);
+    });
+    showModal();
+  });
+}
+
+function showModal() {
+  Modal.classList.remove("hidden");
+  overlay.classList.remove("hidden");
+}
+
+function userThatLiked(user) {
+  const html = `<div class="post-header">
+    <img
+      src="${user.pic}"
+      alt="Profile Picture"
+      class="profile-pic"
+    />
+    <div class="post-info">
+      <div class="user-name">${user.firstName} ${user.lastName}</div>
+      <div class="post-time">Just now</div>
+    </div>
+  </div>`;
+  content.insertAdjacentHTML("afterbegin", html);
+}
+
+function closeModal() {
+  Modal.classList.add("hidden");
+  overlay.classList.add("hidden");
+}
