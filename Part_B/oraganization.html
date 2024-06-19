@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="organization.css">
+    <link rel="stylesheet" href="nav.css"/>
+    <link
+            rel="stylesheet"
+            href="uicons-regular-rounded/css/uicons-regular-rounded.css"
+    />
 </head>
 <body>
 <header>
@@ -17,16 +22,16 @@
         </div>
         <ul class="nav-links">
             <li class="nav-item">
-                <a class="nav-link">messages</a>
+                <a class="nav-link"><i class="fi fi-rr-house-chimney"></i></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link">home</a>
+                <a class="nav-link"><i class="fi fi-rr-comment-dots"></i></i></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link">notification</a>
+                <a class="nav-link"><i class="fi fi-rr-bell"></i></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link">profile</a>
+                <a class="nav-link"><i class="fi fi-rr-user"></i></a>
             </li>
         </ul>
     </nav>
@@ -39,8 +44,8 @@
                  alt="Ben Gurion University Logo">
             <div>
                 <h1>Ben-Gurion University of the Negev</h1>
-                <h3>23K followers | 10K+ employees</h3>
-                <button id="follow-button">+ Follow</button>
+                <h3 id="follower-count">23K followers</h3>
+                <button class="follow-button">+ Follow</button>
             </div>
 
 
@@ -97,4 +102,5 @@
     <p>&copy; 2024 Workfolio. All rights reserved.</p>
 </footer>
 </body>
+<script src="organization.js"></script>
 </html>
