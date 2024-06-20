@@ -42,18 +42,23 @@ function createPost(user, postsContainer) {
     content: postContent,
     likes: { amount: 0, users: [] },
     comments: { amount: 0, list: [] },
-    shares: 0,
+    shares: { amount: 0, users: [] },
   };
   user.posts.push(post);
 
+  attachBtns(newPost, user, post);
+
+  document.querySelector("textarea").value = "";
+}
+
+function attachBtns(newPost, user, post) {
   attachLikeButtonFunctionality(newPost, user, post);
   attachCommentButtonFunctionality(newPost, user, post);
   attachShareButtonFunctionality(newPost, user, post);
   attachLikesModalFunctionality(newPost, post);
   attachCommentsModalFunctionality(newPost, post);
-  document.querySelector("textarea").value = "";
+  attachSharesModalFunctionality(newPost, post);
 }
-
 function createPostElement(user, postContent) {
   const newPost = document.createElement("div");
   let image = "";
@@ -152,8 +157,11 @@ function attachShareButtonFunctionality(newPost, user, post) {
       preparePostToShare(postToShare);
       userPostBox.scrollIntoView({ behavior: "smooth" });
       sharingPost = true;
-      post.shares += 1;
-      newPost.querySelector(".shares").textContent = `${post.shares} Shares`;
+      post.shares.amount += 1;
+      newPost.querySelector(
+        ".shares"
+      ).textContent = `${post.shares.amount} Shares`;
+      post.shares.users.push(user);
     }
   });
 }
@@ -332,4 +340,15 @@ function showModal() {
 function closeModal() {
   Modal.classList.add("hidden");
   overlay.classList.add("hidden");
+}
+
+function attachSharesModalFunctionality(newPost, post) {
+  const shares = newPost.querySelector(".shares");
+  shares.addEventListener("click", function () {
+    content.innerHTML = "";
+    post.shares.users.forEach((usr) => {
+      userThatLiked(usr); // Same function as the ones for likes
+    });
+    showModal();
+  });
 }
