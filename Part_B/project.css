@@ -247,6 +247,24 @@ body {
     position: relative;
 }
 
+
+/* Scrollbar Styles */
+.comment-list::-webkit-scrollbar {
+  width: 18px;
+}
+
+.comment-list::-webkit-scrollbar-track {
+     background: #555;
+}
+
+.comment-list::-webkit-scrollbar-thumb {
+ background: linear-gradient(#10bd87, #8bd2b3);
+  border: 3px solid #555;
+  border-radius: 10px;
+}
+
+
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .project-container {

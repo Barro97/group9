@@ -8,7 +8,6 @@ body {
 
 .chat {
     display: flex;
-    /*flex-direction: row-reverse;*/
     padding: 20px;
 
 }
@@ -53,13 +52,16 @@ body {
 }
 
 .message-content {
-    padding: 10px;
+    min-width: 60px;
+    padding: 10px 10px 25px 10px;
     border-radius: 10px;
-    background-color: #f1f1f1;
+    background-color: #dfdede;
+    color: black;
     word-wrap: break-word;
     white-space: pre-wrap;
     margin-bottom: 5px; /* Add margin between messages for spacing */
     display: inline-block; /* Ensure each message content is on its own line */
+    position: relative;
 }
 
 .message-content a {
@@ -73,12 +75,12 @@ body {
 }
 
 .message-content img {
-    max-width: 100%;  /* Ensures the image does not exceed the width of the message content */
-    max-height: 150px;  /* Sets a maximum height for the images */
-    object-fit: contain;  /* Ensures the image retains its aspect ratio */
-    margin-bottom: 5px;  /* Adds space below the image */
-    border: 1px solid #ccc;  /* Optional: Adds a border to the image for better visibility */
-    border-radius: 5px;  /* Optional: Adds rounded corners to the image */
+    max-width: 100%; /* Ensures the image does not exceed the width of the message content */
+    max-height: 150px; /* Sets a maximum height for the images */
+    object-fit: contain; /* Ensures the image retains its aspect ratio */
+    margin-bottom: 5px; /* Adds space below the image */
+    border: 1px solid #ccc; /* Optional: Adds a border to the image for better visibility */
+    border-radius: 5px; /* Optional: Adds rounded corners to the image */
 }
 
 
@@ -112,12 +114,13 @@ body {
 
 .chat-input button {
     padding: 10px;
-    border: none;
+    border: 1px solid #b5b4b4;
     background-color: #45d49d;
     color: #fff;
     border-radius: 5px;
     margin-left: 10px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .chat-input button:hover {
@@ -128,12 +131,9 @@ body {
     display: flex;
     align-items: center;
     padding: 10px;
-    /*border: 1px solid #ccc;*/
-    /*border-radius: 5px;*/
     margin-left: 10px;
     cursor: pointer;
-    /*background-color: white;*/
-    /*color: white;*/
+
 }
 
 .custom-file-upload img {
@@ -143,11 +143,8 @@ body {
 }
 
 .custom-file-upload:hover {
-    /*transform: scale(1.1);*/
     border-radius: 50%;
     background-color: #e4e4e4;
-
-
 }
 
 .user-container {
@@ -195,8 +192,6 @@ body {
     font-size: 16px;
     font-weight: lighter;
 }
-
-
 
 .chat-sidebar {
     width: 20%;
@@ -255,3 +250,45 @@ body {
     color: #45d49d;
 }
 
+/* Scrollbar Styles */
+.chat-messages::-webkit-scrollbar {
+    width: 18px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #dfdcdc;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: linear-gradient(#10bd87, #8bd2b3);
+    border: 1px solid #555;
+    border-radius: 10px;
+}
+
+.message-content {
+    /*padding-top: 10px;*/
+    padding-bottom: 25px;
+    border-radius: 10px;
+    background-color: #dfdede;
+    color: black;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    margin-bottom: 8px;
+    display: inline-block;
+    position: relative;
+}
+
+.message-timestamp {
+    font-size: smaller;
+    color: #605f5f;
+    position: absolute;
+    bottom: 0px;
+    right: 8px;
+}
+
+.date-header {
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+    margin: 10px 0;
+}
