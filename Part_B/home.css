@@ -369,7 +369,7 @@ main {
 }
 
 .modal {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -387,7 +387,7 @@ main {
 }
 
 .overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -406,4 +406,60 @@ main {
   cursor: pointer;
   border: none;
   background: none;
+}
+
+.commenters {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  border-bottom: 2px solid #34b68c;
+  padding-bottom: 4px;
+}
+
+.commenter {
+  border: none;
+  margin-right: 20px;
+  padding: 0px;
+  margin-bottom: 0px;
+}
+
+.comment-content {
+  width: 50%;
+  position: relative;
+  right: -10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  height: 55px;
+  background-color: #333c45;
+  border: 1px solid #979797;
+  border-radius: 10px;
+}
+
+.comment-content p {
+  margin-top: 5px;
+  margin-left: 5px;
+  font-size: x-small;
+}
+.comments {
+  cursor: pointer;
+}
+
+.about-to-share {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+  position: relative;
+  left: 25%;
+  background-color: #333c45;
+  border: 2px solid #bbb;
+  border-radius: 10px;
+  padding-top: 10px;
+  margin-bottom: 15px;
+}
+
+.about-to-share .post-content p {
+  margin-left: 5px;
+  margin-right: 5px;
 }
