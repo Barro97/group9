@@ -1,15 +1,19 @@
+/*body {*/
+/*  background-color: black;*/
+/*  color: white;*/
+/*  font-family: Tahoma, sans-serif;*/
+/*  margin: 0;*/
+/*  padding: 0;*/
+/*  height: 100%;*/
+/*  width: 100%;*/
+/*  overflow-x: hidden;*/
+/*}*/
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: black;
-    margin: 0;
-    padding: 0;
-}
 
 .chat {
     display: flex;
     padding: 20px;
-
+    height: 100%;
 }
 
 .chat-container {
@@ -22,7 +26,7 @@ body {
     flex-direction: column;
     overflow: hidden;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    height: 500px;
+    height: 550px;
 }
 
 
