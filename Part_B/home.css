@@ -151,8 +151,12 @@ main {
 
 .user-name {
   font-weight: bold;
+  color: white;
+  text-decoration: none;
 }
-
+a {
+  text-decoration: none;
+}
 .post-time {
   color: #92aac9;
   font-size: 12px;
@@ -466,4 +470,450 @@ main {
 
 .shares {
   cursor: pointer;
+}
+
+/* For small screens (max-width: 600px) */
+@media (max-width: 600px) {
+  .nav h1 {
+    font-size: 18px;
+  }
+  .nav .search {
+    position: relative;
+    left: -5em;
+    margin-right: 0.5px;
+  }
+  .nav .search input[type="text"] {
+    width: 80px;
+  }
+
+  .nav .search input[type="submit"] {
+    padding: 5px;
+  }
+
+  .nav-links {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0;
+    justify-content: space-between; /* Spread items evenly */
+    width: 35%;
+    position: relative;
+    left: -1em;
+  }
+
+  .nav-item {
+    margin-right: 0px !important; /* Override any existing margins */
+    flex: 1; /* Ensure each item takes an equal amount of space */
+    text-align: center; /* Center align text within each nav item */
+  }
+
+  /* Ensure there are no unexpected left or right margins or paddings */
+  .nav-links,
+  .nav-item {
+    margin: 0;
+    padding: 0;
+  }
+
+  .post-box {
+    padding: 10px;
+    width: 100%;
+    min-width: 280px; /* Set minimum width to prevent shrinking */
+    box-sizing: border-box;
+  }
+
+  .post-input textarea {
+    height: 80px;
+    width: 100%;
+    min-width: 260px; /* Ensure textarea doesn't shrink */
+  }
+
+  .option-btn,
+  .action-btn {
+    font-size: 12px;
+    padding: 6px 12px;
+    margin: 5px 0;
+    width: 100%; /* Make buttons take full width */
+    text-align: center;
+  }
+
+  .post-options {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .posts,
+  .all-posts {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    padding: 0 10px;
+  }
+
+  .post-header {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .post-info {
+    margin-top: 10px;
+  }
+
+  .reaction-bar,
+  .action-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .action-buttons {
+    width: 100%;
+  }
+  .reaction-bar {
+    margin-bottom: 10px;
+  }
+
+  .project-content {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 10px;
+  }
+
+  .modal {
+    width: 90%;
+    padding: 20px;
+  }
+  .to-post {
+    width: 50%;
+  }
+  .post-options {
+    display: flex;
+    flex-direction: row;
+  }
+  .option-btn {
+    width: 30%;
+    position: relative;
+    left: -0.05rem;
+  }
+
+  .project-box {
+    width: 50%;
+    height: 50%;
+    position: relative;
+    left: 25%;
+  }
+  .action-btn {
+    width: 30%;
+  }
+}
+
+/* For very small screens (max-width: 400px) */
+@media (max-width: 400px) {
+  .nav h1 {
+    font-size: 16px;
+  }
+
+  .nav .search {
+    position: relative;
+    left: -2em;
+    margin-right: 0.5px;
+  }
+
+  .nav .search input[type="text"] {
+    width: 60px;
+    font-size: 12px;
+  }
+
+  .nav .search input[type="submit"] {
+    padding: 3px;
+    font-size: 12px;
+  }
+
+  .nav-links {
+    display: flex;
+    flex-direction: row;
+    padding: 5px 0;
+    justify-content: space-between;
+    width: 40%;
+    position: relative;
+    left: -1em;
+  }
+
+  .nav-item {
+    margin-right: 0px !important;
+    flex: 1;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .nav-links,
+  .nav-item {
+    margin: 0;
+    padding: 0;
+  }
+
+  .post-box {
+    padding: 8px;
+    width: 100%;
+    min-width: 250px;
+    box-sizing: border-box;
+  }
+
+  .post-input textarea {
+    height: 70px;
+    width: 100%;
+    min-width: 230px;
+    font-size: 14px;
+  }
+
+  .option-btn,
+  .action-btn {
+    font-size: 10px;
+    padding: 4px 8px;
+    margin: 3px 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .post-options {
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .posts,
+  .all-posts {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 0 5px;
+  }
+
+  .post-header {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .post-info {
+    margin-top: 8px;
+  }
+
+  .reaction-bar,
+  .action-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .action-buttons {
+    width: 100%;
+  }
+
+  .reaction-bar {
+    margin-bottom: 8px;
+  }
+
+  .project-content {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 8px;
+  }
+
+  .modal {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .to-post {
+    width: 70%;
+  }
+
+  .post-options {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .option-btn {
+    width: 70%;
+    position: relative;
+    left: 0;
+  }
+
+  .project-box {
+    width: 90%;
+    height: auto;
+    position: relative;
+    left: 5%;
+    margin-bottom: 10px;
+  }
+
+  .action-btn {
+    width: 90%;
+  }
+
+  .nav-links,
+  .nav-item {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .profile-pic {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+/* For very small screens (max-width: 400px) */
+@media (max-width: 400px) {
+  .nav h1 {
+    font-size: 14px; /* Adjusted font-size for smaller screen */
+  }
+
+  .nav .search {
+    position: relative;
+    left: -4.5em; /* Adjusted positioning */
+    margin-right: 0.3px; /* Slightly adjusted margin */
+  }
+
+  .nav .search input[type="text"] {
+    width: 50px; /* Reduced width */
+    font-size: 10px; /* Adjusted font-size */
+  }
+
+  .nav .search input[type="submit"] {
+    padding: 2px; /* Adjusted padding */
+    font-size: 10px; /* Adjusted font-size */
+  }
+
+  .nav-links {
+    display: flex;
+    flex-direction: row; /* Preserved flex direction */
+    padding: 4px 0; /* Adjusted padding */
+    justify-content: space-around; /* Slightly adjusted to distribute items more evenly */
+    width: 35%; /* Adjusted width */
+    position: relative;
+    left: -1.5em; /* Adjusted positioning */
+  }
+
+  .nav-item {
+    margin-right: 0px !important; /* Kept as is */
+    flex: 1;
+    text-align: center; /* Kept as is */
+    font-size: 12px; /* Adjusted font-size */
+  }
+
+  .nav-links,
+  .nav-item {
+    margin: 0; /* Kept as is */
+    padding: 0; /* Kept as is */
+  }
+
+  .post-box {
+    padding: 6px; /* Adjusted padding */
+    width: 100%; /* Kept as is */
+    min-width: 200px; /* Adjusted min-width */
+    box-sizing: border-box; /* Kept as is */
+  }
+
+  .post-input textarea {
+    height: 60px; /* Adjusted height */
+    width: 100%; /* Kept as is */
+    min-width: 200px; /* Adjusted min-width */
+    font-size: 12px; /* Adjusted font-size */
+  }
+
+  .option-btn,
+  .action-btn {
+    font-size: 9px; /* Adjusted font-size */
+    padding: 3px 6px; /* Adjusted padding */
+    margin: 2px 0; /* Adjusted margin */
+    width: 100%; /* Kept as is */
+    text-align: center; /* Kept as is */
+  }
+
+  .post-options {
+    flex-direction: row; /* Kept as is */
+    gap: 2px; /* Adjusted gap */
+  }
+
+  .posts,
+  .all-posts {
+    grid-template-columns: 1fr; /* Kept as is */
+    gap: 8px; /* Adjusted gap */
+    padding: 0 4px; /* Adjusted padding */
+  }
+
+  .post-header {
+    flex-direction: row; /* Kept as is */
+    align-items: flex-start; /* Kept as is */
+  }
+
+  .post-info {
+    margin-top: 6px; /* Adjusted margin */
+  }
+
+  .reaction-bar,
+  .action-buttons {
+    display: flex; /* Kept as is */
+    flex-direction: row; /* Kept as is */
+    align-items: center; /* Kept as is */
+  }
+
+  .action-buttons {
+    width: 100%; /* Kept as is */
+  }
+
+  .reaction-bar {
+    margin-bottom: 6px; /* Adjusted margin */
+  }
+
+  .project-content {
+    width: 100%; /* Kept as is */
+    max-width: 100%; /* Kept as is */
+    margin-top: 6px; /* Adjusted margin */
+  }
+
+  .modal {
+    width: 90%; /* Adjusted width */
+    padding: 10px; /* Adjusted padding */
+  }
+
+  .to-post {
+    width: 65%; /* Adjusted width */
+  }
+
+  .post-options {
+    display: flex; /* Kept as is */
+    flex-direction: row; /* Kept as is */
+    gap: 3px; /* Adjusted gap */
+  }
+
+  .option-btn {
+    width: 65%; /* Adjusted width */
+    position: relative; /* Kept as is */
+    left: 0; /* Kept as is */
+  }
+
+  .project-box {
+    width: 60%; /* Adjusted width */
+    height: auto; /* Kept as is */
+    position: relative; /* Kept as is */
+    left: 20%; /* Kept as is */
+    margin-bottom: 8px; /* Adjusted margin */
+  }
+
+  .action-btn {
+    width: 85%; /* Adjusted width */
+  }
+
+  .avatar {
+    width: 35px; /* Adjusted width */
+    height: 35px; /* Adjusted height */
+  }
+
+  .profile-pic {
+    width: 30px; /* Adjusted width */
+    height: 30px; /* Adjusted height */
+  }
 }

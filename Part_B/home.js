@@ -59,6 +59,7 @@ function attachBtns(newPost, user, post) {
   attachCommentsModalFunctionality(newPost, post);
   attachSharesModalFunctionality(newPost, post);
 }
+
 function createPostElement(user, postContent) {
   const newPost = document.createElement("div");
   let image = "";
@@ -81,7 +82,9 @@ function createPostElement(user, postContent) {
         <div class="post-header">
             <img src="${user.pic}" alt="Profile Picture" class="profile-pic" />
             <div class="post-info">
-                <div class="user-name">${user.firstName} ${user.lastName}</div>
+            <a href="profile.html"><div class="user-name">${user.firstName} ${
+    user.lastName
+  }</div></a>
                 <div class="post-time">Just now</div>
             </div>
         </div>
