@@ -76,18 +76,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Validate fields that are suppose to by number only
-    const correctNumbers =
-      onlyNumbers(day) &&
-      onlyNumbers(month) &&
-      onlyNumbers(year) &&
-      onlyNumbers(phone);
+    const correctNumbers = validateNumbers(day, month, year, phone);
 
     if (!correctNumbers) {
       errors.push("Date of birth or phone number should contain only numbers");
     }
 
-    if (!validPhoneNumber(phone)) {
+    if (!validPhoneNumberLength(phone)) {
       errors.push("Phone number must be between 7 or 15 digits");
+    }
+
+    if (!validPhoneNumberBeginning(phone)) {
+      errors.push("Phone number must start with 0!");
+    }
+
+    if (!validDate(day, month, year)) {
+      errors.push("Invalid Date");
     }
 
     return errors;
@@ -119,9 +123,33 @@ function noEmptyValues(formData) {
   return true;
 }
 
-function validPhoneNumber(phoneNumber) {
+function validPhoneNumberLength(phoneNumber) {
   const length = phoneNumber.length;
   console.log(length);
   if (length < 7 || length > 15) return false;
+  else return true;
+}
+function validPhoneNumberBeginning(phoneNumber) {
+  console.log(phoneNumber);
+  if (phoneNumber[0] === "0") return true;
+  else return false;
+}
+
+function validateNumbers(day, month, year, phone) {
+  return (
+    onlyNumbers(day) &&
+    onlyNumbers(month) &&
+    onlyNumbers(year) &&
+    onlyNumbers(phone)
+  );
+}
+
+function validDate(day, month, year) {
+  const dayNum = Number(day);
+  const monthNum = Number(month);
+  const yearNum = Number(year);
+  if (dayNum < 0 || dayNum > 31) return false;
+  else if (monthNum < 1 || monthNum > 12) return false;
+  else if (yearNum < 1940 || yearNum > 2024) return false;
   else return true;
 }
