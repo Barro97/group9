@@ -16,6 +16,7 @@ let uploadingProj = false;
 let sharingPost = false;
 
 document.addEventListener("DOMContentLoaded", function () {
+  initiateSteve();
   attachImageUploadFunctionality();
   attachProjectUploadFunctionality();
   closeBtn.addEventListener("click", closeModal);
@@ -59,6 +60,7 @@ function attachBtns(newPost, user, post) {
   attachCommentsModalFunctionality(newPost, post);
   attachSharesModalFunctionality(newPost, post);
 }
+
 function createPostElement(user, postContent) {
   const newPost = document.createElement("div");
   let image = "";
@@ -81,7 +83,9 @@ function createPostElement(user, postContent) {
         <div class="post-header">
             <img src="${user.pic}" alt="Profile Picture" class="profile-pic" />
             <div class="post-info">
-                <div class="user-name">${user.firstName} ${user.lastName}</div>
+            <a href="profile.html"><div class="user-name">${user.firstName} ${
+    user.lastName
+  }</div></a>
                 <div class="post-time">Just now</div>
             </div>
         </div>
@@ -351,4 +355,34 @@ function attachSharesModalFunctionality(newPost, post) {
     });
     showModal();
   });
+}
+
+function initiateSteve() {
+  // Just to make the example post work
+  const post = postsContainer.querySelector(".post-box");
+  const stevePost = {
+    content: "",
+    likes: { amount: 0, users: [] },
+    comments: { amount: 0, list: [] },
+    shares: { amount: 0, users: [] },
+  };
+  const steve = {
+    // a fictive user
+    firstName: "Steve",
+    lastName: "Jobs",
+    email: "rosenthb@post.bgu.ac.il",
+    phoneNumber: "0547662193",
+    dob: {
+      day: "11",
+      month: "10",
+      year: "1997",
+    },
+    country: "Israel",
+    city: "Rehovot",
+    password: "poipoi9",
+    follows: [],
+    posts: [],
+    pic: "https://www.creativefabrica.com/wp-content/uploads/2023/05/23/Bearded-man-avatar-Generic-male-profile-Graphics-70342414-1-1-580x387.png",
+  };
+  attachBtns(post, steve, stevePost);
 }
