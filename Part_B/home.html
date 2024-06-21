@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Home</title>
-    <link rel="stylesheet" href="nav.css" />
-    <link rel="stylesheet" href="home.css" />
-    <link
-            rel="stylesheet"
-            href="uicons-regular-rounded/css/uicons-regular-rounded.css"
-    />
-  </head>
-  <body>
-    <header>
-      <nav class="nav">
+    <link rel="stylesheet" href="nav.css"/>
+    <link rel="stylesheet" href="home.css"/>
+    <link rel="stylesheet" href="footer.css"/>
+    <link rel="stylesheet" href="uicons-regular-rounded/css/uicons-regular-rounded.css"/>
+
+</head>
+<body>
+<header>
+    <nav class="nav">
         <h1>WorkFolio</h1>
         <div class="search">
             <form>
@@ -45,7 +44,7 @@
                         alt="User Avatar"
                         class="avatar"
                 />
-                <textarea placeholder="What's on your mind, User?"></textarea>
+                <textarea placeholder="What's on your mind, Bar?"></textarea>
             </div>
             <div class="post-options">
                 <button class="action-btn to-post proj">
@@ -69,21 +68,26 @@
                             class="profile-pic"
                     />
                     <div class="post-info">
-                        <div class="user-name">Steve Jobs</div>
+                        <a href="profile.html">
+                            <div class="user-name">Steve Jobs</div>
+                        </a>
                         <div class="post-time">2 days ago</div>
                     </div>
                 </div>
                 <div class="post-content">
                     <p>
-                        Worked alongside <a href="#">Bill Gates</a> to create this amazing
+                        Worked alongside <a href="profile.html">Bill Gates</a> to create this amazing
                         app
                     </p>
-                    <div class="project-box">
-                        <div class="project-content">
-                            <div class="project-overlay"></div>
-                            <div class="project-title">Give me your money</div>
+                    <a href="project.html">
+                        <div class="project-box">
+                            <div class="project-content">
+                                <div class="project-overlay"></div>
+                                <div class="project-title">Give me your money</div>
+                            </div>
                         </div>
-                    </div>
+                    </a>
+
                 </div>
                 <div class="post-footer">
                     <div class="reaction-bar">
@@ -98,43 +102,6 @@
                         </button>
                         <button class="action-btn comment">
                             <div class="action-Type">Comment</div>
-          <div class="post-box">
-          <div class="post-header">
-            <img
-              src="https://cdn.mos.cms.futurecdn.net/3f8ff38c50a1ebb8045c180b7fce9b5b-1200-80.jpg"
-              alt="Profile Picture"
-              class="profile-pic"
-            />
-            <div class="post-info">
-              <a href="profile.html"><div class="user-name">Steve Jobs</div></a>
-              <div class="post-time">2 days ago</div>
-            </div>
-          </div>
-          <div class="post-content">
-            <p>
-              Worked alongside <a href="profile.html">Bill Gates</a> to create this amazing
-              app
-            </p>
-            <div class="project-box">
-              <div class="project-content">
-                <div class="project-overlay"></div>
-                <div class="project-title">Give me your money</div>
-              </div>
-            </div>
-          </div>
-          <div class="post-footer">
-            <div class="reaction-bar">
-              <span class="like">👍 5.1K</span>
-              <span class="comments">804 Comments</span>
-              <span class="shares">409 Shares</span>
-            </div>
-            <div class="action-buttons">
-              <button class="action-btn like">
-                <div class="action-Type">Like</div>
-                <i class="fi-post fi-rr-social-network"></i>
-              </button>
-              <button class="action-btn comment">
-                <div class="action-Type">Comment</div>
 
                             <i class="fi-post fi-rr-comment-alt"></i>
                         </button>
@@ -163,6 +130,8 @@
             </p>
         </div>
     </div>
+
+
     <div class="overlay hidden"></div>
 </main>
 <footer>
@@ -173,6 +142,6 @@
     </div>
 </footer>
 <script src="home.js"></script>
+
 </body>
 </html>
-
