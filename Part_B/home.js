@@ -9,6 +9,7 @@ const Modal = document.querySelector(".modal");
 const overlay = document.querySelector(".overlay");
 const content = Modal.querySelector(".modal-content");
 const closeBtn = document.querySelector(".close-modal");
+const fileInput = document.getElementById("fileInput");
 
 let tryingToComment = false;
 let uploadingImage = false;
@@ -16,16 +17,20 @@ let uploadingProj = false;
 let sharingPost = false;
 
 document.addEventListener("DOMContentLoaded", function () {
+  initPage();
+});
+function initPage() {
   initiateSteve();
   attachImageUploadFunctionality();
   attachProjectUploadFunctionality();
+  attachImageUploadAttempted();
   closeBtn.addEventListener("click", closeModal);
   overlay.addEventListener("click", closeModal);
   postButton.addEventListener("click", function (e) {
     e.preventDefault();
     createPost(user, postsContainer);
   });
-});
+}
 
 function createPost(user, postsContainer) {
   let postContent = "";
@@ -234,16 +239,26 @@ function attachImageUploadFunctionality() {
       removeImageForUpload();
       uploadingImage = false;
     } else {
-      prepareImageForUpload();
+      fileInput.click();
     }
   });
 }
-
-function prepareImageForUpload() {
+function attachImageUploadAttempted() {
+  fileInput.addEventListener("change", function (e) {
+    const files = e.target.files;
+    let imageUrl = "";
+    if (files.length > 0) {
+      const file = files[0];
+      imageUrl = URL.createObjectURL(file);
+      prepareImageForUpload(imageUrl);
+    }
+  });
+}
+function prepareImageForUpload(url) {
   const postInput = userPostBox.querySelector(".post-input");
   const html = `
   <div class="up-img-container"><img
-            src="https://www.training.com.au/wp-content/uploads/science-stem-feature.png"
+            src="${url}"
             alt="Picture To Upload"
             class="Upload-img"
           /></div>`;
@@ -254,6 +269,7 @@ function prepareImageForUpload() {
 function removeImageForUpload() {
   const remove = userPostBox.querySelector(".up-img-container");
   remove.parentNode.removeChild(remove);
+  fileInput.value = "";
 }
 
 function attachProjectUploadFunctionality() {
