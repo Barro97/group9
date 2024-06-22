@@ -31,5 +31,4 @@ We created a JS page for each page, where we performed validations according to 
 **Additional Notes:**
 
 - The application is designed to be responsive and work on different screen sizes.
-- We used various JavaScript libraries to enhance the functionality of the application, such as Bootstrap and jQuery.
 - The application is implemented in a modular way, which makes it easy to maintain and extend.
