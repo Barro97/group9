@@ -1,14 +1,4 @@
-body {
-    background-color: black;
-    color: white;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-}
-
-.name{
+.name {
     margin-right: 10px;
     width: 600px;
 }
@@ -26,7 +16,7 @@ body {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
-    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+    flex-wrap: wrap;
 }
 
 .user-container img {
@@ -40,7 +30,6 @@ body {
 .user-container h1 {
     color: #45d49d;
     margin: 0;
-    width: auto; /* Change from fixed width */
 }
 
 .user-container h3 {
@@ -52,12 +41,9 @@ body {
 
 .social {
     display: flex;
-    width: 180px;
     justify-content: space-between;
     align-items: center;
-    margin-top: 10px; /* Add margin for spacing on smaller screens */
-    position: relative;
-
+    margin-top: 10px;
 }
 
 .social img {
@@ -71,15 +57,7 @@ body {
 
 .social a:hover img {
     filter: brightness(1.3);
-}
-
-.social a:hover {
     transform: scale(1.1);
-}
-
-.social a {
-    height: 40px;
-    width: 40px;
 }
 
 .project-container {
@@ -87,7 +65,6 @@ body {
     flex-direction: row;
     align-items: flex-start;
     position: relative;
-    /*flex-wrap: wrap; !* Allow wrapping for smaller screens *!*/
 }
 
 .project {
@@ -96,7 +73,7 @@ body {
     background-color: #444444;
     padding: 20px;
     border-radius: 10%;
-    box-sizing: border-box; /* Ensure padding is included in width */
+    box-sizing: border-box;
 }
 
 .project h2 {
@@ -104,7 +81,6 @@ body {
 }
 
 .project img {
-    height: auto;
     width: 100%;
     border-radius: 10%;
     object-fit: cover;
@@ -120,7 +96,7 @@ body {
 .comments {
     width: 50%;
     margin: 20px;
-    box-sizing: border-box; /* Ensure margin is included in width */
+    box-sizing: border-box;
 }
 
 .comments h3 {
@@ -187,7 +163,7 @@ body {
     position: relative;
 }
 
-.comment-time{
+.comment-time {
     font-weight: lighter;
     font-size: 12px;
     margin-top: 2px;
@@ -213,8 +189,8 @@ body {
 }
 
 .like-button {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     background-color: white;
     cursor: pointer;
     margin-right: 10px;
@@ -247,60 +223,56 @@ body {
     position: relative;
 }
 
-
 /* Scrollbar Styles */
 .comment-list::-webkit-scrollbar {
-  width: 18px;
+    width: 18px;
 }
 
 .comment-list::-webkit-scrollbar-track {
-     background: #555;
+    background: #555;
 }
 
 .comment-list::-webkit-scrollbar-thumb {
- background: linear-gradient(#10bd87, #8bd2b3);
-  border: 3px solid #555;
-  border-radius: 10px;
+    background: linear-gradient(#10bd87, #8bd2b3);
+    border: 3px solid #555;
+    border-radius: 10px;
 }
-
-
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .project-container {
-        flex-direction: column; /* Stack the projects and comments */
+        flex-direction: column;
     }
 
     .project, .comments {
-        width: 100%; /* Full width for both project and comments */
-        margin-bottom: 20px; /* Add space between sections */
+        width: 100%;
+        margin-bottom: 20px;
     }
 
     .social {
-        right: 0; /* Reset position for smaller screens */
-        justify-content: flex-start; /* Align icons to the start */
+        justify-content: flex-start;
     }
 
     .user-container {
-        justify-content: center; /* Center the user container */
-        text-align: center; /* Center the text */
+        justify-content: center;
+        text-align: center;
     }
 
     .user-container img {
-        margin-bottom: 10px; /* Add space below the image */
+        margin-bottom: 10px;
     }
 }
 
 @media (max-width: 480px) {
     .project-page {
-        padding: 20px; /* Reduce padding for smaller screens */
+        padding: 20px;
     }
 
     .like-container {
-        width: auto; /* Adjust width for smaller screens */
+        width: auto;
     }
 
     .like-count {
-        font-size: 1rem; /* Reduce font size for like count */
+        font-size: 1rem;
     }
 }

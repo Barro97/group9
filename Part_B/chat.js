@@ -1,10 +1,10 @@
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', () => {
     const messageInput = document.getElementById('message-input');
     const fileInput = document.getElementById('file-input');
     const chatMessages = document.querySelector('.chat-messages');
 
     // Auto-resize the textarea
-    messageInput.addEventListener('input', (e) => {
+    messageInput.addEventListener('input', () => {
         messageInput.style.height = 'auto';
         messageInput.style.height = messageInput.scrollHeight + 'px';
         chatMessages.style.height = `calc(100% - ${Math.min(messageInput.scrollHeight, 150) + 20}px)`;
@@ -147,8 +147,7 @@ function selectUser(userName, userTitle, userPicture, userProfileLink) {
     // Clear the current chat messages
     messagesContainer.innerHTML = '';
 
-    // Load the chat messages for the selected user (dummy implementation)
-    // In a real application, you would fetch this data from a server or a local data store
+    // Load the chat messages for the selected user
     const dummyMessages = [
         { text: `Hello ${userName}, how are you?`, isUser: true, date: new Date('2023-06-18T12:00:00') },
         { text: `I'm doing great, thanks! How about you?`, isUser: false, date: new Date('2023-06-18T12:01:00') },
