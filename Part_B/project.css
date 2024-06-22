@@ -239,7 +239,7 @@
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 770px) {
     .project-container {
         flex-direction: column;
     }

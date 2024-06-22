@@ -327,7 +327,7 @@ footer {
 }
 
 /* Media Queries */
-@media screen and (min-width: 400px) and (max-width: 600px) {
+@media (max-width: 770px) {
     .grid-container {
         grid-template-columns: 1fr;
         grid-gap: 10px;
@@ -371,7 +371,7 @@ footer {
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 480px) {
     /* Adjust top section to be column and centered */
     #top-section {
         flex-direction: column;
