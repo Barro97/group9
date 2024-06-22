@@ -1,10 +1,14 @@
-main {
-  /*display: flex;*/
-/*  flex-direction: column;*/
-/*  align-items: center;*/
-/*  justify-content: space-around;*/
+body {
+  display: flex;
+  flex-direction: column;
 }
-
+main {
+  height: 100%;
+  /*display: flex;*/
+  /*  flex-direction: column;*/
+  /*  align-items: center;*/
+  /*  justify-content: space-around;*/
+}
 
 .post-box {
   background-color: #555;
@@ -76,6 +80,7 @@ main {
 }
 
 .posts {
+  height: 100%;
   display: grid;
   grid-template-columns: 800px;
   grid-gap: 20px;
@@ -918,4 +923,11 @@ a {
     width: 30px; /* Adjusted width */
     height: 30px; /* Adjusted height */
   }
+}
+
+footer {
+  height: 30px;
+  width: 90%;
+  position: relative;
+  bottom: -7em;
 }
