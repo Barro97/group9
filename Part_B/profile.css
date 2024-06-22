@@ -247,7 +247,8 @@ footer {
 
 .project-content {
   position: relative;
-  background: url("your-image-url") no-repeat center center;
+  background: url("https://searchengineland.com/wp-content/seloads/2020/03/code-SS_634574354-1920x1080-1.jpg")
+    no-repeat center center;
   background-size: cover;
   height: 150px;
   display: flex;
