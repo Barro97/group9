@@ -928,3 +928,7 @@ footer {
   position: relative;
   bottom: -7em;
 }
+
+#fileInput {
+  display: none;
+}

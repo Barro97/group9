@@ -9,7 +9,7 @@ const Modal = document.querySelector(".modal");
 const overlay = document.querySelector(".overlay");
 const content = Modal.querySelector(".modal-content");
 const closeBtn = document.querySelector(".close-modal");
-
+const fileInput = document.getElementById("fileInput");
 let tryingToComment = false;
 let uploadingImage = false;
 let uploadingProj = false;
@@ -24,6 +24,7 @@ function initPage() {
   initUser();
   attachImageUploadFunctionality();
   attachProjectUploadFunctionality();
+  attachFileSelectionFunctionality();
   closeBtn.addEventListener("click", closeModal);
   overlay.addEventListener("click", closeModal);
   postButton.addEventListener("click", function (e) {
@@ -61,6 +62,17 @@ function createPost(user, postsContainer) {
   attachBtns(newPost, user, post);
 
   document.querySelector("textarea").value = "";
+}
+function initiateSteve() {
+  // Just to make the example post work
+  const post = postsContainer.querySelector(".post-box");
+  const stevePost = {
+    content: "",
+    likes: { amount: 0, users: [] },
+    comments: { amount: 0, list: [] },
+    shares: { amount: 0, users: [] },
+  };
+  attachBtns(post, user, stevePost);
 }
 
 function attachBtns(newPost, user, post) {
@@ -241,50 +253,67 @@ function removeCommentBox() {
 function attachImageUploadFunctionality() {
   UploadImageBtn.addEventListener("click", function () {
     if (uploadingImage) {
-      //   alert("You are already trying to upload an image!");
       removeImageForUpload();
-      uploadingImage = false;
+      // uploadingImage = false;
     } else {
-      prepareImageForUpload();
+      fileInput.click();
     }
   });
 }
 
-function prepareImageForUpload() {
-  const postInput = userPostBox.querySelector(".post-input");
-  const html = `
+function attachFileSelectionFunctionality() {
+  fileInput.addEventListener("change", function (e) {
+    const files = e.target.files;
+    let imgUrl = "";
+    if (files.length > 0) {
+      const file = files[0];
+      imgUrl = URL.createObjectURL(file);
+      prepareImageForUpload(imgUrl);
+    }
+  });
+}
+
+function prepareImageForUpload(url) {
+  const postInput = userPostBox.querySelector(".post-input"); // Get the post input element
+  const html = ` 
   <div class="up-img-container"><img
-            src="https://www.training.com.au/wp-content/uploads/science-stem-feature.png"
+            src="${url}" 
             alt="Picture To Upload"
             class="Upload-img"
           /></div>`;
-  postInput.insertAdjacentHTML("afterend", html);
-  uploadingImage = true;
+  postInput.insertAdjacentHTML("afterend", html); // Insert the image upload HTML including the uploaded picture after the post input
+  uploadingImage = true; // Update the flag to indicate an image is being uploaded
 }
 
+// Function to remove image upload elements from the post box
 function removeImageForUpload() {
-  const remove = userPostBox.querySelector(".up-img-container");
-  remove.parentNode.removeChild(remove);
+  const remove = userPostBox.querySelector(".up-img-container"); // Find the image upload container
+  remove.parentNode.removeChild(remove); // Remove the image upload container from the DOM
+  fileInput.value = ""; // Clear the input file element for future uploads
 }
 
+// Function to attach event listener for project upload
 function attachProjectUploadFunctionality() {
   UploadProjBtn.addEventListener("click", function () {
     if (uploadingProj) {
-      removeProjectForUpload();
-      uploadingProj = false;
+      // Check if a project is already being uploaded
+      removeProjectForUpload(); // Remove the project upload elements
+      uploadingProj = false; // Update the flag to indicate no project is being uploaded
     } else {
-      prepareProjectForUpload();
+      prepareProjectForUpload(); // Update the UI for a new project upload
     }
   });
 }
 
+// Function to remove project upload elements from the post box
 function removeProjectForUpload() {
-  const remove = userPostBox.querySelector(".project-box");
-  remove.parentNode.removeChild(remove);
+  const remove = userPostBox.querySelector(".project-box"); // Find the project box element
+  remove.parentNode.removeChild(remove); // Remove the project box from the DOM
 }
 
+// Function to add project upload elements to the post box
 function prepareProjectForUpload() {
-  const postInput = userPostBox.querySelector(".post-input");
+  const postInput = userPostBox.querySelector(".post-input"); // Get the post input element
   const html = `
         <div class="project-box">
                     <div class="project-content">
@@ -293,21 +322,35 @@ function prepareProjectForUpload() {
                     </div>
                   </div>
                 </div>`;
-  postInput.insertAdjacentHTML("afterend", html);
-  uploadingProj = true;
+  postInput.insertAdjacentHTML("afterend", html); // Insert the project upload HTML after the post input
+  uploadingProj = true; // Update the flag to indicate a project is being uploaded
 }
 
+// Function to attach event listener for likes modal
 function attachLikesModalFunctionality(newPost, post) {
-  const likes = newPost.querySelector(".like");
+  const likes = newPost.querySelector(".like"); // Get the like element in the post
   likes.addEventListener("click", function () {
-    content.innerHTML = "";
+    content.innerHTML = ""; // Clear previous content in the modal
     post.likes.users.forEach((usr) => {
-      userThatLiked(usr);
+      userThatLiked(usr); // Display each user who liked the post
     });
-    showModal();
+    showModal(); // Show the modal with the list of users who liked the post
   });
 }
 
+// Function to attach event listener for shares modal
+function attachSharesModalFunctionality(newPost, post) {
+  const shares = newPost.querySelector(".shares"); // Get the shares element in the post
+  shares.addEventListener("click", function () {
+    content.innerHTML = ""; // Clear previous content in the modal
+    post.shares.users.forEach((usr) => {
+      userThatLiked(usr); // Same function as the ones for the likes, display each user who shared the post
+    });
+    showModal(); // Show the modal with the list of users who shared the post
+  });
+}
+
+// Function to display the users who liked the post in the modal
 function userThatLiked(user) {
   const html = `<div class="post-header">
       <img
@@ -320,20 +363,22 @@ function userThatLiked(user) {
         <div class="post-time">Just now</div>
       </div>
     </div>`;
-  content.insertAdjacentHTML("afterbegin", html);
+  content.insertAdjacentHTML("afterbegin", html); // Insert the HTML for the user who liked
 }
 
+// Function to attach event listeners for displaying comments in a modal
 function attachCommentsModalFunctionality(newPost, post) {
-  const comments = newPost.querySelector(".comments");
+  const comments = newPost.querySelector(".comments"); // Get the comments section of the post
   comments.addEventListener("click", function () {
-    content.innerHTML = "";
+    content.innerHTML = ""; // Clear previous content in the modal
     post.comments.list.forEach(({ commenter, text }) => {
-      usersThatCommented(commenter, text);
+      usersThatCommented(commenter, text); // Add each comment to the modal
     });
-    showModal();
+    showModal(); // Show the modal with comments
   });
 }
 
+// Function to display the comment in the modal
 function usersThatCommented(user, comment) {
   const html = `<div class="commenters">
   <div class="post-header commenter">
@@ -349,37 +394,17 @@ function usersThatCommented(user, comment) {
    </div>
    <div class="comment-content"><p>${comment}</p></div>
    </div>`;
-  content.insertAdjacentHTML("afterbegin", html);
+  content.insertAdjacentHTML("afterbegin", html); // Insert the HTML for the comment
 }
+
+// Function to show the modal and overlay
 function showModal() {
   Modal.classList.remove("hidden");
   overlay.classList.remove("hidden");
 }
 
+// Function to hide the modal and overlay
 function closeModal() {
   Modal.classList.add("hidden");
   overlay.classList.add("hidden");
-}
-
-function attachSharesModalFunctionality(newPost, post) {
-  const shares = newPost.querySelector(".shares");
-  shares.addEventListener("click", function () {
-    content.innerHTML = "";
-    post.shares.users.forEach((usr) => {
-      userThatLiked(usr); // Same function as the ones for likes
-    });
-    showModal();
-  });
-}
-
-function initiateSteve() {
-  // Just to make the example post work
-  const post = postsContainer.querySelector(".post-box");
-  const stevePost = {
-    content: "",
-    likes: { amount: 0, users: [] },
-    comments: { amount: 0, list: [] },
-    shares: { amount: 0, users: [] },
-  };
-  attachBtns(post, user, stevePost);
 }
