@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Add the new user to the users array
       users.push(user);
       console.log(user);
+      localStorage.setItem("dontClear", true);
       // Save the updated users array to localStorage
       localStorage.setItem("users", JSON.stringify(users));
       window.location.href = "login.html";

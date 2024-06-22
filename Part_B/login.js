@@ -1,6 +1,5 @@
 "use strict";
-
-localStorage.clear(); //remove later!
+if (!localStorage.getItem("dontClear")) localStorage.clear();
 
 const user1 = {
   // a fictive user
@@ -20,7 +19,6 @@ const user1 = {
   posts: [],
   pic: "https://cdn-icons-png.flaticon.com/512/6833/6833605.png",
 };
-console.log(user1.pic);
 
 if (!JSON.parse(localStorage.getItem("users"))) {
   localStorage.setItem("users", JSON.stringify([]));
@@ -28,7 +26,6 @@ if (!JSON.parse(localStorage.getItem("users"))) {
   usersArr.push(user1);
   localStorage.setItem("users", JSON.stringify(usersArr));
 }
-console.log(JSON.parse(localStorage.getItem("users")));
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector(".login-form");
