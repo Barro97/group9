@@ -467,6 +467,8 @@ footer {
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    position: relative;
+    left: 2.5%;
   }
   #top-section {
     width: 50%;
@@ -479,6 +481,8 @@ footer {
   /* Adjust the name container */
   .name {
     width: 100%;
+    position: relative;
+    left: 2.5%;
   }
 
   .name h1 {
@@ -492,7 +496,8 @@ footer {
   /* Align follows section */
   .follows {
     margin-top: 10px;
-    align-items: center;
+    position: relative;
+    left: 2.5%;
   }
 
   #follow-button {
@@ -507,24 +512,34 @@ footer {
     gap: 5px;
     justify-content: center;
     width: 50%;
+    position: relative;
+    left: 2.5%;
   }
 
   .social a img {
     width: 25px;
     height: 25px;
   }
+  #links {
+    width: 50%;
+  }
 
+  .right-section {
+    width: 70%;
+    position: relative;
+    left: 14.5%;
+    bottom: -1em;
+  }
   /* Adjust project grid for smaller screens */
   .projects {
     grid-template-columns: 1fr;
     gap: 5px;
-    width: 100%;
+    width: 60%;
     margin: 0 auto;
   }
 
   .project-box {
     width: 100%;
-    max-width: 100%;
     padding: 5px;
   }
 
@@ -535,23 +550,27 @@ footer {
 
   /* Adjust description layout */
   .description {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    /* flex-wrap: wrap; */
+  }
+  .description--text {
+    font-size: x-small;
   }
 
   .description--text {
-    text-align: center;
     margin-top: 5px;
   }
-
+  #background {
+    width: 57%;
+  }
+  #background img {
+    width: 40px;
+    height: 40px;
+  }
   /* Ensure no horizontal overflow */
   body,
   html {
     overflow-x: hidden;
   }
 }
-/* 
-footer {
-  position: relative;
-  bottom: -7em;
-} */
