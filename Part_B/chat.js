@@ -3,14 +3,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const fileInput = document.getElementById('file-input');
     const chatMessages = document.querySelector('.chat-messages');
 
-// Auto-resize the textarea
+    // Auto-resize the textarea
     messageInput.addEventListener('input', (e) => {
         messageInput.style.height = 'auto';
         messageInput.style.height = messageInput.scrollHeight + 'px';
         chatMessages.style.height = `calc(100% - ${Math.min(messageInput.scrollHeight, 150) + 20}px)`;
     });
 
-// Listen for keydown event on the input field
+    // Listen for keydown event on the input field
     messageInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
@@ -18,12 +18,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     });
 
-// Handle file input change
+    // Handle file input change
     fileInput.addEventListener('change', () => {
         sendMessage();
     });
 
-// Load the last chat user
+    // Load the last chat user
     loadLastChatUser();
 });
 
@@ -37,12 +37,12 @@ function sendMessage() {
     const files = fileInput.files;
     if (messageText === '' && files.length === 0) return;
 
-// Create a timestamp for the message
+    // Create a timestamp for the message
     const now = new Date();
-    const timestamp = now.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit'});
-    const currentDate = now.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'});
+    const timestamp = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    const currentDate = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-// Add date header if this is the first message of the day
+    // Add date header if this is the first message of the day
     if (currentDate !== lastMessageDate) {
         const dateHeader = document.createElement('div');
         dateHeader.className = 'date-header';
@@ -51,7 +51,7 @@ function sendMessage() {
         lastMessageDate = currentDate;
     }
 
-// Create the message element
+    // Create the message element
     const messageElement = document.createElement('div');
     messageElement.className = 'message user';
 
@@ -107,7 +107,7 @@ function sendMessage() {
     messageInput.style.height = 'auto';
     fileInput.value = '';
 
-// Simulate a response after 1 second
+    // Simulate a response after 1 second
     setTimeout(() => {
         const responseElement = document.createElement('div');
         responseElement.className = 'message';
@@ -135,30 +135,30 @@ function selectUser(userName, userTitle, userPicture, userProfileLink) {
     const userPictureElement = document.getElementById('user-picture');
     const userProfileLinkElement = document.querySelector('.profile-link a');
 
-// Set the chat header to the selected user's name
+    // Set the chat header to the selected user's name
     chatHeader.textContent = `Chat with ${userName}`;
 
-// Update user details in the user container
+    // Update user details in the user container
     userNameElement.textContent = userName;
     userTitleElement.textContent = userTitle;
     userPictureElement.src = userPicture;
     userProfileLinkElement.href = userProfileLink;
 
-// Clear the current chat messages
+    // Clear the current chat messages
     messagesContainer.innerHTML = '';
 
-// Load the chat messages for the selected user (dummy implementation)
-// In a real application, you would fetch this data from a server or a local data store
+    // Load the chat messages for the selected user (dummy implementation)
+    // In a real application, you would fetch this data from a server or a local data store
     const dummyMessages = [
-        {text: `Hello ${userName}, how are you?`, isUser: true, date: new Date('2023-06-18T12:00:00')},
-        {text: `I'm doing great, thanks! How about you?`, isUser: false, date: new Date('2023-06-18T12:01:00')},
-        {text: `I’m fine too, thanks for asking!`, isUser: true, date: new Date('2023-06-19T09:15:00')}
+        { text: `Hello ${userName}, how are you?`, isUser: true, date: new Date('2023-06-18T12:00:00') },
+        { text: `I'm doing great, thanks! How about you?`, isUser: false, date: new Date('2023-06-18T12:01:00') },
+        { text: `I’m fine too, thanks for asking!`, isUser: true, date: new Date('2023-06-19T09:15:00') }
     ];
 
     lastMessageDate = ''; // Reset the last message date
 
     dummyMessages.forEach((msg) => {
-        const messageDate = msg.date.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'});
+        const messageDate = msg.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
         if (messageDate !== lastMessageDate) {
             const dateHeader = document.createElement('div');
@@ -177,7 +177,7 @@ function selectUser(userName, userTitle, userPicture, userProfileLink) {
 
         const timestampElement = document.createElement('span');
         timestampElement.className = 'message-timestamp';
-        timestampElement.textContent = msg.date.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit'});
+        timestampElement.textContent = msg.date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
         messageContentElement.appendChild(timestampElement);
         messageElement.appendChild(messageContentElement);
@@ -186,14 +186,20 @@ function selectUser(userName, userTitle, userPicture, userProfileLink) {
 
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-// Save the selected user's info in local storage
-    localStorage.setItem('lastChatUser', JSON.stringify({userName, userTitle, userPicture, userProfileLink}));
+    // Save the selected user's info in local storage
+    localStorage.setItem('lastChatUser', JSON.stringify({ userName, userTitle, userPicture, userProfileLink }));
 }
 
 function loadLastChatUser() {
     const lastChatUser = localStorage.getItem('lastChatUser');
     if (lastChatUser) {
-        const {userName, userTitle, userPicture, userProfileLink} = JSON.parse(lastChatUser);
+        const { userName, userTitle, userPicture, userProfileLink } = JSON.parse(lastChatUser);
         selectUser(userName, userTitle, userPicture, userProfileLink);
+    } else {
+        // Select the top user in the chat sidebar if no last chat user is found
+        const topUserElement = document.querySelector('.chat-sidebar-user');
+        if (topUserElement) {
+            topUserElement.click();
+        }
     }
 }

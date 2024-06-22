@@ -1,7 +1,13 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .grid-container {
     display: grid;
     grid-template-columns: 600px 600px;
-    height: 700px;
+    height: 100%;
     /* grid-auto-rows: minmax(150px, auto); */
     grid-gap: 20px;
     grid-column-gap: 200px;
@@ -53,45 +59,6 @@
     margin-right: 50px;
 }
 
-#follow-button {
-    width: 100px; /* Fixed width */
-    background: linear-gradient(
-            to bottom right,
-            #45d49d,
-            #34b68c
-    ); /* Gradient background */
-    border: 2px solid black;
-    border-radius: 20px; /* Rounded corners */
-    box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.2); /* Inner shadow for depth */
-    color: black; /* Text color */
-    font-weight: bold; /* Bold text */
-    font-family: Arial, sans-serif; /* Font family */
-    padding: 10px 20px; /* Padding */
-    text-align: center; /* Center text */
-    text-decoration: none; /* No underline */
-    display: inline-block;
-    transition: background 0.3s, transform 0.2s, box-shadow 0.2s; /* Smooth transition */
-    cursor: pointer; /* Pointer cursor */
-}
-
-#follow-button:hover {
-    background: linear-gradient(
-            to bottom,
-            #37b986,
-            #4ddf9e
-    ); /* Hover effect on background */
-    box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.2); /* Inner shadow */
-}
-
-#follow-button:active {
-    transform: translateY(0); /* Push back to normal */
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2); /* Inner shadow */
-    background: linear-gradient(
-            to bottom,
-            #34b68c,
-            #45d49d
-    ); /* Active background */
-}
 
 .my-details {
     display: flex;
@@ -204,8 +171,12 @@ h1 {
 }
 
 footer {
-    height: 100px;
-    width: auto;
+    /*height: 100px;*/
+    height: 30px;
+    /*width: auto;*/
+    width: 90%;
+    position: relative;
+    bottom: -7em;
 }
 
 .social img {
@@ -249,6 +220,7 @@ footer {
 
 .project-content {
     position: relative;
+    background: url("https://searchengineland.com/wp-content/seloads/2020/03/code-SS_634574354-1920x1080-1.jpg") no-repeat center center;
     background-size: cover;
     height: 150px;
     display: flex;
@@ -373,4 +345,208 @@ footer {
 
 #background a:hover {
     transform: scale(1.1);
+}
+
+/* Media Queries */
+@media screen and (min-width: 400px) and (max-width: 600px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+        grid-gap: 10px;
+    }
+
+    #top-section {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+        width: 80%;
+    }
+
+    #top-section img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .left-section,
+    .right-section {
+        padding: 15px;
+    }
+
+    #background {
+        width: 80%;
+    }
+
+    #about {
+        width: 80%;
+    }
+
+    #projects {
+        width: 80%;
+        overflow-x: hidden;
+    }
+
+    .projects {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(230px, 1fr));
+        gap: 20px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 400px) {
+    /* Adjust top section to be column and centered */
+    #top-section {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 10px;
+        gap: 10px;
+        width: 100%;
+    }
+
+    /* Ensure grid container padding is small */
+    .grid-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        height: 1fr;
+        /* grid-auto-rows: minmax(150px, auto); */
+        grid-gap: 20px;
+        grid-column-gap: 200px;
+        justify-content: center;
+        position: relative;
+        bottom: -3rem;
+        align-items: center;
+    }
+
+    /* Adjust section paddings */
+    .left-section,
+    .right-section {
+        padding: 5px;
+        width: 80%;
+    }
+
+    /* Ensure sections take full width */
+    .section {
+        padding: 10px;
+        width: 80%;
+        box-sizing: border-box;
+    }
+
+    /* Make profile image smaller */
+    #top-section img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        position: relative;
+        left: 2.5%;
+    }
+
+    #top-section {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Adjust the name container */
+    .name {
+        width: 100%;
+        position: relative;
+        left: 2.5%;
+    }
+
+    .name h1 {
+        font-size: 1.2em;
+    }
+
+    .name h3 {
+        font-size: 0.9em;
+    }
+
+    /* Align follows section */
+    .follows {
+        margin-top: 10px;
+        position: relative;
+        left: 2.5%;
+    }
+
+    #follow-button {
+        width: 80px;
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    /* Adjust social media icons */
+    .social {
+        flex-wrap: wrap;
+        gap: 5px;
+        justify-content: center;
+        width: 50%;
+        position: relative;
+        left: 2.5%;
+    }
+
+    .social a img {
+        width: 25px;
+        height: 25px;
+    }
+
+    #links {
+        width: 50%;
+    }
+
+    .right-section {
+        width: 70%;
+        position: relative;
+        left: 14.5%;
+        bottom: -1em;
+    }
+
+    /* Adjust project grid for smaller screens */
+    .projects {
+        grid-template-columns: 1fr;
+        gap: 5px;
+        width: 60%;
+        margin: 0 auto;
+    }
+
+    .project-box {
+        width: 100%;
+        padding: 5px;
+    }
+
+    .project-content {
+        height: auto;
+        min-height: 60px;
+    }
+
+    /* Adjust description layout */
+    .description {
+        flex-direction: row;
+        align-items: center;
+        /* flex-wrap: wrap; */
+    }
+
+    .description--text {
+        font-size: x-small;
+    }
+
+    .description--text {
+        margin-top: 5px;
+    }
+
+    #background {
+        width: 57%;
+    }
+
+    #background img {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Ensure no horizontal overflow */
+    body,
+    html {
+        overflow-x: hidden;
+    }
 }
