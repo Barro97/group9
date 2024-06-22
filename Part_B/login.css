@@ -7,6 +7,30 @@ body {
     width: 100%;
 }
 
+header h1 {
+    color: #45d49d; /* White color for the brand title */
+    position: relative;
+    right: 700px;
+    animation: heading;
+    animation-duration: 1.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes heading {
+    0% {
+        top: -50px;
+    }
+    25%{
+        top:20px;
+    }
+    50%{
+        top:5px;
+    }
+    100% {
+        top: 20px;
+    }
+}
+
 .container {
     background-color: white;
     padding: 20px;
