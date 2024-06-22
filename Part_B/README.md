@@ -5,7 +5,7 @@ In this section, we built the client-side of our application, WorkFolio, which c
 **HTML Pages:**
 
 - **login:** The login page allows users to enter their email and password to sign in. If the user is not yet registered, there is a link to the signup page.
-  - **Existing user:** Email: rinak@post.bgu.ac.il Password: 9poipoi
+  - **Existing user:** Email: rinak@post.bgu.ac.il Password: poipoi9
 - **signup:** The signup page allows users to register for an account by filling out all the required fields. If one or more fields are not filled in correctly, an appropriate message will be displayed.
 - **home:** The home page includes content where users can post updates, see posts from others, and perform various actions such as liking, commenting, and sharing.
 - **profile my:** The logged-in user's profile. This page displays the user's personal information, including details about their professional experience, education, previous projects, and social media links.
