@@ -15,10 +15,12 @@ let uploadingImage = false;
 let uploadingProj = false;
 let sharingPost = false;
 
+// Event listener for DOMContentLoaded to initialize the page when the document is fully loaded
 document.addEventListener("DOMContentLoaded", function () {
-  initPage();
+  initPage(); // Call initPage function to set up the page
 });
 
+// Function to initialize the page
 function initPage() {
   initiateSteve();
   initUser();
@@ -33,20 +35,23 @@ function initPage() {
   });
 }
 
+// Function to initialize the user interface with the active user's details
 function initUser() {
-  userPostBox.querySelector("img").src = user.pic;
+  userPostBox.querySelector("img").src = user.pic; // Set the user's profile picture
   userPostBox.querySelector(
     "textarea"
-  ).placeholder = `What's on your mind, ${user.firstName}?`;
+  ).placeholder = `What's on your mind, ${user.firstName}?`; // Set the placeholder text in the textarea
 }
+
+// Function to create a new post and add it to the posts container
 function createPost(user, postsContainer) {
   let postContent = "";
 
-  postContent = document.querySelector("textarea").value.trim();
+  postContent = document.querySelector("textarea").value.trim(); // Get the text from the textarea and trim whitespace
 
   if (!postContent) {
     alert("Please enter some text to post.");
-    return;
+    return; // Exit the function if no content
   }
   const newPost = createPostElement(user, postContent);
   postsContainer.insertBefore(newPost, postsContainer.firstChild);
@@ -57,14 +62,15 @@ function createPost(user, postsContainer) {
     comments: { amount: 0, list: [] },
     shares: { amount: 0, users: [] },
   };
-  user.posts.push(post);
+  user.posts.push(post); // Add the new post to the user's posts
 
-  attachBtns(newPost, user, post);
+  attachBtns(newPost, user, post); // Attach buttons for likes, comments, and shares to the new post
 
-  document.querySelector("textarea").value = "";
+  document.querySelector("textarea").value = ""; // Clear the textarea
 }
+
+// Function just to make the example post work
 function initiateSteve() {
-  // Just to make the example post work
   const post = postsContainer.querySelector(".post-box");
   const stevePost = {
     content: "",
@@ -75,6 +81,7 @@ function initiateSteve() {
   attachBtns(post, user, stevePost);
 }
 
+// Function to attach buttons for likes, comments, shares, and modals to a post
 function attachBtns(newPost, user, post) {
   attachLikeButtonFunctionality(newPost, user, post);
   attachCommentButtonFunctionality(newPost, user, post);
@@ -84,24 +91,27 @@ function attachBtns(newPost, user, post) {
   attachSharesModalFunctionality(newPost, post);
 }
 
+// Function to create a new post element based on user input and content
 function createPostElement(user, postContent) {
   const newPost = document.createElement("div");
   let image = "";
   let proj = "";
   let share = "";
   if (uploadingImage) {
-    image = document.querySelector(".up-img-container").innerHTML;
-    removeImageForUpload();
+    // Check if an image is being uploaded
+    image = document.querySelector(".up-img-container").innerHTML; // Get the HTML content of the uploaded image
+    removeImageForUpload(); // Remove the image upload elements
   }
   if (uploadingProj) {
-    proj = document.querySelector(".project-box").innerHTML;
-    removeProjectForUpload();
+    // Check if a project is being uploaded
+    proj = document.querySelector(".project-box").innerHTML; // Get the HTML content of the uploaded project
+    removeProjectForUpload(); // Remove the project upload elements
   }
   if (sharingPost) {
-    share = document.querySelector(".about-to-share").innerHTML;
-    removePostForShare();
+    share = document.querySelector(".about-to-share").innerHTML; // Get the HTML content of the post to share
+    removePostForShare(); // Remove the post sharing elements
   }
-  newPost.className = "post-box";
+  newPost.className = "post-box"; // Assign the post-box class to the new post for better design
   newPost.innerHTML = `
         <div class="post-header">
             <img src="${user.pic}" alt="Profile Picture" class="profile-pic" />
@@ -150,68 +160,80 @@ function createPostElement(user, postContent) {
   uploadingImage = false;
   uploadingProj = false;
   sharingPost = false;
-  return newPost;
+  return newPost; // Return the newly created post element
 }
 
 function attachLikeButtonFunctionality(newPost, user, post) {
-  const likeButton = newPost.querySelector(".action-btn.like");
+  const likeButton = newPost.querySelector(".action-btn.like"); // Get the like button element
   likeButton.addEventListener("click", function () {
     if (!post.likes.users.some((usr) => usr.email === user.email)) {
-      post.likes.amount += 1;
-      newPost.querySelector(".like").textContent = `👍 ${post.likes.amount}`;
-      post.likes.users.push(user);
+      // Check if the user has not already liked the post
+      post.likes.amount += 1; // Increment the like count
+      newPost.querySelector(".like").textContent = `👍 ${post.likes.amount}`; // Update the like count display
+      post.likes.users.push(user); // Add the user to the list of users who liked the post
     } else {
-      alert("You already liked this post");
+      // alert("You already liked this post"); // Alert if the user already liked the post
+      post.likes.amount -= 1; // Decrement the like count
+      newPost.querySelector(".like").textContent = `👍 ${post.likes.amount}`; // Update the like count display
+      post.likes.users.pop(user); // remove the user from the list of users who liked the post
     }
   });
 }
 
+// Function to attach event listener for the comment button functionality
 function attachCommentButtonFunctionality(newPost, user, post) {
-  const commentButton = newPost.querySelector(".action-btn.comment");
+  const commentButton = newPost.querySelector(".action-btn.comment"); // Get the comment button element
   commentButton.addEventListener("click", function () {
     if (tryingToComment) {
-      removeCommentBox();
+      // Check if a comment box is already present
+      removeCommentBox(); // Remove the existing comment box
     } else {
-      tryingToComment = true;
-      addCommentBox(newPost, user, post);
+      tryingToComment = true; // Set the flag to indicate a comment box is being added
+      addCommentBox(newPost, user, post); // Add a new comment box
     }
   });
 }
 
+// Function to attach event listener for the share button functionality
 function attachShareButtonFunctionality(newPost, user, post) {
-  const shareButton = newPost.querySelector(".action-btn.share");
+  const shareButton = newPost.querySelector(".action-btn.share"); // Get the share button element
   shareButton.addEventListener("click", function (e) {
     if (sharingPost) {
-      alert("you are already trying to share!");
+      // Check if the user is already trying to share a post
+      alert("you are already trying to share!"); // Alert if already sharing
     } else {
-      const postToShare = e.target.closest(".post-box");
-      preparePostToShare(postToShare);
-      userPostBox.scrollIntoView({ behavior: "smooth" });
-      sharingPost = true;
-      post.shares.amount += 1;
+      const postToShare = e.target.closest(".post-box"); // Get the post box closest to the clicked share button
+      preparePostToShare(postToShare); // Prepare the post for sharing
+      userPostBox.scrollIntoView({ behavior: "smooth" }); // Smooth scroll to the user post box
+      sharingPost = true; // Set the flag to indicate a post is being shared
+      post.shares.amount += 1; // Increment the share count
       newPost.querySelector(
         ".shares"
-      ).textContent = `${post.shares.amount} Shares`;
-      post.shares.users.push(user);
+      ).textContent = `${post.shares.amount} Shares`; // Update the share count display
+      post.shares.users.push(user); // Add the user to the list of users who shared the post
     }
   });
 }
+
+// Function to remove the post prepared for sharing
 function removePostForShare() {
-  const remove = userPostBox.querySelector(".about-to-share");
-  remove.parentNode.removeChild(remove);
+  const remove = userPostBox.querySelector(".about-to-share"); // Find the element marked for sharing
+  remove.parentNode.removeChild(remove); // Remove the element from the DOM
 }
 
+// Function to prepare a post for sharing by adding it to the user post box
 function preparePostToShare(postToShare) {
-  const shareHeader = postToShare.querySelector(".post-header");
-  const shareContent = postToShare.querySelector(".post-content");
-  const postInput = userPostBox.querySelector(".post-input");
+  const shareHeader = postToShare.querySelector(".post-header"); // Get the header of the post to share
+  const shareContent = postToShare.querySelector(".post-content"); // Get the content of the post to share
+  const postInput = userPostBox.querySelector(".post-input"); // Get the post input element
   const html = `<div class="about-to-share">
   <div class="post-header">${shareHeader.innerHTML}</div>
   <div class="post-content">${shareContent.innerHTML}</div>  
     </div>`;
-  postInput.insertAdjacentHTML("afterend", html);
+  postInput.insertAdjacentHTML("afterend", html); // Insert the post to share after the post input
 }
 
+// Function to add a comment box below a post
 function addCommentBox(newPost, user, post) {
   const commentBoxHTML = `
         <div class="comment-box">
@@ -222,57 +244,64 @@ function addCommentBox(newPost, user, post) {
             </div>
             <button class="option-btn post-comment">Post</button>
         </div>`;
-  newPost.insertAdjacentHTML("afterend", commentBoxHTML);
+  newPost.insertAdjacentHTML("afterend", commentBoxHTML); // Insert the comment box HTML after the new post
 
-  const commentBox = document.querySelector(".comment-box");
+  const commentBox = document.querySelector(".comment-box"); // Get the newly added comment box
   commentBox
     .querySelector(".post-comment")
     .addEventListener("click", function () {
       const commentText = document
         .querySelector(".comment-input textarea")
-        .value.trim();
+        .value.trim(); // Get the text entered in the comment box and trim whitespace
       if (commentText) {
-        post.comments.amount += 1;
+        // Check if there is any text to post
+        post.comments.amount += 1; // Increment the comment count
         newPost.querySelector(
           ".comments"
-        ).textContent = `${post.comments.amount} Comments`;
-        post.comments.list.push({ commenter: user, text: commentText });
-        removeCommentBox();
+        ).textContent = `${post.comments.amount} Comments`; // Update the comment count display
+        post.comments.list.push({ commenter: user, text: commentText }); // Add the new comment to the post's comment list
+        removeCommentBox(); // Remove the comment box after posting
       } else {
-        alert("Please enter some text to post.");
+        alert("Please enter some text to post."); // Alert the user if no text was entered
       }
     });
 }
 
+// Function to remove the comment box from the DOM
 function removeCommentBox() {
-  const commentBox = document.querySelector(".comment-box");
-  commentBox.parentNode.removeChild(commentBox);
-  tryingToComment = false;
+  const commentBox = document.querySelector(".comment-box"); // Get the comment box element
+  commentBox.parentNode.removeChild(commentBox); // Remove the comment box from the DOM
+  tryingToComment = false; // Update the flag to indicate no comment box is present
 }
 
+// Function to attach event listener for image upload
 function attachImageUploadFunctionality() {
   UploadImageBtn.addEventListener("click", function () {
     if (uploadingImage) {
-      removeImageForUpload();
-      // uploadingImage = false;
+      // Check if an image is already being uploaded
+      removeImageForUpload(); // Remove the image upload elements
+      uploadingImage = false; // Flag updated
     } else {
-      fileInput.click();
+      fileInput.click(); // Trigger the file input click event to open the file selection dialog
     }
   });
 }
 
+// Function to attach event listener for file selection
 function attachFileSelectionFunctionality() {
   fileInput.addEventListener("change", function (e) {
-    const files = e.target.files;
+    const files = e.target.files; // Get the selected files
     let imgUrl = "";
     if (files.length > 0) {
-      const file = files[0];
-      imgUrl = URL.createObjectURL(file);
-      prepareImageForUpload(imgUrl);
+      // Check if any file is selected
+      const file = files[0]; // Get the first selected file
+      imgUrl = URL.createObjectURL(file); // Create a URL for the selected file
+      prepareImageForUpload(imgUrl); // Prepare the image for upload using the URL
     }
   });
 }
 
+// Function to display the image that is about to be uploaded in user post box
 function prepareImageForUpload(url) {
   const postInput = userPostBox.querySelector(".post-input"); // Get the post input element
   const html = ` 
