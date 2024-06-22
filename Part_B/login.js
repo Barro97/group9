@@ -1,6 +1,7 @@
 "use strict";
 if (!localStorage.getItem("dontClear")) localStorage.clear(); // Doesn't clear storage if someone signed up, will be removed in part C
 
+localStorage.setItem("activeUser", "");
 const user1 = {
   // A fictive user
   firstName: "Rina",
@@ -55,3 +56,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+console.log(localStorage.getItem("activeUser"));
