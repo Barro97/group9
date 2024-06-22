@@ -16,7 +16,12 @@ let uploadingProj = false;
 let sharingPost = false;
 
 document.addEventListener("DOMContentLoaded", function () {
+  initPage();
+});
+
+function initPage() {
   initiateSteve();
+  initUser();
   attachImageUploadFunctionality();
   attachProjectUploadFunctionality();
   closeBtn.addEventListener("click", closeModal);
@@ -25,8 +30,14 @@ document.addEventListener("DOMContentLoaded", function () {
     e.preventDefault();
     createPost(user, postsContainer);
   });
-});
+}
 
+function initUser() {
+  userPostBox.querySelector("img").src = user.pic;
+  userPostBox.querySelector(
+    "textarea"
+  ).placeholder = `What's on your mind, ${user.firstName}?`;
+}
 function createPost(user, postsContainer) {
   let postContent = "";
 
@@ -193,7 +204,7 @@ function addCommentBox(newPost, user, post) {
   const commentBoxHTML = `
         <div class="comment-box">
             <div class="post-input comment-input">
-                <img src="https://www.creativefabrica.com/wp-content/uploads/2023/05/23/Bearded-man-avatar-Generic-male-profile-Graphics-70342414-1-1-580x387.png"
+                <img src="${user.pic}"
                      alt="User Avatar" class="avatar" />
                 <textarea placeholder="Insert comment here"></textarea>
             </div>
