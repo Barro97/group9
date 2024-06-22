@@ -28,8 +28,8 @@
 .section {
   padding: 20px;
   background-color: #555;
-  border-radius: 20px;
-  border: 3px solid #45d49d;
+ border-radius: 8px;
+    border: 1px solid #ccc;
 }
 #top-section {
   display: flex;

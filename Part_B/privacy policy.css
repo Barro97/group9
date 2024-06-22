@@ -33,11 +33,12 @@ body {
 
 .privacy-content h2 {
     color: #45d49d;
-    margin-top: 20px;
+    margin-top: 25px;
 }
 
 .privacy-content p, .privacy-content ul {
     margin-bottom: 15px;
+    font-size: 20px;
 }
 
 .privacy-content ul {

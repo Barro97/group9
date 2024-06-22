@@ -1,80 +1,88 @@
 body {
-  background-color: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  font-family: Arial, sans-serif;
+    /*  background-color: black;*/
+    /*  display: flex;*/
+    /*  justify-content: center;*/
+    /*  align-items: center;*/
+    /*  height: 100vh;*/
+    /*  margin: 0;*/
+    /*  font-family: Arial, sans-serif;*/
+
+    background-color: black;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
 }
 
 .container {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  max-width: 500px; /* Increased max-width for better layout */
-  width: 100%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px; /* Increased max-width for better layout */
+    width: 100%;
+    margin: 150px auto;
 }
 
 h1 {
-  color: #00b894;
-  text-align: center;
-  margin-bottom: 20px;
+    color: #00b894;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .signup-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .form-group {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .form-group label {
-  width: 30%; /* Adjust width as needed */
-  text-align: center;
-  font-size: 14px;
+    width: 30%; /* Adjust width as needed */
+    text-align: center;
+    font-size: 14px;
 }
 
 .form-group input[type="text"],
 .form-group input[type="email"],
 .form-group input[type="tel"],
 .form-group input[type="password"] {
-  padding: 10px;
-  border-radius: 10px;
-  border: 2px solid #cccccc;
-  font-size: 14px;
-  width: 65%; /* Adjust width as needed */
-  box-sizing: border-box;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #cccccc;
+    font-size: 14px;
+    width: 65%; /* Adjust width as needed */
+    box-sizing: border-box;
 }
 
 .dob-container {
-  display: flex;
-  gap: 5px;
-  width: 65%;
+    display: flex;
+    gap: 5px;
+    width: 65%;
 }
 
 .dob-container input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 10px;
-  border: 2px solid #cccccc;
-  font-size: 14px;
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #cccccc;
+    font-size: 14px;
 }
 
 button[type="submit"] {
-  background-color: #00b894;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 16px;
-  width: fit-content;
-  align-self: flex-end;
+    background-color: #00b894;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    width: fit-content;
+    align-self: flex-end;
 }
