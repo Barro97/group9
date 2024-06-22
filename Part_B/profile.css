@@ -1,7 +1,12 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 .grid-container {
   display: grid;
   grid-template-columns: 600px 600px;
-  height: 700px;
+  height: 100%;
   /* grid-auto-rows: minmax(150px, auto); */
   grid-gap: 20px;
   grid-column-gap: 200px;
@@ -28,8 +33,8 @@
 .section {
   padding: 20px;
   background-color: #555;
- border-radius: 8px;
-    border: 1px solid #ccc;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
 #top-section {
   display: flex;
@@ -197,8 +202,10 @@ h1 {
 }
 
 footer {
-  height: 100px;
-  width: auto;
+  height: 50px;
+  width: 90%;
+  position: relative;
+  bottom: -7em;
 }
 
 .social img {
@@ -543,3 +550,8 @@ footer {
     overflow-x: hidden;
   }
 }
+/* 
+footer {
+  position: relative;
+  bottom: -7em;
+} */
