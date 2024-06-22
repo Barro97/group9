@@ -39,8 +39,8 @@ function sendMessage() {
 
     // Create a timestamp for the message
     const now = new Date();
-    const timestamp = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-    const currentDate = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const timestamp = now.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit'});
+    const currentDate = now.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'});
 
     // Add date header if this is the first message of the day
     if (currentDate !== lastMessageDate) {
@@ -149,15 +149,15 @@ function selectUser(userName, userTitle, userPicture, userProfileLink) {
 
     // Load the chat messages for the selected user
     const dummyMessages = [
-        { text: `Hello ${userName}, how are you?`, isUser: true, date: new Date('2023-06-18T12:00:00') },
-        { text: `I'm doing great, thanks! How about you?`, isUser: false, date: new Date('2023-06-18T12:01:00') },
-        { text: `I’m fine too, thanks for asking!`, isUser: true, date: new Date('2023-06-19T09:15:00') }
+        {text: `Hello ${userName}, how are you?`, isUser: true, date: new Date('2023-06-18T12:00:00')},
+        {text: `I'm doing great, thanks! How about you?`, isUser: false, date: new Date('2023-06-18T12:01:00')},
+        {text: `I’m fine too, thanks for asking!`, isUser: true, date: new Date('2023-06-19T09:15:00')}
     ];
 
     lastMessageDate = ''; // Reset the last message date
 
     dummyMessages.forEach((msg) => {
-        const messageDate = msg.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        const messageDate = msg.date.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'});
 
         if (messageDate !== lastMessageDate) {
             const dateHeader = document.createElement('div');
@@ -176,7 +176,7 @@ function selectUser(userName, userTitle, userPicture, userProfileLink) {
 
         const timestampElement = document.createElement('span');
         timestampElement.className = 'message-timestamp';
-        timestampElement.textContent = msg.date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        timestampElement.textContent = msg.date.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit'});
 
         messageContentElement.appendChild(timestampElement);
         messageElement.appendChild(messageContentElement);
@@ -186,13 +186,13 @@ function selectUser(userName, userTitle, userPicture, userProfileLink) {
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
     // Save the selected user's info in local storage
-    localStorage.setItem('lastChatUser', JSON.stringify({ userName, userTitle, userPicture, userProfileLink }));
+    localStorage.setItem('lastChatUser', JSON.stringify({userName, userTitle, userPicture, userProfileLink}));
 }
 
 function loadLastChatUser() {
     const lastChatUser = localStorage.getItem('lastChatUser');
     if (lastChatUser) {
-        const { userName, userTitle, userPicture, userProfileLink } = JSON.parse(lastChatUser);
+        const {userName, userTitle, userPicture, userProfileLink} = JSON.parse(lastChatUser);
         selectUser(userName, userTitle, userPicture, userProfileLink);
     } else {
         // Select the top user in the chat sidebar if no last chat user is found

@@ -1,131 +1,131 @@
 body {
-  background-color: black;
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
+    background-color: black;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
 }
 
 header h1 {
-  color: #45d49d; /* White color for the brand title */
-  position: relative;
-  right: 700px;
-  animation: heading;
-  animation-duration: 1.5s;
-  animation-fill-mode: forwards;
+    color: #45d49d; /* White color for the brand title */
+    position: relative;
+    right: 700px;
+    animation: heading;
+    animation-duration: 1.5s;
+    animation-fill-mode: forwards;
 }
 
 @keyframes heading {
-  0% {
-    top: -50px;
-  }
-  25% {
-    top: 20px;
-  }
-  50% {
-    top: 5px;
-  }
-  100% {
-    top: 20px;
-  }
+    0% {
+        top: -50px;
+    }
+    25% {
+        top: 20px;
+    }
+    50% {
+        top: 5px;
+    }
+    100% {
+        top: 20px;
+    }
 }
 
 .container {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  width: 100%;
-  text-align: left;
-  margin: 170px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: left;
+    margin: 170px auto;
 }
 
 h1 {
-  color: #00b894;
-  text-align: center;
-  margin-bottom: 20px;
+    color: #00b894;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .account-link {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  font-size: 14px;
-  position: relative;
-  right: -1.7em;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+    position: relative;
+    right: -1.7em;
 }
 
 .account-link a {
-  color: #00b894;
-  position: relative;
-  left: -17.5em;
-  text-decoration: none;
+    color: #00b894;
+    position: relative;
+    left: -17.5em;
+    text-decoration: none;
 }
 
 .form-group {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .form-group label {
-  width: 30%;
-  text-align: center;
-  font-size: 16px;
+    width: 30%;
+    text-align: center;
+    font-size: 16px;
 }
 
 .form-group input[type="email"],
 .form-group input[type="password"] {
-  padding: 10px;
-  border-radius: 10px;
-  border: 2px solid #cccccc;
-  font-size: 14px;
-  width: 65%;
-  box-sizing: border-box;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #cccccc;
+    font-size: 14px;
+    width: 65%;
+    box-sizing: border-box;
 }
 
 .form-group input[type="checkbox"] {
-  width: auto;
-  margin-right: 10px;
-  position: relative;
-  left: -20em;
+    width: auto;
+    margin-right: 10px;
+    position: relative;
+    left: -20em;
 }
 
 .form-group label[for="remember-me"] {
-  width: auto;
+    width: auto;
 }
 
 button[type="submit"] {
-  background-color: #00b894;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 16px;
-  width: fit-content;
-  align-self: flex-end;
+    background-color: #00b894;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    width: fit-content;
+    align-self: flex-end;
 }
 
 .email {
-  position: relative;
-  left: -0.95em;
+    position: relative;
+    left: -0.95em;
 }
 
 .remember {
-  position: relative;
-  right: -1.5em;
+    position: relative;
+    right: -1.5em;
 }
 
 footer {
-  position: relative;
-  bottom: -10.7em;
+    position: relative;
+    bottom: -10.7em;
 }

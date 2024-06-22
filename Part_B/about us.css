@@ -1,6 +1,6 @@
 body {
-    background: url(https://as2.ftcdn.net/v2/jpg/03/66/42/27/1000_F_366422741_BM88DLRBWz9NOdrwTLzryVVIAoDB946A.jpg) repeat; /* Specifies the image and sets it to repeat */
-    background-size: auto; /* Ensures the image is displayed at its original size */
+    background: url(https://as2.ftcdn.net/v2/jpg/03/66/42/27/1000_F_366422741_BM88DLRBWz9NOdrwTLzryVVIAoDB946A.jpg) repeat;
+    background-size: auto;
     color: white;
     font-family: Tahoma, sans-serif;
     margin: 0;
