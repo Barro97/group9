@@ -96,7 +96,11 @@ function createPostElement(user, postContent) {
                 ? `<div class="up-img-container">${image}</div>`
                 : ""
             }
-             ${uploadingProj ? `<div class="project-box">${proj}</div>` : ""}
+             ${
+               uploadingProj
+                 ? `<a href="project.html"><div class="project-box">${proj}</div></a>`
+                 : ""
+             }
              ${sharingPost ? `<div class="about-to-share">${share}</div>` : ""}
         </div>
         <div class="post-footer">
@@ -366,23 +370,5 @@ function initiateSteve() {
     comments: { amount: 0, list: [] },
     shares: { amount: 0, users: [] },
   };
-  const steve = {
-    // a fictive user
-    firstName: "Steve",
-    lastName: "Jobs",
-    email: "rosenthb@post.bgu.ac.il",
-    phoneNumber: "0547662193",
-    dob: {
-      day: "11",
-      month: "10",
-      year: "1997",
-    },
-    country: "Israel",
-    city: "Rehovot",
-    password: "poipoi9",
-    follows: [],
-    posts: [],
-    pic: "https://www.creativefabrica.com/wp-content/uploads/2023/05/23/Bearded-man-avatar-Generic-male-profile-Graphics-70342414-1-1-580x387.png",
-  };
-  attachBtns(post, steve, stevePost);
+  attachBtns(post, user, stevePost);
 }
