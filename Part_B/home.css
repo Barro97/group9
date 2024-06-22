@@ -225,10 +225,7 @@ a {
   font-weight: bold;
   width: 110px;
 }
-.fi-post {
-  font-size: 24px;
-  color: #333c45;
-}
+
 .action-btn:hover {
   background-color: #e4e6eb;
   color: #45d49d;

@@ -123,15 +123,15 @@ function createPostElement(user, postContent) {
             <div class="action-buttons">
                 <button class="action-btn like">
                     <div class="action-type">Like</div>
-                    <i class="fi-post fi-rr-social-network"></i>
+                    <i class="fi fi-rr-social-network"></i>
                 </button>
                 <button class="action-btn comment">
                     <div class="action-type">Comment</div>
-                    <i class="fi-post fi-rr-comment-alt"></i>
+                    <i class="fi fi-rr-comment-alt"></i>
                 </button>
                 <button class="action-btn share">
                     <div class="action-type">Share</div>
-                    <i class="fi-post fi-rr-share-square"></i>
+                    <i class="fi fi-rr-share-square"></i>
                 </button>
             </div>
         </div>`;
