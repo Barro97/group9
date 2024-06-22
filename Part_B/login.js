@@ -1,12 +1,11 @@
 "use strict";
-
-localStorage.clear(); //remove later!
+if (!localStorage.getItem("dontClear")) localStorage.clear();
 
 const user1 = {
   // a fictive user
-  firstName: "Bar",
-  lastName: "Rosenthal",
-  email: "rosenthb@post.bgu.ac.il",
+  firstName: "Rina",
+  lastName: "Klinchuk",
+  email: "rinak@post.bgu.ac.il",
   phoneNumber: "0547662193",
   dob: {
     day: "11",
@@ -18,9 +17,8 @@ const user1 = {
   password: "poipoi9",
   follows: [],
   posts: [],
-  pic: "https://www.creativefabrica.com/wp-content/uploads/2023/05/23/Bearded-man-avatar-Generic-male-profile-Graphics-70342414-1-1-580x387.png",
+  pic: "https://cdn-icons-png.flaticon.com/512/6833/6833605.png",
 };
-console.log(user1.pic);
 
 if (!JSON.parse(localStorage.getItem("users"))) {
   localStorage.setItem("users", JSON.stringify([]));
@@ -28,7 +26,6 @@ if (!JSON.parse(localStorage.getItem("users"))) {
   usersArr.push(user1);
   localStorage.setItem("users", JSON.stringify(usersArr));
 }
-console.log(JSON.parse(localStorage.getItem("users")));
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector(".login-form");
@@ -47,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (user) {
       localStorage.setItem("activeUser", JSON.stringify(user));
-      alert("Logged in successfully!");
+      // alert("Logged in successfully!");
       window.location.href = "home.html"; // Redirect to a dashboard or home page
     } else {
       alert("Invalid email or password.");

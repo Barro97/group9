@@ -16,7 +16,12 @@ let uploadingProj = false;
 let sharingPost = false;
 
 document.addEventListener("DOMContentLoaded", function () {
+  initPage();
+});
+
+function initPage() {
   initiateSteve();
+  initUser();
   attachImageUploadFunctionality();
   attachProjectUploadFunctionality();
   closeBtn.addEventListener("click", closeModal);
@@ -25,8 +30,14 @@ document.addEventListener("DOMContentLoaded", function () {
     e.preventDefault();
     createPost(user, postsContainer);
   });
-});
+}
 
+function initUser() {
+  userPostBox.querySelector("img").src = user.pic;
+  userPostBox.querySelector(
+    "textarea"
+  ).placeholder = `What's on your mind, ${user.firstName}?`;
+}
 function createPost(user, postsContainer) {
   let postContent = "";
 
@@ -112,15 +123,15 @@ function createPostElement(user, postContent) {
             <div class="action-buttons">
                 <button class="action-btn like">
                     <div class="action-type">Like</div>
-                    <i class="fi-post fi-rr-social-network"></i>
+                    <i class="fi fi-rr-social-network"></i>
                 </button>
                 <button class="action-btn comment">
                     <div class="action-type">Comment</div>
-                    <i class="fi-post fi-rr-comment-alt"></i>
+                    <i class="fi fi-rr-comment-alt"></i>
                 </button>
                 <button class="action-btn share">
                     <div class="action-type">Share</div>
-                    <i class="fi-post fi-rr-share-square"></i>
+                    <i class="fi fi-rr-share-square"></i>
                 </button>
             </div>
         </div>`;
@@ -193,7 +204,7 @@ function addCommentBox(newPost, user, post) {
   const commentBoxHTML = `
         <div class="comment-box">
             <div class="post-input comment-input">
-                <img src="https://www.creativefabrica.com/wp-content/uploads/2023/05/23/Bearded-man-avatar-Generic-male-profile-Graphics-70342414-1-1-580x387.png"
+                <img src="${user.pic}"
                      alt="User Avatar" class="avatar" />
                 <textarea placeholder="Insert comment here"></textarea>
             </div>
