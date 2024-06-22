@@ -99,3 +99,8 @@ body {
 .fi {
     font-size: 24px;
 }
+
+.nav a {
+  text-decoration: none;
+  color: white;
+}
