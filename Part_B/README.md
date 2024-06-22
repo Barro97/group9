@@ -8,15 +8,15 @@ In this section, we built the client-side of our application, WorkFolio, which c
   - **Existing user:** Email: rinak@post.bgu.ac.il Password: poipoi9
 - **signup:** The signup page allows users to register for an account by filling out all the required fields. If one or more fields are not filled in correctly, an appropriate message will be displayed.
 - **home:** The home page includes content where users can post updates, see posts from others, and perform various actions such as liking, commenting, and sharing.
-- **profile my:** The logged-in user's profile. This page displays the user's personal information, including details about their professional experience, education, previous projects, and social media links.
+- **my profile:** The logged-in user's profile. This page displays the user's personal information, including details about their professional experience, education, previous projects, and social media links.
 - **profile:** A user's profile. This page displays personal information, follower count, follow button, social media links, professional experience, education, and various projects they have worked on.
 - **organization:** An organization page. This page includes information about the organization, follower count, follow button, contact information, and the organization's social media links.
 - **chat:** A chat page. On this page, users can chat with each other, upload files, and view their chat history with other users.
 - **project:** A user's project page. The page includes information about the project, the option to download the project file, the number of likes, and an area for comments on the project.
-- **us about:** An about us page. The purpose of the page is to present visitors to the site with information about the company, the services it offers, and how to contact them.
-- **policy privacy:** The site's privacy policy page. The purpose of the page is to explain to users how the site collects, uses, and shares their personal information.
+- **about us:** An about us page. The purpose of the page is to present visitors to the site with information about the company, the services it offers, and how to contact them.
+- **privacy policy:** The site's privacy policy page. The purpose of the page is to explain to users how the site collects, uses, and shares their personal information.
 - **notifications:** A notifications page. The purpose of the page is to show the user the various notifications they have received regarding activity on the site.
-- **results search:** A search results page. The purpose of the page is to display the results of a specific search performed by the user.
+- **search results:** A search results page. The purpose of the page is to display the results of a specific search performed by the user.
 
 **CSS Pages:**
 
