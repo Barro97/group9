@@ -1,0 +1,17 @@
+
+    {% if request.path == '/chat' %}
+    <script src="{{ url_for('chat.static', filename='js/chat.js') }}"></script>
+    {% elif request.path == '/login' or request.path == '/' %}
+    <script src="{{ url_for('login.static', filename='js/login.js') }}"></script>
+    {% elif request.path == '/home' %}
+    <script src="{{ url_for('home.static', filename='js/home.js') }}"></script>
+    {% elif request.path == '/profile' %}
+    <script src="{{ url_for('profile.static', filename='js/profile.js') }}"></script>
+    {% elif request.path == '/project' %}
+    <script src="{{ url_for('project.static', filename='js/project.js') }}"></script>
+    {% elif request.path == '/signup' %}
+    <script src="{{ url_for('signup.static', filename='js/signup.js') }}"></script>
+    {% elif request.path == '/organization' %}
+    <script src="{{ url_for('organization.static', filename='js/organization.js') }}"></script>
+{% endif %}
+

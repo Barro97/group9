@@ -1,17 +1,11 @@
 
 {% extends 'base.html' %}
-{% block main %}
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8"/>-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
-<!--    <title>Log In</title>-->
-<!--    <link rel="stylesheet" href="login.css"/>-->
-<!--    <link rel="stylesheet" href="footer.css"/>-->
 
-<!--</head>-->
-<!--<body>-->
+{% block page_head %}
+<title>Log In</title>
+{%endblock%}
+
+{% block main %}
 <header>
     <h1>WorkFolio</h1>
 </header>
@@ -38,14 +32,4 @@
         <button type="submit">Sign in</button>
     </form>
 </div>
-<footer>
-    <p>&copy; 2024 Workfolio</p>
-    <div class="pages">
-        <a href="privacy%20policy.html">Privacy Policy</a>
-        <a href="about%20us.html">About Us</a>
-    </div>
-</footer>
-<script src="login.js"></script>
-<!--</body>-->
-<!--</html>-->
 {%endblock%}
