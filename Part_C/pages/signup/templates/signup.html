@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="signup.css"/>
+    <link rel="stylesheet" href="footer.css"/>
+</head>
+
+<header>
+    <h1>WorkFolio</h1>
+</header>
+<body>
+<div class="container">
+    <h1>Sign up</h1>
+    <form action="#" class="signup-form">
+        <div class="form-group">
+            <label for="first-name">First name</label>
+            <input type="text" id="first-name" name="first-name"/>
+        </div>
+        <div class="form-group">
+            <label for="last-name">Last name</label>
+            <input type="text" id="last-name" name="last-name"/>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email"/>
+        </div>
+        <div class="form-group">
+            <label for="phone-number">Phone number</label>
+            <input type="tel" id="phone-number" name="phone-number"/>
+        </div>
+        <div class="form-group">
+            <label for="dob">Date of birth</label>
+            <div class="dob-container">
+                <input
+                        maxlength="2"
+                        type="text"
+                        id="dob-day"
+                        name="dob-day"
+                        placeholder="DD"
+                />
+
+                <input
+                        type="text"
+                        id="dob-month"
+                        name="dob-month"
+                        placeholder="MM"
+                        maxlength="2"
+                />
+                <input
+                        type="text"
+                        maxlength="4"
+                        id="dob-year"
+                        name="dob-year"
+                        placeholder="YYYY"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="country">Country</label>
+            <input type="text" id="country" name="country"/>
+        </div>
+        <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" id="city" name="city"/>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password"/>
+        </div>
+        <div class="form-group">
+            <label for="verify-password">Verify password</label>
+            <input type="password" id="verify-password" name="verify-password"/>
+        </div>
+        <button type="submit">Sign up</button>
+    </form>
+</div>
+<footer>
+    <p>&copy; 2024 Workfolio</p>
+    <div class="pages">
+        <a href="privacy%20policy.html">Privacy Policy</a>
+        <a href="about%20us.html">About Us</a>
+    </div>
+</footer>
+</body>
+<script src="signup.js"></script>
+</html>
