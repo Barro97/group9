@@ -1,0 +1,36 @@
+.privacy-container {
+    width: 70%;
+    margin: 40px auto;
+    background-color: #444444;
+    color: white;
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.privacy-header {
+    color: #45d49d;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.privacy-content {
+    padding: 20px;
+}
+
+.privacy-content h2 {
+    color: #45d49d;
+    margin-top: 25px;
+}
+
+.privacy-content p, .privacy-content ul {
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.privacy-content ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}

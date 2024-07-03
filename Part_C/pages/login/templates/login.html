@@ -1,0 +1,51 @@
+
+{% extends 'base.html' %}
+{% block main %}
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8"/>-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
+<!--    <title>Log In</title>-->
+<!--    <link rel="stylesheet" href="login.css"/>-->
+<!--    <link rel="stylesheet" href="footer.css"/>-->
+
+<!--</head>-->
+<!--<body>-->
+<header>
+    <h1>WorkFolio</h1>
+</header>
+
+<div class="container">
+    <h1>Log in</h1>
+    <form action="#" class="login-form">
+        <div class="account-link">
+            <span>New?</span> <a href="signup.html">create an account</a>
+        </div>
+        <div class="form-group">
+            <label class="email" for="email">Email</label>
+            <input type="email" id="email" name="email"/>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password"/>
+        </div>
+        <div class="form-group remember">
+            <label for="remember-me">Remember me</label>
+
+            <input type="checkbox" id="remember-me" name="remember-me"/>
+        </div>
+        <button type="submit">Sign in</button>
+    </form>
+</div>
+<footer>
+    <p>&copy; 2024 Workfolio</p>
+    <div class="pages">
+        <a href="privacy%20policy.html">Privacy Policy</a>
+        <a href="about%20us.html">About Us</a>
+    </div>
+</footer>
+<script src="login.js"></script>
+<!--</body>-->
+<!--</html>-->
+{%endblock%}

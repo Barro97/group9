@@ -1,0 +1,63 @@
+body {
+    background: url(https://as2.ftcdn.net/v2/jpg/03/66/42/27/1000_F_366422741_BM88DLRBWz9NOdrwTLzryVVIAoDB946A.jpg) repeat;
+    background-size: auto;
+    color: white;
+    font-family: Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+section {
+    margin: 40px auto;
+    width: 60%;
+    text-align: center;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border: 1px solid #ccc;
+}
+
+section h1 {
+    color: #37b486;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+section h2 {
+    color: #37b486;
+    font-size: 2em;
+    margin-bottom: 15px;
+}
+
+section p {
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+}
+
+aside {
+    margin: 20px auto;
+    width: 80%;
+    padding: 20px;
+    background-color: #333;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+aside h2 {
+    color: #37b486;
+    font-size: 1.8em;
+    margin-bottom: 15px;
+}
+
+aside h3 {
+    font-size: 1.2em;
+    margin-top: 15px;
+}
+
+aside p {
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-size: 1em;
+}
