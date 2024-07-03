@@ -34,3 +34,9 @@ app.register_blueprint(project)
 from pages.searchresults.search_results import search_results
 app.register_blueprint(search_results)
 
+@app.route('/')
+def home():
+    return render_template('login.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
