@@ -34,3 +34,12 @@ app.register_blueprint(project)
 from pages.searchresults.search_results import search_results
 app.register_blueprint(search_results)
 
+from pages.signup.signup import signup
+app.register_blueprint(signup)
+
+@app.route('/')
+def home():
+    return render_template('login.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)

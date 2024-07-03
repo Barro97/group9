@@ -2,7 +2,7 @@ from flask import Blueprint, render_template
 
 # about blueprint definition
 my_profile = Blueprint(
-    'home',
+    'my_profile',
     __name__,
     static_folder='static',
     static_url_path='/my_profile',

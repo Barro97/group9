@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Sign Up</title>
-    <link rel="stylesheet" href="signup.css"/>
-    <link rel="stylesheet" href="footer.css"/>
-</head>
+{% extends 'base.html' %}
 
+{% block page_head %}
+<title>signup</title>
+{%endblock%}
+
+{% block main %}
 <header>
     <h1>WorkFolio</h1>
 </header>
@@ -77,13 +74,4 @@
         <button type="submit">Sign up</button>
     </form>
 </div>
-<footer>
-    <p>&copy; 2024 Workfolio</p>
-    <div class="pages">
-        <a href="privacy%20policy.html">Privacy Policy</a>
-        <a href="about%20us.html">About Us</a>
-    </div>
-</footer>
-</body>
-<script src="signup.js"></script>
-</html>
+{%endblock%}
