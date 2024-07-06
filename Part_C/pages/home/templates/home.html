@@ -14,7 +14,7 @@
                         alt="User Avatar"
                         class="avatar"
                 />
-                <textarea placeholder="What's on your mind, Bar?"></textarea>
+                <textarea placeholder="What's on your mind, {{session.get('user')['first_name']}}?"></textarea>
             </div>
             <div class="post-options">
                 <button class="action-btn to-post proj">

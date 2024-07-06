@@ -24,6 +24,8 @@ users_collection = mydb['users']
 # Routes
 @login.route('/login')
 def index():
+    session['logged_in'] = False  # So the nav-bar doesn't show up for users who are not logged in
+    session['user'] = ''  # Remove user
     return render_template('login.html')
 
 
@@ -38,7 +40,7 @@ def check_user():
         user = users_collection.find_one(query)  # Try to find the user that was input in the DB
         if user:
             session['user'] = user  # Save the current user
-            user.pop('_id', None)
+            user.pop('_id', None)  # Removing the "_id" key
             session['logged_in'] = True  # A boolean for page interaction
             return jsonify({"success": True, "redirect": "/home"})  # A JSON for successful log in attempt
         else:
