@@ -8,7 +8,9 @@
     {% include ('styles.html') %}
 </head>
 <body>
+{% if session['logged_in'] == true %}
 {% include ('nav.html') %}
+{% endif %}
 {% block main %}
 {% endblock %}
 {% include ('footer.html') %}
