@@ -23,8 +23,22 @@ mydb = myclient['user_database']
 users_collection = mydb['users']
 
 # Routes
-@search_results.route('/search_results')
+@search_results.route('/search_results', methods=['GET'])
 def index():
-    myquery = {"first_name": "sfs"}
-    mydoc=list(users_collection.find(myquery))
-    return render_template('search_results.html', mydoc=mydoc)
+    query = request.args.get('query')
+    if query:
+        # Construct the query for MongoDB
+        myquery = {"$or": [
+            {"first_name": {"$regex": query, "$options": "i"}},
+            {"last_name": {"$regex": query, "$options": "i"}},
+            {"role": {"$regex": query, "$options": "i"}},
+
+        ]}
+    else:
+        # If no query is provided, fetch all documents
+        myquery = {}
+
+    # Perform the query on the collection
+    mydoc = list(users_collection.find(myquery))
+
+    return render_template('search_results.html', mydoc=mydoc, query=query)

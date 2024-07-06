@@ -8,57 +8,7 @@
 
 <main>
     <section class="search-results">
-        <h1>Search Results for "Ben"</h1>
-        <div class="result-item">
-            <a href="profile.html">
-                <img src="https://cdn-icons-png.flaticon.com/512/2919/2919906.png" alt="Ben Cohen">
-            </a>
-            <div class="result-content">
-                <h2><a href="profile.html">Ben Cohen</a></h2>
-                <p>Product Manager</p>
-            </div>
-        </div>
-        <div class="result-item">
-            <a href="profile.html">
-                <img src="https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png" alt="Ben Katz">
-            </a>
-            <div class="result-content">
-                <h2><a href="profile.html">Ben Katz</a></h2>
-                <p>Frontend Developer</p>
-            </div>
-        </div>
-        <div class="result-item">
-            <a href="profile.html">
-                <img src="https://cdn-icons-png.flaticon.com/512/9203/9203764.png" alt="Ben Avrahami">
-            </a>
-            <div class="result-content">
-                <h2><a href="profile.html">Ben Avrahami</a></h2>
-                <p>Machine Learning Engineer</p>
-            </div>
-        </div>
-        <div class="result-item">
-            <a href="profile.html">
-                <img src="https://www.doesport.co.uk/wp-content/uploads/2017/11/profile-icon-male-avatar-portrait-casual-person-silhouette-face-flat-design-vector-illustration-58249394.jpg"
-                     alt="Ben Weiss">
-            </a>
-            <div class="result-content">
-                <h2><a href="profile.html">Ben Weiss</a></h2>
-                <p>Software Engineer</p>
-            </div>
-        </div>
-        <div class="result-item">
-            <a href="profile.html">
-                <img src="https://w7.pngwing.com/pngs/557/749/png-transparent-computer-icons-avatar-user-profile-blog-personal-heroes-recruiter-conversation-thumbnail.png"
-                     alt="Ben Barak">
-            </a>
-            <div class="result-content">
-                <h2><a href="profile.html">Ben Barak</a></h2>
-                <p>Full Stack Developer</p>
-            </div>
-        </div>
-
-
-       <h1>Search Results</h1>
+        <h1>You searched for: {{ query }}</h1>
         {% for doc in mydoc %}
         <div class="result-item">
             <a href="profile.html">
@@ -66,6 +16,7 @@
             </a>
             <div class="result-content">
                 <h2><a href="profile.html">{{ doc['first_name'] }} {{ doc['last_name'] }}</a></h2>
+                <p>{{ doc['role'] }}</p>
             </div>
         </div>
         {% endfor %}
