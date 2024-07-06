@@ -56,6 +56,19 @@
                 <p>Full Stack Developer</p>
             </div>
         </div>
+
+
+       <h1>Search Results</h1>
+        {% for doc in mydoc %}
+        <div class="result-item">
+            <a href="profile.html">
+                <img src="{{ doc['profile_picture'] }}" alt="{{ doc['first_name'] }} {{ doc['last_name'] }}">
+            </a>
+            <div class="result-content">
+                <h2><a href="profile.html">{{ doc['first_name'] }} {{ doc['last_name'] }}</a></h2>
+            </div>
+        </div>
+        {% endfor %}
     </section>
 </main>
 {%endblock%}

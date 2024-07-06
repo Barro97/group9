@@ -19,14 +19,14 @@ document.addEventListener("DOMContentLoaded", () => {
         else {
             alert("Form submitted successfully!");
             const user = {
-                firstName: formData.get("first-name"),
-                lastName: formData.get("last-name"),
+                firstName: formData.get("first_name"),
+                lastName: formData.get("last_name"),
                 email: formData.get("email"),
-                phoneNumber: formData.get("phone-number"),
+                phoneNumber: formData.get("phone_number"),
                 dob: {
-                    day: formData.get("dob-day"),
-                    month: formData.get("dob-month"),
-                    year: formData.get("dob-year"),
+                    day: formData.get("dob_day"),
+                    month: formData.get("dob_month"),
+                    year: formData.get("dob_year"),
                 },
                 country: formData.get("country"),
                 city: formData.get("city"),
@@ -51,11 +51,11 @@ document.addEventListener("DOMContentLoaded", () => {
     function validateFormData(formData) {
         const errors = [];
         const password = formData.get("password");
-        const verifyPassword = formData.get("verify-password");
-        const day = formData.get("dob-day");
-        const month = formData.get("dob-month");
-        const year = formData.get("dob-year");
-        const phone = formData.get("phone-number");
+        const verifyPassword = formData.get("verify_password");
+        const day = formData.get("dob_day");
+        const month = formData.get("dob_month");
+        const year = formData.get("dob_year");
+        const phone = formData.get("phone_number");
         const email = formData.get("email");
 
         // Make sure there are no empty fields

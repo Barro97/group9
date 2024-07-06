@@ -1,3 +1,7 @@
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
+import pymongo
+
 from flask import *
 app = Flask(__name__)
 
@@ -37,9 +41,25 @@ app.register_blueprint(search_results)
 from pages.signup.signup import signup
 app.register_blueprint(signup)
 
+
+
 @app.route('/')
 def home():
     return render_template('login.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+uri = "mongodb+srv://rinak:SbSaxSwP6TEHmWGw@workfolio.w1hkpdf.mongodb.net/?retryWrites=true&w=majority&appName=Workfolio"
+myclient = MongoClient(uri, server_api=ServerApi('1'))
+
+mydb = myclient['user_database']
+users_collection = mydb['users']
+
+
+@app.route('/MongoDB')
+def MongoDB_func():
+    name='Rina'
+
+

@@ -13,4 +13,5 @@ my_profile = Blueprint(
 # Routes
 @my_profile.route('/my_profile')
 def index():
-    return render_template('my profile.html')
+    name='Rina'
+    return render_template('my profile.html', name=name)
