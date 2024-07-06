@@ -1,5 +1,4 @@
 "use strict";
-const user = JSON.parse(localStorage.getItem("activeUser"));
 const postButton = document.getElementById("post-button");
 const postsContainer = document.querySelector(".all-posts");
 const UploadImageBtn = document.querySelector(".image-upload");
@@ -22,8 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Function to initialize the page
 function initPage() {
-    initiateSteve();
-    initUser();
+    // initiateSteve();
+    // initUser();
     attachImageUploadFunctionality();
     attachProjectUploadFunctionality();
     attachFileSelectionFunctionality();
@@ -36,12 +35,12 @@ function initPage() {
 }
 
 // Function to initialize the user interface with the active user's details
-function initUser() {
-    userPostBox.querySelector("img").src = user.pic; // Set the user's profile picture
-    userPostBox.querySelector(
-        "textarea"
-    ).placeholder = `What's on your mind, ${user.firstName}?`; // Set the placeholder text in the textarea
-}
+// function initUser() {
+//     userPostBox.querySelector("img").src = user.pic; // Set the user's profile picture
+//     userPostBox.querySelector(
+//         "textarea"
+//     ).placeholder = `What's on your mind, ${user.firstName}?`; // Set the placeholder text in the textarea
+// }
 
 // Function to create a new post and add it to the posts container
 function createPost(user, postsContainer) {
@@ -70,16 +69,16 @@ function createPost(user, postsContainer) {
 }
 
 // Function just to make the example post work
-function initiateSteve() {
-    const post = postsContainer.querySelector(".post-box");
-    const stevePost = {
-        content: "",
-        likes: {amount: 0, users: []},
-        comments: {amount: 0, list: []},
-        shares: {amount: 0, users: []},
-    };
-    attachBtns(post, user, stevePost);
-}
+// function initiateSteve() {
+//     const post = postsContainer.querySelector(".post-box");
+//     const stevePost = {
+//         content: "",
+//         likes: {amount: 0, users: []},
+//         comments: {amount: 0, list: []},
+//         shares: {amount: 0, users: []},
+//     };
+//     attachBtns(post, user, stevePost);
+// }
 
 // Function to attach buttons for likes, comments, shares, and modals to a post
 function attachBtns(newPost, user, post) {
