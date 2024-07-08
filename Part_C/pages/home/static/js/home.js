@@ -57,8 +57,14 @@ function createPost(user, postsContainer) {
     const post = {
         owner: user.email,
         content: postContent,
+        DT: dateTime()
     };
-    sendData(post)
+
+      sendData(post).then(id=>{
+        console.log(id);
+      }).catch(err=>{console.log(err)});
+
+
     attachBtns(newPost, user, post); // Attach buttons for likes, comments, and shares to the new post
 
     document.querySelector("textarea").value = ""; // Clear the textarea
@@ -433,19 +439,43 @@ function closeModal() {
     overlay.classList.add("hidden");
 }
 
-function sendData(post) {
-    fetch('/create_post', {
+ function sendData(post) {
+    return fetch('/create_post', { // The "return" makes sure that this is not a void function and that an id value is returned
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(post)
     })
-    .then(response => response.json())
+    .then(response => response.json()) // read the JSON from flask
     .then(data => {
-        console.log('Success:', data);
+        console.log('Success:', data.status);
+        return data.id; // Return the new post's id for further button implementation
     })
     .catch((error) => {
         console.error('Error:', error);
     });
+}
+
+function dateTime(){
+    // Create a new Date object
+const now = new Date();
+
+// Get the current date and time components
+const year = now.getFullYear();
+const month = now.getMonth() + 1; // Months are zero-based (0-11), so add 1
+const day = now.getDate();
+const hours = now.getHours();
+const minutes = now.getMinutes();
+const seconds = now.getSeconds();
+const milliseconds = now.getMilliseconds();
+
+// Format the date and time as desired
+const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+// Combine date and time
+const formattedDateTime = `${formattedDate} ${formattedTime}`;
+
+return formattedDateTime; // Outputs: YYYY-MM-DD HH:MM
 }

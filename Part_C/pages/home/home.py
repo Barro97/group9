@@ -15,6 +15,8 @@ uri = "mongodb+srv://rinak:SbSaxSwP6TEHmWGw@workfolio.w1hkpdf.mongodb.net/?retry
 myclient = MongoClient(uri, server_api=ServerApi('1'))
 mydb = myclient['user_database']
 posts_collection = mydb['posts']
+likes_collection = mydb['likes']
+
 
 # Routes
 @home.route('/home')
@@ -31,7 +33,12 @@ def user():
 def create_post():
     if request.method == "POST":
         post = request.get_json()
-        posts_collection.insert_one(post)
-        # print(post)
-        response = {'status': 'Success'}
+        insertion = posts_collection.insert_one(post)
+        inserted_id = insertion.inserted_id
+        print(inserted_id)
+        response = {'status': 'Success', 'id': str(inserted_id)}
         return jsonify(response)
+
+# @home.route('/create_like', methods=['POST'])
+# def create_like():
+#     if request.method == "POST":
