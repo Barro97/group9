@@ -21,7 +21,7 @@ let user=''
 // Event listener for DOMContentLoaded to initialize the page when the document is fully loaded
 document.addEventListener("DOMContentLoaded", function () {
     fetch('/user').then((response) => response.json()).then((data) => {console.log(data)
-    user=data.user;
+    user=data.user; // recieve user data
     initPage(user); // Call initPage function to set up the page
     ;}).catch(error => console.log(error));
 });
@@ -61,11 +61,10 @@ function createPost(user, postsContainer) {
     };
 
       sendData(post).then(id=>{
-        console.log(id);
+        attachBtns(newPost, user, id); // Attach buttons for likes, comments, and shares to the new post
       }).catch(err=>{console.log(err)});
 
 
-    attachBtns(newPost, user, post); // Attach buttons for likes, comments, and shares to the new post
 
     document.querySelector("textarea").value = ""; // Clear the textarea
 }
@@ -164,21 +163,27 @@ function createPostElement(user, postContent) {
     return newPost; // Return the newly created post element
 }
 
-function attachLikeButtonFunctionality(newPost, user, post) {
+function attachLikeButtonFunctionality(newPost, user, id) {
     const likeButton = newPost.querySelector(".action-btn.like"); // Get the like button element
     likeButton.addEventListener("click", function () {
-        if (!post.likes.users.some((usr) => usr.email === user.email)) {
-            // Check if the user has not already liked the post
-            post.likes.amount += 1; // Increment the like count
-            newPost.querySelector(".like").textContent = `👍 ${post.likes.amount}`; // Update the like count display
-            post.likes.users.push(user); // Add the user to the list of users who liked the post
-        } else {
-            // alert("You already liked this post"); // Alert if the user already liked the post
-            post.likes.amount -= 1; // Decrement the like count
-            newPost.querySelector(".like").textContent = `👍 ${post.likes.amount}`; // Update the like count display
-            post.likes.users.pop(user); // remove the user from the list of users who liked the post
-        }
+        const dataToSend = {id:id, DT:dateTime()}
+       fetch('/create_like', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataToSend)
+    })
+    .then(response => response.json()) // read the JSON from flask
+    .then(data => {
+        console.log(data.status);
+            newPost.querySelector(".like").textContent = `👍 ${data.amount}`; // Update the like count display
+
+    })
+    .catch((error) => {
+        console.error('Error:', error);
     });
+})
 }
 
 // Function to attach event listener for the comment button functionality

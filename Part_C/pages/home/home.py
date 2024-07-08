@@ -35,10 +35,27 @@ def create_post():
         post = request.get_json()
         insertion = posts_collection.insert_one(post)
         inserted_id = insertion.inserted_id
-        print(inserted_id)
         response = {'status': 'Success', 'id': str(inserted_id)}
         return jsonify(response)
 
-# @home.route('/create_like', methods=['POST'])
-# def create_like():
-#     if request.method == "POST":
+
+@home.route('/create_like', methods=['POST'])
+def create_like():
+    if request.method == "POST":
+        active_user = session.get('user')
+        data = request.get_json()
+        post_id = data['id']
+        query = {"post_id": post_id, "liker": active_user['email']}
+        like = likes_collection.find_one(query)
+        if like:
+            likes_collection.delete_one(like)
+            status = 'Removed'
+        else:
+            new_like = {'liker': active_user['email'], "post_id": post_id, 'DT': data['DT']}
+            likes_collection.insert_one(new_like)
+            status = 'Added'
+
+        count = likes_collection.count_documents({'post_id': post_id})
+        response = {'status': status, 'liker': active_user, 'amount': count}
+        return jsonify(response)
+
