@@ -9,25 +9,24 @@
     <div class="left-section">
         <section class="section" id="top-section">
             <img
-                    src="https://cdn-icons-png.flaticon.com/512/6833/6833605.png"
-                    alt="generic profile picture"
+                    src={{profile_picture}}
+                    alt="profile picture"
             />
             <div class="my-details">
-                <h1>{{name}}</h1>
-                <h3>Data Analyst</h3>
-                <h5 class="follow-count">followers: 500</h5>
+                <h1>{{full_name}}</h1>
+                <h3>{{role}}</h3>
+                <h5 class="follow-count">followers: {{followers}}</h5>
             </div>
-
         </section>
         <section class="section" id="links">
             <h1>Social media</h1>
             <div class="social">
-                <a href="https://www.linkedin.com/in/rina-klinchuk/"><img
+                <a href={{linkedin}}><img
                         src="https://blog.waalaxy.com/wp-content/uploads/2021/01/LinkedIn-Symbole.png" alt=""></a>
-                <a href="https://github.com/rinaklin"><img
+                <a href={{github}}><img
                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png"
                         alt=""></a>
-                <a href="https://www.facebook.com/rina.klinchuk/"><img
+                <a href={{facebook}}><img
                         src="https://static-00.iconduck.com/assets.00/facebook-color-icon-2048x2048-bfly1vxr.png"
                         alt=""></a>
             </div>
@@ -74,16 +73,7 @@
         <section class="section scrollable" id="about">
             <h1>About me</h1>
             <div>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta aut
-                qui reprehenderit dolores a, ex mollitia. Consectetur optio
-                repudiandae sint esse exercitationem illum accusamus voluptate odit
-                quidem ratione! Nobis distinctio rem error esse maiores a.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis quia nihil quos non sed, at explicabo eum
-                quibusdam, nostrum officiis consequatur magnam perspiciatis earum similique saepe. Fugiat nostrum sed
-                dignissimos?
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iusto fugit harum distinctio eligendi! Quasi
-                aspernatur dolorum quam? Ipsam, sint consequatur corporis, dignissimos maxime veniam illum iusto ipsa
-                sequi quis perferendis?
+                {{about_me}}
             </div>
         </section>
         <section class="section scrollable" id="projects">

@@ -65,9 +65,9 @@ if __name__ == '__main__':
 
 uri = "mongodb+srv://rinak:SbSaxSwP6TEHmWGw@workfolio.w1hkpdf.mongodb.net/?retryWrites=true&w=majority&appName=Workfolio"
 myclient = MongoClient(uri, server_api=ServerApi('1'))
-
 mydb = myclient['user_database']
 users_collection = mydb['users']
+messages_collection = mydb['messages']
 
 
 @app.route('/MongoDB')
