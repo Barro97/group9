@@ -14,15 +14,21 @@ let uploadingImage = false;
 let uploadingProj = false;
 let sharingPost = false;
 
+let user=''
+
+
+
 // Event listener for DOMContentLoaded to initialize the page when the document is fully loaded
 document.addEventListener("DOMContentLoaded", function () {
-    initPage(); // Call initPage function to set up the page
+    fetch('/user').then((response) => response.json()).then((data) => {console.log(data)
+    user=data.user; // recieve user data
+    initPage(user); // Call initPage function to set up the page
+    ;}).catch(error => console.log(error));
 });
 
 // Function to initialize the page
-function initPage() {
+function initPage(user) {
     // initiateSteve();
-    // initUser();
     attachImageUploadFunctionality();
     attachProjectUploadFunctionality();
     attachFileSelectionFunctionality();
@@ -34,13 +40,6 @@ function initPage() {
     });
 }
 
-// Function to initialize the user interface with the active user's details
-// function initUser() {
-//     userPostBox.querySelector("img").src = user.pic; // Set the user's profile picture
-//     userPostBox.querySelector(
-//         "textarea"
-//     ).placeholder = `What's on your mind, ${user.firstName}?`; // Set the placeholder text in the textarea
-// }
 
 // Function to create a new post and add it to the posts container
 function createPost(user, postsContainer) {
@@ -56,14 +55,16 @@ function createPost(user, postsContainer) {
     postsContainer.insertBefore(newPost, postsContainer.firstChild);
 
     const post = {
+        owner: user.email,
         content: postContent,
-        likes: {amount: 0, users: []},
-        comments: {amount: 0, list: []},
-        shares: {amount: 0, users: []},
+        DT: dateTime()
     };
-    user.posts.push(post); // Add the new post to the user's posts
 
-    attachBtns(newPost, user, post); // Attach buttons for likes, comments, and shares to the new post
+      sendData(post).then(id=>{
+        attachBtns(newPost, user, id); // Attach buttons for likes, comments, and shares to the new post
+      }).catch(err=>{console.log(err)});
+
+
 
     document.querySelector("textarea").value = ""; // Clear the textarea
 }
@@ -113,10 +114,10 @@ function createPostElement(user, postContent) {
     newPost.className = "post-box"; // Assign the post-box class to the new post for better design
     newPost.innerHTML = `
         <div class="post-header">
-            <img src="${user.pic}" alt="Profile Picture" class="profile-pic" />
+            <img src="${user.profile_picture}" alt="Profile Picture" class="profile-pic" />
             <div class="post-info">
-            <a href="profile.html"><div class="user-name">${user.firstName} ${
-        user.lastName
+            <a href="profile.html"><div class="user-name">${user.first_name} ${
+        user.last_name
     }</div></a>
                 <div class="post-time">Just now</div>
             </div>
@@ -162,21 +163,27 @@ function createPostElement(user, postContent) {
     return newPost; // Return the newly created post element
 }
 
-function attachLikeButtonFunctionality(newPost, user, post) {
+function attachLikeButtonFunctionality(newPost, user, id) {
     const likeButton = newPost.querySelector(".action-btn.like"); // Get the like button element
     likeButton.addEventListener("click", function () {
-        if (!post.likes.users.some((usr) => usr.email === user.email)) {
-            // Check if the user has not already liked the post
-            post.likes.amount += 1; // Increment the like count
-            newPost.querySelector(".like").textContent = `👍 ${post.likes.amount}`; // Update the like count display
-            post.likes.users.push(user); // Add the user to the list of users who liked the post
-        } else {
-            // alert("You already liked this post"); // Alert if the user already liked the post
-            post.likes.amount -= 1; // Decrement the like count
-            newPost.querySelector(".like").textContent = `👍 ${post.likes.amount}`; // Update the like count display
-            post.likes.users.pop(user); // remove the user from the list of users who liked the post
-        }
+        const dataToSend = {id:id, DT:dateTime()}
+       fetch('/create_like', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataToSend)
+    })
+    .then(response => response.json()) // read the JSON from flask
+    .then(data => {
+        console.log(data.status);
+            newPost.querySelector(".like").textContent = `👍 ${data.amount}`; // Update the like count display
+
+    })
+    .catch((error) => {
+        console.error('Error:', error);
     });
+})
 }
 
 // Function to attach event listener for the comment button functionality
@@ -435,4 +442,45 @@ function showModal() {
 function closeModal() {
     Modal.classList.add("hidden");
     overlay.classList.add("hidden");
+}
+
+ function sendData(post) {
+    return fetch('/create_post', { // The "return" makes sure that this is not a void function and that an id value is returned
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(post)
+    })
+    .then(response => response.json()) // read the JSON from flask
+    .then(data => {
+        console.log('Success:', data.status);
+        return data.id; // Return the new post's id for further button implementation
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+function dateTime(){
+    // Create a new Date object
+const now = new Date();
+
+// Get the current date and time components
+const year = now.getFullYear();
+const month = now.getMonth() + 1; // Months are zero-based (0-11), so add 1
+const day = now.getDate();
+const hours = now.getHours();
+const minutes = now.getMinutes();
+const seconds = now.getSeconds();
+const milliseconds = now.getMilliseconds();
+
+// Format the date and time as desired
+const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+// Combine date and time
+const formattedDateTime = `${formattedDate} ${formattedTime}`;
+
+return formattedDateTime; // Outputs: YYYY-MM-DD HH:MM
 }
