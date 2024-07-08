@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 let lastMessageDate = '';
 
-function sendMessage() {
+async function sendMessage() {
     const messageInput = document.getElementById('message-input');
     const fileInput = document.getElementById('file-input');
     const messagesContainer = document.getElementById('chat-messages');
@@ -37,12 +37,10 @@ function sendMessage() {
     const files = fileInput.files;
     if (messageText === '' && files.length === 0) return;
 
-    // Create a timestamp for the message
     const now = new Date();
     const timestamp = now.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit'});
     const currentDate = now.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'});
 
-    // Add date header if this is the first message of the day
     if (currentDate !== lastMessageDate) {
         const dateHeader = document.createElement('div');
         dateHeader.className = 'date-header';
@@ -51,7 +49,6 @@ function sendMessage() {
         lastMessageDate = currentDate;
     }
 
-    // Create the message element
     const messageElement = document.createElement('div');
     messageElement.className = 'message user';
 
@@ -107,8 +104,23 @@ function sendMessage() {
     messageInput.style.height = 'auto';
     fileInput.value = '';
 
-    // Simulate a response after 1 second
-    setTimeout(() => {
+    // Send message to the server
+    const userName = document.getElementById('user-name').textContent;
+
+    const response = await fetch('/send_message', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            message_text: messageText,
+            user_name: userName,
+            timestamp: timestamp,
+            files: Array.from(files).map(file => file.name) // Sending only file names for simplicity
+        })
+    });
+
+    if (response.ok) {
         const responseElement = document.createElement('div');
         responseElement.className = 'message';
 
@@ -124,10 +136,10 @@ function sendMessage() {
         responseElement.appendChild(responseContentElement);
         messagesContainer.appendChild(responseElement);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }, 1000);
+    }
 }
 
-function selectUser(userName, userTitle, userPicture, userProfileLink) {
+async function selectUser(userName, userTitle, userPicture, userProfileLink) {
     const chatHeader = document.querySelector('.chat-header');
     const messagesContainer = document.getElementById('chat-messages');
     const userNameElement = document.getElementById('user-name');
@@ -135,29 +147,21 @@ function selectUser(userName, userTitle, userPicture, userProfileLink) {
     const userPictureElement = document.getElementById('user-picture');
     const userProfileLinkElement = document.querySelector('.profile-link a');
 
-    // Set the chat header to the selected user's name
     chatHeader.textContent = `Chat with ${userName}`;
-
-    // Update user details in the user container
     userNameElement.textContent = userName;
     userTitleElement.textContent = userTitle;
     userPictureElement.src = userPicture;
     userProfileLinkElement.href = userProfileLink;
 
-    // Clear the current chat messages
     messagesContainer.innerHTML = '';
 
-    // Load the chat messages for the selected user
-    const dummyMessages = [
-        {text: `Hello ${userName}, how are you?`, isUser: true, date: new Date('2023-06-18T12:00:00')},
-        {text: `I'm doing great, thanks! How about you?`, isUser: false, date: new Date('2023-06-18T12:01:00')},
-        {text: `I’m fine too, thanks for asking!`, isUser: true, date: new Date('2023-06-19T09:15:00')}
-    ];
+    const response = await fetch(`/get_messages?user_name=${encodeURIComponent(userName)}`);
+    const messages = await response.json();
 
-    lastMessageDate = ''; // Reset the last message date
+    lastMessageDate = '';
 
-    dummyMessages.forEach((msg) => {
-        const messageDate = msg.date.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'});
+    messages.forEach((msg) => {
+        const messageDate = new Date(msg.timestamp).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'});
 
         if (messageDate !== lastMessageDate) {
             const dateHeader = document.createElement('div');
@@ -172,11 +176,11 @@ function selectUser(userName, userTitle, userPicture, userProfileLink) {
 
         const messageContentElement = document.createElement('div');
         messageContentElement.className = 'message-content';
-        messageContentElement.textContent = msg.text;
+        messageContentElement.textContent = msg.message_text;
 
         const timestampElement = document.createElement('span');
         timestampElement.className = 'message-timestamp';
-        timestampElement.textContent = msg.date.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit'});
+        timestampElement.textContent = new Date(msg.timestamp).toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit'});
 
         messageContentElement.appendChild(timestampElement);
         messageElement.appendChild(messageContentElement);
@@ -185,7 +189,6 @@ function selectUser(userName, userTitle, userPicture, userProfileLink) {
 
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-    // Save the selected user's info in local storage
     localStorage.setItem('lastChatUser', JSON.stringify({userName, userTitle, userPicture, userProfileLink}));
 }
 
@@ -195,7 +198,6 @@ function loadLastChatUser() {
         const {userName, userTitle, userPicture, userProfileLink} = JSON.parse(lastChatUser);
         selectUser(userName, userTitle, userPicture, userProfileLink);
     } else {
-        // Select the top user in the chat sidebar if no last chat user is found
         const topUserElement = document.querySelector('.chat-sidebar-user');
         if (topUserElement) {
             topUserElement.click();

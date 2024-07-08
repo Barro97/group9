@@ -1,1 +1,4 @@
 not to upload/
+
+pycache_/
+*.py[cod]
