@@ -20,57 +20,58 @@ users_collection = mydb['users']
 
 
 # Routes
+
+# Define route for the home page
 @home.route('/home')
 def index():
     return render_template('home.html')
 
 
+# Define route to get user information
 @home.route('/user', methods=['GET', 'POST'])
 def user():
-    return jsonify({"user": session.get('user')})
+    return jsonify({"user": session.get('user')})  # Return the current user's session data as JSON
 
-
+# Define route to show likes for a specific post
 @home.route('/<post_id>/likes')
 def show_likes(post_id):
-    print(post_id)
-    likes = likes_collection.find({'post_id': post_id})
+    likes = likes_collection.find({'post_id': post_id})  # Find likes for the given post ID
     users_that_liked = []
     for like in likes:
-        user = users_collection.find_one({'email': like['liker']})
+        user = users_collection.find_one({'email': like['liker']})  # Find the user who liked the post
         if user:
-            user['_id']=''
-            print(user)
-            users_that_liked.append(user)
-    print(users_that_liked)
-    return jsonify({'users': users_that_liked})
+            user['_id'] = ''   # Remove the '_id' field from the user document
+            users_that_liked.append(user)  # Add the user to the list
+    return jsonify({'users': users_that_liked})  # Return the list of users who liked the post as JSON
 
 
+# Define route to create a new post
 @home.route('/create_post', methods=['POST'])
 def create_post():
     if request.method == "POST":
-        post = request.get_json()
-        insertion = posts_collection.insert_one(post)
-        inserted_id = insertion.inserted_id
-        response = {'status': 'Success', 'id': str(inserted_id)}
-        return jsonify(response)
+        post = request.get_json()  # Get the JSON data from the request
+        insertion = posts_collection.insert_one(post)  # Insert the new post into the database
+        inserted_id = insertion.inserted_id  # Get the inserted post's ID
+        response = {'status': 'Success', 'id': str(inserted_id)}  # Prepare the response
+        return jsonify(response)  # Return the response as JSON
 
-
+# Define route to create or remove a like
 @home.route('/create_like', methods=['POST'])
 def create_like():
     if request.method == "POST":
-        active_user = session.get('user')
-        data = request.get_json()
-        post_id = data['id']
-        query = {"post_id": post_id, "liker": active_user['email']}
-        like = likes_collection.find_one(query)
+        active_user = session.get('user')  # Get the current user's session data
+        data = request.get_json()  # Get the JSON data from the request
+        post_id = data['id']  # Get the post ID from the data
+        query = {"post_id": post_id, "liker": active_user['email']}  # Prepare the query to find the like
+        like = likes_collection.find_one(query)  # Find if the like already exists
         if like:
-            likes_collection.delete_one(like)
+            likes_collection.delete_one(like)  # Remove the like if it exists
             status = 'Removed'
         else:
-            new_like = {'liker': active_user['email'], "post_id": post_id, 'DT': data['DT']}
-            likes_collection.insert_one(new_like)
+            new_like = {'liker': active_user['email'], "post_id": post_id, 'DT': data['DT']}  # Create a new like
+            likes_collection.insert_one(new_like)  # Insert the new like into the database
             status = 'Added'
 
-        count = likes_collection.count_documents({'post_id': post_id})
-        response = {'status': status, 'liker': active_user, 'amount': count}
+        count = likes_collection.count_documents({'post_id': post_id})  # Count the number of likes for the post
+        response = {'status': status, 'liker': active_user, 'amount': count}  # Prepare the response
         return jsonify(response)

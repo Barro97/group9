@@ -366,25 +366,29 @@ function attachLikesModalFunctionality(newPost, post_id) {
     const likes = newPost.querySelector(".like"); // Get the like element in the post
     likes.addEventListener("click", function () {
         content.innerHTML = ""; // Clear previous content in the modal
-        fetch(`/${post_id}/likes`).then((response) => {
+
+        // Fetch the list of users who liked the post
+        fetch(`/${post_id}/likes`)
+            .then((response) => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             return response.json();
-        }).then(data => {
+        })
+            .then(data => {
             console.log(data)
+                // Iterate over each user in the response data
             data.users.forEach((user) => {
+                // Call a function to handle displaying the user who liked the post
                 userThatLiked(user);
             });
             showModal();
-        }).catch(error => {
+        })
+            .catch(error => {
             console.log(error);
         });
     });
-        // post.likes.users.forEach((usr) => {
-        //     userThatLiked(usr); // Display each user who liked the post
-        // });
-        // showModal(); // Show the modal with the list of users who liked the post
+
     }
 
 
