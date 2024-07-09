@@ -362,16 +362,31 @@ function prepareProjectForUpload() {
 }
 
 // Function to attach event listener for likes modal
-function attachLikesModalFunctionality(newPost, post) {
+function attachLikesModalFunctionality(newPost, post_id) {
     const likes = newPost.querySelector(".like"); // Get the like element in the post
     likes.addEventListener("click", function () {
         content.innerHTML = ""; // Clear previous content in the modal
-        post.likes.users.forEach((usr) => {
-            userThatLiked(usr); // Display each user who liked the post
+        fetch(`/${post_id}/likes`).then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        }).then(data => {
+            console.log(data)
+            data.users.forEach((user) => {
+                userThatLiked(user);
+            });
+            showModal();
+        }).catch(error => {
+            console.log(error);
         });
-        showModal(); // Show the modal with the list of users who liked the post
     });
-}
+        // post.likes.users.forEach((usr) => {
+        //     userThatLiked(usr); // Display each user who liked the post
+        // });
+        // showModal(); // Show the modal with the list of users who liked the post
+    }
+
 
 // Function to attach event listener for shares modal
 function attachSharesModalFunctionality(newPost, post) {
@@ -389,12 +404,12 @@ function attachSharesModalFunctionality(newPost, post) {
 function userThatLiked(user) {
     const html = `<div class="post-header">
       <img
-        src="${user.pic}"
+        src="${user.profile_picture}"
         alt="Profile Picture"
         class="profile-pic"
       />
       <div class="post-info">
-        <div class="user-name">${user.firstName} ${user.lastName}</div>
+        <div class="user-name">${user.first_name} ${user.last_name}</div>
         <div class="post-time">Just now</div>
       </div>
     </div>`;
