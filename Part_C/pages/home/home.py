@@ -16,6 +16,7 @@ myclient = MongoClient(uri, server_api=ServerApi('1'))
 mydb = myclient['user_database']
 posts_collection = mydb['posts']
 likes_collection = mydb['likes']
+users_collection = mydb['users']
 
 
 # Routes
@@ -27,6 +28,21 @@ def index():
 @home.route('/user', methods=['GET', 'POST'])
 def user():
     return jsonify({"user": session.get('user')})
+
+
+@home.route('/<post_id>/likes')
+def show_likes(post_id):
+    print(post_id)
+    likes = likes_collection.find({'post_id': post_id})
+    users_that_liked = []
+    for like in likes:
+        user = users_collection.find_one({'email': like['liker']})
+        if user:
+            user['_id']=''
+            print(user)
+            users_that_liked.append(user)
+    print(users_that_liked)
+    return jsonify({'users': users_that_liked})
 
 
 @home.route('/create_post', methods=['POST'])
@@ -58,4 +74,3 @@ def create_like():
         count = likes_collection.count_documents({'post_id': post_id})
         response = {'status': status, 'liker': active_user, 'amount': count}
         return jsonify(response)
-
