@@ -9,11 +9,12 @@ const overlay = document.querySelector(".overlay");
 const content = Modal.querySelector(".modal-content");
 const closeBtn = document.querySelector(".close-modal");
 const fileInput = document.getElementById("fileInput");
+const sentinel = document.getElementById('sentinel');
 let tryingToComment = false;
 let uploadingImage = false;
 let uploadingProj = false;
 let sharingPost = false;
-
+let currentPage = 1;  // Track the current page number for posts
 let user=''
 
 
@@ -24,13 +25,43 @@ document.addEventListener("DOMContentLoaded", function () {
     user=data.user; // recieve user data
     initPage(user); // Call initPage function to set up the page
     ;}).catch(error => console.log(error));
-    fetch('/show_posts').then((response) => response.json()).then((data) => {console.log(data)
-        data.posts.forEach(post => {
-    const newPost= createPostElement(post.user,post.content)
-    postsContainer.insertBefore(newPost, postsContainer.firstChild);
-        })
-    ;}).catch(error => console.log(error));
+// Create a new IntersectionObserver instance
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Load the next page of posts when the sentinel comes into view
+            loadPosts(currentPage,observer);
+        }
+    });
+}, {
+    rootMargin: '200px',  // Start loading before the sentinel is in the viewport
 });
+
+// Observe the sentinel element
+observer.observe(sentinel);
+
+// Initial load of posts
+loadPosts(currentPage,observer);
+});
+
+function loadPosts(page,observer) {
+      observer.unobserve(sentinel);
+    fetch(`/show_posts?page=${page}`).then((response) => response.json()).then((data) => {console.log(data)
+       const fragment = document.createDocumentFragment();
+        data.posts.forEach(post => {
+            console.log(post.likes);
+    const newPost= createPostElement(post.user,post.content,post.likes)
+            attachBtns(newPost,post.user,post._id)
+    fragment.appendChild(newPost);
+        })
+    postsContainer.appendChild(fragment)
+ // Increment the current page for the next load
+            currentPage++;
+observer.observe(sentinel);
+
+    }).catch(error => console.log(error));
+
+}
 
 // Function to initialize the page
 function initPage(user) {
@@ -98,7 +129,7 @@ function attachBtns(newPost, user, post) {
 }
 
 // Function to create a new post element based on user input and content
-function createPostElement(user, postContent) {
+function createPostElement(user, postContent,amount=0) {
     const newPost = document.createElement("div");
     let image = "";
     let proj = "";
@@ -144,7 +175,7 @@ function createPostElement(user, postContent) {
         </div>
         <div class="post-footer">
             <div class="reaction-bar">
-                <span class="like">👍 0</span>
+                <span class="like">👍 ${amount}</span>
                 <span class="comments">0 Comments</span>
                 <span class="shares">0 Shares</span>
             </div>

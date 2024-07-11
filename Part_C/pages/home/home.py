@@ -59,12 +59,18 @@ def create_post():
 
 @home.route('/show_posts')
 def show_posts():
-    posts_to_show = posts_collection.find({'owner': session.get('user')['email']})
+    page = int(request.args.get('page', 1))  # Get the page number from the request, default to 1 if not provided
+    per_page = 2  # Number of posts to show per page
+    skip = (page - 1) * per_page  # Calculate the number of posts to skip based on the page number
+
+    posts_to_show = posts_collection.find({'owner': session.get('user')['email']}).skip(skip).limit(per_page)
     posts_list = list(posts_to_show)  # Convert the cursor to a list of dictionaries
     for post in posts_list:
         post['_id'] = str(post['_id'])  # Convert ObjectId to string for JSON serialization
         post['user'] = users_collection.find_one({'email': post['owner']})
         post['user']['_id'] = str(post['user']['_id'])
+        post['likes'] = likes_collection.count_documents({'post_id': post['_id']})  # Count the number of likes for the post
+
     return jsonify({'posts': posts_list})
 
 
