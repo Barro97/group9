@@ -32,6 +32,7 @@ def index():
 def user():
     return jsonify({"user": session.get('user')})  # Return the current user's session data as JSON
 
+
 # Define route to show likes for a specific post
 @home.route('/<post_id>/likes')
 def show_likes(post_id):
@@ -40,7 +41,7 @@ def show_likes(post_id):
     for like in likes:
         user = users_collection.find_one({'email': like['liker']})  # Find the user who liked the post
         if user:
-            user['_id'] = ''   # Remove the '_id' field from the user document
+            user['_id'] = ''  # Remove the '_id' field from the user document
             users_that_liked.append(user)  # Add the user to the list
     return jsonify({'users': users_that_liked})  # Return the list of users who liked the post as JSON
 
@@ -54,6 +55,18 @@ def create_post():
         inserted_id = insertion.inserted_id  # Get the inserted post's ID
         response = {'status': 'Success', 'id': str(inserted_id)}  # Prepare the response
         return jsonify(response)  # Return the response as JSON
+
+
+@home.route('/show_posts')
+def show_posts():
+    posts_to_show = posts_collection.find({'owner': session.get('user')['email']})
+    posts_list = list(posts_to_show)  # Convert the cursor to a list of dictionaries
+    for post in posts_list:
+        post['_id'] = str(post['_id'])  # Convert ObjectId to string for JSON serialization
+        post['user'] = users_collection.find_one({'email': post['owner']})
+        post['user']['_id'] = str(post['user']['_id'])
+    return jsonify({'posts': posts_list})
+
 
 # Define route to create or remove a like
 @home.route('/create_like', methods=['POST'])

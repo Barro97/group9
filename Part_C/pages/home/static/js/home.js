@@ -24,6 +24,12 @@ document.addEventListener("DOMContentLoaded", function () {
     user=data.user; // recieve user data
     initPage(user); // Call initPage function to set up the page
     ;}).catch(error => console.log(error));
+    fetch('/show_posts').then((response) => response.json()).then((data) => {console.log(data)
+        data.posts.forEach(post => {
+    const newPost= createPostElement(post.user,post.content)
+    postsContainer.insertBefore(newPost, postsContainer.firstChild);
+        })
+    ;}).catch(error => console.log(error));
 });
 
 // Function to initialize the page
