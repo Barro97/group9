@@ -7,132 +7,57 @@
 {% block main %}
 <section class="project-page">
     <div class="user-container">
-        <img src="https://www.creativefabrica.com/wp-content/uploads/2023/05/23/Bearded-man-avatar-Generic-male-profile-Graphics-70342414-1-1-580x387.png"
-             alt="generic profile picture"/>
-
+        <img src="{{ user.profile_picture }}" alt="Profile Picture"/>
         <div class="name">
-            <h1>Bar Rosenthal</h1>
-            <h3>Software Engineer</h3>
+            <h1>{{ user.name }}</h1>
+            <h3>{{ user.role }}</h3>
         </div>
-
         <aside class="social">
-            <a href="https://www.linkedin.com"><img
-                    src="https://blog.waalaxy.com/wp-content/uploads/2021/01/LinkedIn-Symbole.png"
-                    alt="LinkedIn"></a>
-            <a href="https://github.com/"><img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png"
-                    alt="Instagram"></a>
-            <a href="https://www.facebook.com"><img
-                    src="https://static-00.iconduck.com/assets.00/facebook-color-icon-2048x2048-bfly1vxr.png"
-                    alt="Facebook"></a>
+            <a href="{{ user.linkedin }}"><img src="https://blog.waalaxy.com/wp-content/uploads/2021/01/LinkedIn-Symbole.png" alt="LinkedIn"></a>
+            <a href="{{ user.github }}"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png" alt="Github"></a>
+            <a href="{{ user.facebook }}"><img src="https://static-00.iconduck.com/assets.00/facebook-color-icon-2048x2048-bfly1vxr.png" alt="Facebook"></a>
         </aside>
     </div>
 
     <div class="project-container">
         <div class="project">
             <div class="project-header">
-                <h2>Project 1</h2>
+                <h2>{{ project.name }}</h2>
                 <div class="like-container">
                     <div class="like-button">
-                        <img src="https://cdn-icons-png.flaticon.com/512/169/169778.png"
-                             alt="like"/>
+                        <img src="https://cdn-icons-png.flaticon.com/512/169/169778.png" alt="like"/>
                     </div>
-                    <div class="like-count">0</div>
+                    <div class="like-count">{{ project.likes }}</div>
                 </div>
             </div>
-            <a href="the%20best%20project%20ever.docx" download>
-                <img src="https://searchengineland.com/wp-content/seloads/2020/03/code-SS_634574354-1920x1080-1.jpg"
-                     alt="Download Project File"/>
+            <a href="{{ project.file_url }}" download>
+                <img src="{{ project.image_url }}" alt="Download Project File"/>
             </a>
         </div>
 
         <div class="comments">
             <h3>Comments</h3>
             <div class="comment-list">
+                {% for comment in comments %}
                 <div class="comment">
                     <div class="profile-picture">
-                        <a href="profile.html">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135823.png" alt="User Profile">
+                        <a href="/profile/{{ comment.user_id }}">
+                            <img src="{{ comment.user_picture_url }}" alt="User Profile">
                         </a>
                     </div>
                     <div class="comment-details">
-                        <div class="user-name">Adi Cohen</div>
-                        <div class="comment-content">Great project!</div>
-                        <div class="comment-time" data-time="2024-06-17T10:00:00Z">2 hours ago</div>
+                        <div class="user-name">{{ comment.user_name }}</div>
+                        <div class="comment-content">{{ comment.content }}</div>
+                        <div class="comment-time" data-time="{{ comment.timestamp }}">{{ comment.time_ago }}</div>
                     </div>
                 </div>
-
-
-                <div class="comment">
-                    <div class="profile-picture">
-                        <a href="profile.html">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User Profile">
-                        </a>
-                    </div>
-                    <div class="comment-details">
-                        <div class="user-name">Shalom Levi</div>
-                        <div class="comment-content">Excellent project!</div>
-                        <div class="comment-time" data-time="2024-06-17T09:00:00Z">3 hours ago</div>
-                    </div>
-                </div>
-
-                <div class="comment">
-                    <div class="profile-picture">
-                        <a href="profile.html">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135823.png" alt="User Profile">
-                        </a>
-                    </div>
-                    <div class="comment-details">
-                        <div class="user-name">Adi Cohen</div>
-                        <div class="comment-content">Great project!</div>
-                        <div class="comment-time" data-time="2024-06-17T08:00:00Z">5 hours ago</div>
-                    </div>
-                </div>
-
-                <div class="comment">
-                    <div class="profile-picture">
-                        <a href="profile.html">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User Profile">
-                        </a>
-                    </div>
-                    <div class="comment-details">
-                        <div class="user-name">Shalom Levi</div>
-                        <div class="comment-content">Excellent project!</div>
-                        <div class="comment-time" data-time="2024-06-17T07:00:00Z">5 hours ago</div>
-                    </div>
-                </div>
-
-                <div class="comment">
-                    <div class="profile-picture">
-                        <a href="profile.html">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135823.png" alt="User Profile">
-                        </a>
-                    </div>
-                    <div class="comment-details">
-                        <div class="user-name">Adi Cohen</div>
-                        <div class="comment-content">Great project!</div>
-                        <div class="comment-time" data-time="2024-06-17T06:00:00Z">7 hours ago</div>
-                    </div>
-                </div>
-
-                <div class="comment">
-                    <div class="profile-picture">
-                        <a href="profile.html">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User Profile">
-                        </a>
-                    </div>
-                    <div class="comment-details">
-                        <div class="user-name">Shalom Levi</div>
-                        <div class="comment-content">Excellent project!</div>
-                        <div class="comment-time" data-time="2024-06-17T05:00:00Z">8 hours ago</div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
 
             <div class="new-comment">
                 <div class="profile-picture">
-                    <a href="my%20profile.html">
-                        <img src="https://cdn-icons-png.flaticon.com/512/6833/6833605.png" alt="My Picture">
+                    <a href="/profile/{{ user._id }}">
+                        <img src="{{ user.profile_picture }}" alt="My Picture">
                     </a>
                 </div>
                 <form class="comment-form">
@@ -143,4 +68,4 @@
         </div>
     </div>
 </section>
-{%endblock%}
+{% endblock %}

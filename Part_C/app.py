@@ -70,6 +70,37 @@ users_collection = mydb['users']
 messages_collection = mydb['messages']
 
 
-@app.route('/MongoDB')
-def MongoDB_func():
-    name = 'Rina'
+# @app.route('/MongoDB')
+# def MongoDB_func():
+#     name = 'Rina'
+
+@app.route('/follow', methods=['POST'])
+def follow():
+    follower_id = request.json['follower_id']
+    followee_id = request.json['followee_id']
+
+    # Update follower count for followee
+    users_collection.update_one({'_id': followee_id}, {'$inc': {'followers': 1}})
+
+    # Add follower to followee's followers list (if required)
+    # users_collection.update_one({'_id': followee_id}, {'$addToSet': {'followers_list': follower_id}})
+
+    return jsonify({'status': 'success'})
+
+
+@app.route('/unfollow', methods=['POST'])
+def unfollow():
+    follower_id = request.json['follower_id']
+    followee_id = request.json['followee_id']
+
+    # Update follower count for followee
+    users_collection.update_one({'_id': followee_id}, {'$inc': {'followers': -1}})
+
+    # Remove follower from followee's followers list (if required)
+    # users_collection.update_one({'_id': followee_id}, {'$pull': {'followers_list': follower_id}})
+
+    return jsonify({'status': 'success'})
+
+
+if __name__ == '__main__':
+    app.run(debug=True)

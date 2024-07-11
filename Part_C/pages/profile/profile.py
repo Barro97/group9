@@ -1,6 +1,8 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
+from pymongo import MongoClient
+from pymongo.server_api import ServerApi
+from bson.objectid import ObjectId
 
-# about blueprint definition
 profile = Blueprint(
     'profile',
     __name__,
@@ -9,8 +11,18 @@ profile = Blueprint(
     template_folder='templates'
 )
 
+# MongoDB setup
+uri = "mongodb+srv://rinak:SbSaxSwP6TEHmWGw@workfolio.w1hkpdf.mongodb.net/?retryWrites=true&w=majority&appName=Workfolio"
+myclient = MongoClient(uri, server_api=ServerApi('1'))
+mydb = myclient['user_database']
+users_collection = mydb['users']
+project_collection = mydb['projects']
 
-# Routes
-@profile.route('/profile')
-def index():
-    return render_template('profile.html')
+@profile.route('/profile/<user_id>')
+def view_profile(user_id):
+    user = users_collection.find_one({'_id': ObjectId(user_id)})
+    if user:
+        projects = project_collection.find({'owner': user_id})
+        return render_template('profile.html', user=user, projects=projects)
+    else:
+        return "User not found", 404

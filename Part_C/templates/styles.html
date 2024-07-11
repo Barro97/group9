@@ -1,28 +1,29 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}"/>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}"/>
-<link rel="stylesheet" href="{{ url_for('static', filename='media/uicons-regular-rounded/css/uicons-regular-rounded.css') }}"/>
- {% if request.path == '/aboutus' %}
-    <link rel="stylesheet" href="{{ url_for('aboutus.static', filename='css/about us.css') }}"/>
-    {% elif request.path == '/chat' %}
-    <link rel="stylesheet" href="{{ url_for('chat.static', filename='css/chat.css') }}"/>
-    {% elif request.path == '/login' or request.path == '/' %}
-    <link rel="stylesheet" href="{{ url_for('login.static', filename='css/login.css') }}"/>
-    {% elif request.path == '/home' %}
-    <link rel="stylesheet" href="{{ url_for('home.static', filename='css/home.css') }}"/>
-    {% elif request.path == '/my_profile' %}
-    <link rel="stylesheet" href="{{ url_for('my_profile.static', filename='css/my_profile.css') }}"/>
-    {% elif request.path == '/notifications' %}
-    <link rel="stylesheet" href="{{ url_for('notifications.static', filename='css/notifications.css') }}"/>
-    {% elif request.path == '/privacy_policy' %}
-    <link rel="stylesheet" href="{{ url_for('privacy_policy.static', filename='css/privacy policy.css') }}"/>
-    {% elif request.path == '/profile' %}
-    <link rel="stylesheet" href="{{ url_for('profile.static', filename='css/profile.css') }}"/>
-    {% elif request.path == '/project' %}
-    <link rel="stylesheet" href="{{ url_for('project.static', filename='css/project.css') }}"/>
-    {% elif request.path == '/search_results' %}
-    <link rel="stylesheet" href="{{ url_for('search_results.static', filename='css/search results.css') }}"/>
-    {% elif request.path == '/signup' %}
-    <link rel="stylesheet" href="{{ url_for('signup.static', filename='css/signup.css') }}"/>
-    {% elif request.path == '/organization' %}
-    <link rel="stylesheet" href="{{ url_for('organization.static', filename='css/organization.css') }}"/>
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='media/uicons-regular-rounded/css/uicons-regular-rounded.css') }}"/>
+{% if request.path == '/aboutus' %}
+<link rel="stylesheet" href="{{ url_for('aboutus.static', filename='css/about us.css') }}"/>
+{% elif request.path == '/chat' %}
+<link rel="stylesheet" href="{{ url_for('chat.static', filename='css/chat.css') }}"/>
+{% elif request.path == '/login' or request.path == '/' %}
+<link rel="stylesheet" href="{{ url_for('login.static', filename='css/login.css') }}"/>
+{% elif request.path == '/home' %}
+<link rel="stylesheet" href="{{ url_for('home.static', filename='css/home.css') }}"/>
+{% elif request.path == '/my_profile' %}
+<link rel="stylesheet" href="{{ url_for('my_profile.static', filename='css/my_profile.css') }}"/>
+{% elif request.path == '/notifications' %}
+<link rel="stylesheet" href="{{ url_for('notifications.static', filename='css/notifications.css') }}"/>
+{% elif request.path == '/privacy_policy' %}
+<link rel="stylesheet" href="{{ url_for('privacy_policy.static', filename='css/privacy policy.css') }}"/>
+{% elif request.path.startswith('/profile') %}
+<link rel="stylesheet" href="{{ url_for('profile.static', filename='css/profile.css') }}"/>
+{% elif request.path.startswith('/project') %}
+<link rel="stylesheet" href="{{ url_for('project.static', filename='css/project.css') }}"/>
+{% elif request.path == '/search_results' %}
+<link rel="stylesheet" href="{{ url_for('search_results.static', filename='css/search results.css') }}"/>
+{% elif request.path == '/signup' %}
+<link rel="stylesheet" href="{{ url_for('signup.static', filename='css/signup.css') }}"/>
+{% elif request.path == '/organization' %}
+<link rel="stylesheet" href="{{ url_for('organization.static', filename='css/organization.css') }}"/>
 {% endif %}

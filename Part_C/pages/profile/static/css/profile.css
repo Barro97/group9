@@ -102,6 +102,7 @@ body {
 }
 
 #about {
+    min-width: 550px;
     height: 173px;
     overflow-y: auto;
 }
@@ -238,7 +239,7 @@ footer {
 
 .project-content {
     position: relative;
-    background: url("https://searchengineland.com/wp-content/seloads/2020/03/code-SS_634574354-1920x1080-1.jpg") no-repeat center center;
+    /*background: url("https://searchengineland.com/wp-content/seloads/2020/03/code-SS_634574354-1920x1080-1.jpg") no-repeat center center;*/
     background-size: cover;
     height: 150px;
     display: flex;
@@ -403,6 +404,7 @@ footer {
     }
 
     #about {
+        min-width: 800px;
         width: 80%;
     }
 

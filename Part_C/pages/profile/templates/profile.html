@@ -8,35 +8,31 @@
 
 <main class="grid-container">
     <div class="left-section">
-        <section class="section" id="top-section">
-            <img
-                    src="https://www.creativefabrica.com/wp-content/uploads/2023/05/23/Bearded-man-avatar-Generic-male-profile-Graphics-70342414-1-1-580x387.png"
-                    alt="generic profile picture"
-            />
-
+         <section class="section" id="top-section">
+            <img src="{{ user['profile_picture'] }}" alt="{{ user['first_name'] }} {{ user['last_name'] }}"/>
             <div class="name">
-                <h1>Bar Rosenthal</h1>
-                <h3>Software Engineer</h3>
+                <h1>{{ user['first_name'] }} {{ user['last_name'] }}</h1>
+                <h3>{{ user['role'] }}</h3>
             </div>
             <div class="follows">
                 <button id="follow-button">+follow</button>
-                <h5 class="follow-count">followers: 0</h5>
+                <h5 class="follow-count">followers: {{ user.get('followers', 0) }}</h5>
             </div>
         </section>
         <section class="section" id="links">
             <h1>Social media</h1>
             <div class="social">
-                <a href="https://www.linkedin.com/in/bar-rosenthal-406a552a0/"><img
-                        src="https://blog.waalaxy.com/wp-content/uploads/2021/01/LinkedIn-Symbole.png" alt=""></a>
-                <a href="https://github.com/Barro97"><img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png"
-                        alt=""></a>
-                <a href="https://www.facebook.com/bar.rozenthal/"><img
-                        src="https://static-00.iconduck.com/assets.00/facebook-color-icon-2048x2048-bfly1vxr.png"
-                        alt=""></a>
+                {% if user.linkedin %}
+                <a href="{{ user.linkedin }}"><img src="https://blog.waalaxy.com/wp-content/uploads/2021/01/LinkedIn-Symbole.png" alt=""></a>
+                {% endif %}
+                {% if user.github %}
+                <a href="{{ user.github }}"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png" alt=""></a>
+                {% endif %}
+                {% if user.facebook %}
+                <a href="{{ user.facebook }}"><img src="https://static-00.iconduck.com/assets.00/facebook-color-icon-2048x2048-bfly1vxr.png" alt=""></a>
+                {% endif %}
             </div>
         </section>
-
         <section class="section" id="background">
             <div class="experience">
                 <h1>Experience</h1>
@@ -79,98 +75,22 @@
 
         <section class="section scrollable" id="about">
             <h1>About me</h1>
-            <div>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta aut
-                qui reprehenderit dolores a, ex mollitia. Consectetur optio
-                repudiandae sint esse exercitationem illum accusamus voluptate odit
-                quidem ratione! Nobis distinctio rem error esse maiores a.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis quia nihil quos non sed, at explicabo eum
-                quibusdam, nostrum officiis consequatur magnam perspiciatis earum similique saepe. Fugiat nostrum sed
-                dignissimos?
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iusto fugit harum distinctio eligendi! Quasi
-                aspernatur dolorum quam? Ipsam, sint consequatur corporis, dignissimos maxime veniam illum iusto ipsa
-                sequi quis perferendis?
-            </div>
+            <div>{{ user.about }}</div>
         </section>
         <section class="section scrollable" id="projects">
-            <h1>projects</h1>
+            <h1>Projects</h1>
 
             <div class="projects">
-                <a href="project.html" class="project-box">
+                {% for project in projects %}
+                <a href=/project/{{ project._id }} class="project-box">
                     <div class="project-content">
-                        <div class="project-overlay"></div>
-                        <div class="project-title">Project 1</div>
+                        <div class="project-overlay">
+                            <img src="{{ project.image_url }}" alt="Project"/>
+                        </div>
+                        <div class="project-title">{{ project.title }}</div>
                     </div>
                 </a>
-                <a href="project.html" class="project-box">
-                    <div class="project-content">
-                        <div class="project-overlay"></div>
-                        <div class="project-title">Project 2</div>
-                    </div>
-                </a>
-                <a href="project.html" class="project-box">
-                    <div class="project-content">
-                        <div class="project-overlay"></div>
-                        <div class="project-title">Project 3</div>
-                    </div>
-                </a>
-                <a href="project.html" class="project-box">
-                    <div class="project-content">
-                        <div class="project-overlay"></div>
-                        <div class="project-title">Project 4</div>
-                    </div>
-                </a>
-                <a href="project.html" class="project-box">
-                    <div class="project-content">
-                        <div class="project-overlay"></div>
-                        <div class="project-title">Project 5</div>
-                    </div>
-                </a>
-                <a href="project.html" class="project-box">
-                    <div class="project-content">
-                        <div class="project-overlay"></div>
-                        <div class="project-title">Project 6</div>
-                    </div>
-                </a>
-                <a href="project.html" class="project-box">
-                    <div class="project-content">
-                        <div class="project-overlay"></div>
-                        <div class="project-title">Project 7</div>
-                    </div>
-                </a>
-                <a href="project.html" class="project-box">
-                    <div class="project-content">
-                        <div class="project-overlay"></div>
-                        <div class="project-title">Project 8</div>
-                    </div>
-                </a>
-                <a href="project.html" class="project-box">
-                    <div class="project-content">
-                        <div class="project-overlay"></div>
-                        <div class="project-title">Project 9</div>
-                    </div>
-                </a>
-                <a href="project.html" class="project-box">
-                    <div class="project-content">
-                        <div class="project-overlay"></div>
-                        <div class="project-title">Project 10</div>
-                    </div>
-                </a><a href="project.html" class="project-box">
-                <div class="project-content">
-                    <div class="project-overlay"></div>
-                    <div class="project-title">Project 11</div>
-                </div>
-            </a><a href="project.html" class="project-box">
-                <div class="project-content">
-                    <div class="project-overlay"></div>
-                    <div class="project-title">Project 12</div>
-                </div>
-            </a><a href="project.html" class="project-box">
-                <div class="project-content">
-                    <div class="project-overlay"></div>
-                    <div class="project-title">Project 13</div>
-                </div>
-            </a>
+                {% endfor %}
             </div>
 
         </section>

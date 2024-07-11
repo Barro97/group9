@@ -22,7 +22,7 @@ def index():
     full_name = f"{first_name} {last_name}"
     role = user.get('role')
     profile_picture = user.get('profile_picture')
-    followers = user.get('followers', 100)  # You can set a default value or fetch it from DB
+    followers = user.get('followers', 0)  # You can set a default value or fetch it from DB
     linkedin = user.get('linkedin', 'https://www.linkedin.com/in/rina-klinchuk/')
     github = user.get('github', 'https://github.com/rinaklin')
     facebook = user.get('facebook', 'https://www.facebook.com/rina.klinchuk/')
