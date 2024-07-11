@@ -9,11 +9,12 @@ const overlay = document.querySelector(".overlay");
 const content = Modal.querySelector(".modal-content");
 const closeBtn = document.querySelector(".close-modal");
 const fileInput = document.getElementById("fileInput");
+const sentinel = document.getElementById('sentinel');
 let tryingToComment = false;
 let uploadingImage = false;
 let uploadingProj = false;
 let sharingPost = false;
-
+let currentPage = 1;  // Track the current page number for posts
 let user=''
 
 
@@ -24,13 +25,37 @@ document.addEventListener("DOMContentLoaded", function () {
     user=data.user; // recieve user data
     initPage(user); // Call initPage function to set up the page
     ;}).catch(error => console.log(error));
-    fetch('/show_posts').then((response) => response.json()).then((data) => {console.log(data)
+// Create a new IntersectionObserver instance
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Load the next page of posts when the sentinel comes into view
+            loadPosts(currentPage);
+        }
+    });
+}, {
+    rootMargin: '200px',  // Start loading before the sentinel is in the viewport
+});
+
+// Observe the sentinel element
+observer.observe(sentinel);
+
+// Initial load of posts
+loadPosts(currentPage);
+});
+
+function loadPosts(page) {
+    fetch(`/show_posts?page=${page}`).then((response) => response.json()).then((data) => {console.log(data)
+       const fragment = document.createDocumentFragment();
         data.posts.forEach(post => {
     const newPost= createPostElement(post.user,post.content)
-    postsContainer.insertBefore(newPost, postsContainer.firstChild);
+    fragment.appendChild(newPost);
         })
-    ;}).catch(error => console.log(error));
-});
+    postsContainer.insertBefore(fragment, postsContainer.firstChild);
+ // Increment the current page for the next load
+            currentPage++;
+    }).catch(error => console.log(error));
+}
 
 // Function to initialize the page
 function initPage(user) {
