@@ -69,6 +69,8 @@ def show_posts():
         post['_id'] = str(post['_id'])  # Convert ObjectId to string for JSON serialization
         post['user'] = users_collection.find_one({'email': post['owner']})
         post['user']['_id'] = str(post['user']['_id'])
+        post['likes'] = likes_collection.count_documents({'post_id': post['_id']})  # Count the number of likes for the post
+
     return jsonify({'posts': posts_list})
 
 

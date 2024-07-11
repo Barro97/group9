@@ -30,7 +30,7 @@ const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             // Load the next page of posts when the sentinel comes into view
-            loadPosts(currentPage);
+            loadPosts(currentPage,observer);
         }
     });
 }, {
@@ -41,20 +41,26 @@ const observer = new IntersectionObserver(entries => {
 observer.observe(sentinel);
 
 // Initial load of posts
-loadPosts(currentPage);
+loadPosts(currentPage,observer);
 });
 
-function loadPosts(page) {
+function loadPosts(page,observer) {
+      observer.unobserve(sentinel);
     fetch(`/show_posts?page=${page}`).then((response) => response.json()).then((data) => {console.log(data)
        const fragment = document.createDocumentFragment();
         data.posts.forEach(post => {
-    const newPost= createPostElement(post.user,post.content)
+            console.log(post.likes);
+    const newPost= createPostElement(post.user,post.content,post.likes)
+            attachBtns(newPost,post.user,post._id)
     fragment.appendChild(newPost);
         })
-    postsContainer.insertBefore(fragment, postsContainer.firstChild);
+    postsContainer.appendChild(fragment)
  // Increment the current page for the next load
             currentPage++;
+observer.observe(sentinel);
+
     }).catch(error => console.log(error));
+
 }
 
 // Function to initialize the page
@@ -123,7 +129,7 @@ function attachBtns(newPost, user, post) {
 }
 
 // Function to create a new post element based on user input and content
-function createPostElement(user, postContent) {
+function createPostElement(user, postContent,amount=0) {
     const newPost = document.createElement("div");
     let image = "";
     let proj = "";
@@ -169,7 +175,7 @@ function createPostElement(user, postContent) {
         </div>
         <div class="post-footer">
             <div class="reaction-bar">
-                <span class="like">👍 0</span>
+                <span class="like">👍 ${amount}</span>
                 <span class="comments">0 Comments</span>
                 <span class="shares">0 Shares</span>
             </div>
