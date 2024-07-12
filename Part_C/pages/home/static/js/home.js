@@ -50,7 +50,7 @@ function loadPosts(page,observer) {
        const fragment = document.createDocumentFragment();
         data.posts.forEach(post => {
             console.log(post.likes);
-    const newPost= createPostElement(post.user,post.content,post.likes)
+    const newPost= createPostElement(post.user,post.content ,post)
             attachBtns(newPost,post.user,post._id)
     fragment.appendChild(newPost);
         })
@@ -129,7 +129,7 @@ function attachBtns(newPost, user, post) {
 }
 
 // Function to create a new post element based on user input and content
-function createPostElement(user, postContent,amount=0) {
+function createPostElement(user, postContent, post= {}) {
     const newPost = document.createElement("div");
     let image = "";
     let proj = "";
@@ -156,7 +156,7 @@ function createPostElement(user, postContent,amount=0) {
             <a href="profile.html"><div class="user-name">${user.first_name} ${
         user.last_name
     }</div></a>
-                <div class="post-time">Just now</div>
+                <div class="post-time">${post ? post.DT : 'Just now'}</div>
             </div>
         </div>
         <div class="post-content">
@@ -175,7 +175,7 @@ function createPostElement(user, postContent,amount=0) {
         </div>
         <div class="post-footer">
             <div class="reaction-bar">
-                <span class="like">👍 ${amount}</span>
+                <span class="like">👍 ${post ? post.likes : '0'}</span>
                 <span class="comments">0 Comments</span>
                 <span class="shares">0 Shares</span>
             </div>
@@ -277,11 +277,11 @@ function preparePostToShare(postToShare) {
 }
 
 // Function to add a comment box below a post
-function addCommentBox(newPost, user, post) {
+function addCommentBox(newPost, user, post_id) {
     const commentBoxHTML = `
         <div class="comment-box">
             <div class="post-input comment-input">
-                <img src="${user.pic}"
+                <img src="${user.profile_picture}"
                      alt="User Avatar" class="avatar" />
                 <textarea placeholder="Insert comment here"></textarea>
             </div>
@@ -297,18 +297,26 @@ function addCommentBox(newPost, user, post) {
                 .querySelector(".comment-input textarea")
                 .value.trim(); // Get the text entered in the comment box and trim whitespace
             if (commentText) {
-                // Check if there is any text to post
-                post.comments.amount += 1; // Increment the comment count
-                newPost.querySelector(
-                    ".comments"
-                ).textContent = `${post.comments.amount} Comments`; // Update the comment count display
-                post.comments.list.push({commenter: user, text: commentText}); // Add the new comment to the post's comment list
-                removeCommentBox(); // Remove the comment box after posting
+                fetch('/create_comment', { // The "return" makes sure that this is not a void function and that an id value is returned
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: post_id, comment: commentText, DT: dateTime() })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    newPost.querySelector(".comments").textContent = `${data.amount} Comments`; // Update the comment count display
+                    removeCommentBox(); // Remove the comment box after posting
+                })
+                .catch(error => console.log(error));
             } else {
                 alert("Please enter some text to post."); // Alert the user if no text was entered
             }
         });
 }
+
 
 // Function to remove the comment box from the DOM
 function removeCommentBox() {
@@ -540,3 +548,4 @@ const formattedDateTime = `${formattedDate} ${formattedTime}`;
 
 return formattedDateTime; // Outputs: YYYY-MM-DD HH:MM
 }
+

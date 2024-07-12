@@ -17,6 +17,7 @@ mydb = myclient['user_database']
 posts_collection = mydb['posts']
 likes_collection = mydb['likes']
 users_collection = mydb['users']
+comments_collection = mydb['comments']
 
 
 # Routes
@@ -63,13 +64,15 @@ def show_posts():
     per_page = 2  # Number of posts to show per page
     skip = (page - 1) * per_page  # Calculate the number of posts to skip based on the page number
 
-    posts_to_show = posts_collection.find({'owner': session.get('user')['email']}).sort('DT', -1).skip(skip).limit(per_page)
+    posts_to_show = posts_collection.find({'owner': session.get('user')['email']}).sort('DT', -1).skip(skip).limit(
+        per_page)
     posts_list = list(posts_to_show)  # Convert the cursor to a list of dictionaries
     for post in posts_list:
         post['_id'] = str(post['_id'])  # Convert ObjectId to string for JSON serialization
         post['user'] = users_collection.find_one({'email': post['owner']})
         post['user']['_id'] = str(post['user']['_id'])
-        post['likes'] = likes_collection.count_documents({'post_id': post['_id']})  # Count the number of likes for the post
+        post['likes'] = likes_collection.count_documents(
+            {'post_id': post['_id']})  # Count the number of likes for the post
 
     return jsonify({'posts': posts_list})
 
@@ -93,4 +96,18 @@ def create_like():
 
         count = likes_collection.count_documents({'post_id': post_id})  # Count the number of likes for the post
         response = {'status': status, 'liker': active_user, 'amount': count}  # Prepare the response
+        return jsonify(response)
+
+
+@home.route('/create_comment', methods=['POST'])
+def create_comment():
+    if request.method == "POST":
+        active_user = session.get('user')
+        data = request.get_json()
+        post_id = data['id']
+        comment = data['comment']
+        new_comment = {'post_id': post_id, 'commenter': active_user, 'comment': comment, 'DT': data['DT']}
+        comments_collection.insert_one(new_comment)
+        count = comments_collection.count_documents({'post_id': post_id})
+        response = {'status': 'Added', 'comment': comment, 'amount': count}
         return jsonify(response)
