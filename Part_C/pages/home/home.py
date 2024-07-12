@@ -46,7 +46,18 @@ def show_likes(post_id):
             users_that_liked.append(user)  # Add the user to the list
     return jsonify({'users': users_that_liked})  # Return the list of users who liked the post as JSON
 
-
+@home.route('/<post_id>/comments')
+def show_comments(post_id):
+    comments = comments_collection.find({'post_id': post_id})
+    users_that_commented = []
+    for comment in comments:
+        comment['_id'] = str(comment['_id'])
+        user = users_collection.find_one({'email': comment['commenter']})
+        if user:
+            user['_id'] = ''  # Remove the '_id' field from the user document
+            users_that_commented.append({'user':user,'comment':comment})  # Add the user to the list
+    print(users_that_commented)
+    return jsonify({'users': users_that_commented})
 # Define route to create a new post
 @home.route('/create_post', methods=['POST'])
 def create_post():
@@ -58,7 +69,7 @@ def create_post():
         return jsonify(response)  # Return the response as JSON
 
 
-@home.route('/show_posts')
+@home.route('/show_posts')  # NEED TO CHANGE WHEN IMPLEMENTING FOLLOWERS
 def show_posts():
     page = int(request.args.get('page', 1))  # Get the page number from the request, default to 1 if not provided
     per_page = 2  # Number of posts to show per page
@@ -106,7 +117,7 @@ def create_comment():
         data = request.get_json()
         post_id = data['id']
         comment = data['comment']
-        new_comment = {'post_id': post_id, 'commenter': active_user, 'comment': comment, 'DT': data['DT']}
+        new_comment = {'post_id': post_id, 'commenter': active_user['email'], 'comment': comment, 'DT': data['DT']}
         comments_collection.insert_one(new_comment)
         count = comments_collection.count_documents({'post_id': post_id})
         response = {'status': 'Added', 'comment': comment, 'amount': count}

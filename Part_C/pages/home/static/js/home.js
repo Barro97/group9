@@ -470,28 +470,37 @@ function attachCommentsModalFunctionality(newPost, post) {
     const comments = newPost.querySelector(".comments"); // Get the comments section of the post
     comments.addEventListener("click", function () {
         content.innerHTML = ""; // Clear previous content in the modal
-        post.comments.list.forEach(({commenter, text}) => {
-            usersThatCommented(commenter, text); // Add each comment to the modal
-        });
-        showModal(); // Show the modal with comments
+        fetch(`/${post}/comments`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data.users) {
+                    data.users.forEach((user) => {
+                        usersThatCommented(user.user, user.comment);
+                    });
+                }
+                showModal(); // Show the modal with comments
+            })
+            .catch(error => console.log(error));
     });
 }
+
 
 // Function to display the comment in the modal
 function usersThatCommented(user, comment) {
     const html = `<div class="commenters">
   <div class="post-header commenter">
      <img
-       src="${user.pic}"
+       src="${user.profile_picture}"
        alt="Profile Picture"
        class="profile-pic"
      />
      <div class="post-info">
-       <div class="user-name">${user.firstName} ${user.lastName}</div>
-       <div class="post-time">Just now</div>
+       <div class="user-name">${user.first_name} ${user.last_name}</div>
+       <div class="post-time">${comment.DT}</div>
      </div>
    </div>
-   <div class="comment-content"><p>${comment}</p></div>
+   <div class="comment-content"><p>${comment.comment}</p></div>
    </div>`;
     content.insertAdjacentHTML("afterbegin", html); // Insert the HTML for the comment
 }
