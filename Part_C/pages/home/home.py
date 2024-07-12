@@ -63,7 +63,7 @@ def show_posts():
     per_page = 2  # Number of posts to show per page
     skip = (page - 1) * per_page  # Calculate the number of posts to skip based on the page number
 
-    posts_to_show = posts_collection.find({'owner': session.get('user')['email']}).skip(skip).limit(per_page)
+    posts_to_show = posts_collection.find({'owner': session.get('user')['email']}).sort('DT', -1).skip(skip).limit(per_page)
     posts_list = list(posts_to_show)  # Convert the cursor to a list of dictionaries
     for post in posts_list:
         post['_id'] = str(post['_id'])  # Convert ObjectId to string for JSON serialization
