@@ -2,27 +2,32 @@
 
 {% block page_head %}
 <title>Project</title>
-{%endblock%}
+{% endblock %}
 
 {% block main %}
 <section class="project-page">
     <div class="user-container">
         <img src="{{ user.profile_picture }}" alt="Profile Picture"/>
         <div class="name">
-            <h1>{{ user.name }}</h1>
+            <h1>{{ user.first_name }} {{ user.last_name }}</h1>
             <h3>{{ user.role }}</h3>
         </div>
         <aside class="social">
-            <a href="{{ user.linkedin }}"><img src="https://blog.waalaxy.com/wp-content/uploads/2021/01/LinkedIn-Symbole.png" alt="LinkedIn"></a>
-            <a href="{{ user.github }}"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png" alt="Github"></a>
-            <a href="{{ user.facebook }}"><img src="https://static-00.iconduck.com/assets.00/facebook-color-icon-2048x2048-bfly1vxr.png" alt="Facebook"></a>
+            <a href="{{ user.linkedin }}"><img
+                    src="https://blog.waalaxy.com/wp-content/uploads/2021/01/LinkedIn-Symbole.png" alt="LinkedIn"></a>
+            <a href="{{ user.github }}"><img
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png"
+                    alt="Github"></a>
+            <a href="{{ user.facebook }}"><img
+                    src="https://static-00.iconduck.com/assets.00/facebook-color-icon-2048x2048-bfly1vxr.png"
+                    alt="Facebook"></a>
         </aside>
     </div>
 
     <div class="project-container">
         <div class="project">
             <div class="project-header">
-                <h2>{{ project.name }}</h2>
+                <h2>{{ project.title }}</h2>
                 <div class="like-container">
                     <div class="like-button">
                         <img src="https://cdn-icons-png.flaticon.com/512/169/169778.png" alt="like"/>
@@ -48,7 +53,7 @@
                     <div class="comment-details">
                         <div class="user-name">{{ comment.user_name }}</div>
                         <div class="comment-content">{{ comment.content }}</div>
-                        <div class="comment-time" data-time="{{ comment.timestamp }}">{{ comment.time_ago }}</div>
+                        <div class="comment-time" data-time="{{ comment.timestamp }}">{{ comment.timestamp }}</div>
                     </div>
                 </div>
                 {% endfor %}
@@ -60,8 +65,9 @@
                         <img src="{{ user.profile_picture }}" alt="My Picture">
                     </a>
                 </div>
-                <form class="comment-form">
-                    <textarea placeholder="Add a comment..." rows="3"></textarea>
+                <form class="comment-form" action="/project/{{ project._id }}/comment" method="post">
+                    <textarea name="content" placeholder="Add a comment..." rows="3"></textarea>
+                    <input type="hidden" name="user_id" value="{{ user._id }}">
                     <button type="submit">Submit</button>
                 </form>
             </div>
