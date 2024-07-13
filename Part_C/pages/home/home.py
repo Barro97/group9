@@ -18,6 +18,7 @@ posts_collection = mydb['posts']
 likes_collection = mydb['likes']
 users_collection = mydb['users']
 comments_collection = mydb['comments']
+shares_collection = mydb['shares']
 
 
 # Routes
@@ -46,6 +47,7 @@ def show_likes(post_id):
             users_that_liked.append(user)  # Add the user to the list
     return jsonify({'users': users_that_liked})  # Return the list of users who liked the post as JSON
 
+
 @home.route('/<post_id>/comments')
 def show_comments(post_id):
     comments = comments_collection.find({'post_id': post_id})
@@ -55,9 +57,27 @@ def show_comments(post_id):
         user = users_collection.find_one({'email': comment['commenter']})
         if user:
             user['_id'] = ''  # Remove the '_id' field from the user document
-            users_that_commented.append({'user':user,'comment':comment})  # Add the user to the list
+            users_that_commented.append({'user': user, 'comment': comment})  # Add the user to the list
     print(users_that_commented)
     return jsonify({'users': users_that_commented})
+
+
+@home.route('/<post_id>/shares')
+def show_shares(post_id):
+    shares = shares_collection.find({'post_id': post_id})
+    users_that_shared = []
+    for share in shares:
+        share['_id'] = str(share['_id'])
+        user = users_collection.find_one({'email': share['sharer']})
+        if user:
+            user['_id'] = ''  # Remove the '_id' field from the user document
+            users_that_shared.append({'user': user, 'share': share})  # Add the user to the list
+        print(users_that_shared)
+    return jsonify({'users': users_that_shared})
+
+
+
+
 # Define route to create a new post
 @home.route('/create_post', methods=['POST'])
 def create_post():
@@ -84,7 +104,8 @@ def show_posts():
         post['user']['_id'] = str(post['user']['_id'])
         post['likes'] = likes_collection.count_documents(
             {'post_id': post['_id']})  # Count the number of likes for the post
-
+        post['comments'] = comments_collection.count_documents({'post_id': post['_id']})
+        post['shares'] = shares_collection.count_documents({'post_id': post['_id']})
     return jsonify({'posts': posts_list})
 
 
@@ -121,4 +142,17 @@ def create_comment():
         comments_collection.insert_one(new_comment)
         count = comments_collection.count_documents({'post_id': post_id})
         response = {'status': 'Added', 'comment': comment, 'amount': count}
+        return jsonify(response)
+
+
+@home.route('/create_share', methods=['POST'])
+def create_share():
+    if request.method == "POST":
+        active_user = session.get('user')
+        data = request.get_json()
+        html = data['shared']  # Get the post ID from the data
+        post_id = data['shared_post_id']
+        new_share = {'shared': html, 'post_id': post_id, 'sharer': active_user['email']}
+        insertion = shares_collection.insert_one(new_share)
+        response = {'status': 'Added', 'share_id': str(insertion.inserted_id)}
         return jsonify(response)

@@ -16,6 +16,7 @@ let uploadingProj = false;
 let sharingPost = false;
 let currentPage = 1;  // Track the current page number for posts
 let user=''
+let postBeingShared=''
 
 
 
@@ -145,8 +146,12 @@ function createPostElement(user, postContent, post= {}) {
         removeProjectForUpload(); // Remove the project upload elements
     }
     if (sharingPost) {
-        share = document.querySelector(".about-to-share").innerHTML; // Get the HTML content of the post to share
-        removePostForShare(); // Remove the post sharing elements
+sharebox(post)
+        share=postBeingShared
+} // Closing the if statement
+    if ('share' in post){
+        sharingPost=true
+        share=post.share
     }
     newPost.className = "post-box"; // Assign the post-box class to the new post for better design
     newPost.innerHTML = `
@@ -175,9 +180,9 @@ function createPostElement(user, postContent, post= {}) {
         </div>
         <div class="post-footer">
             <div class="reaction-bar">
-                <span class="like">👍 ${post ? post.likes : '0'}</span>
-                <span class="comments">0 Comments</span>
-                <span class="shares">0 Shares</span>
+                <span class="like">👍 ${!isObjectEmpty(post) ? post.likes : '0'}</span>
+                <span class="comments">${!isObjectEmpty(post) ? post.comments : '0'} Comments</span>
+                <span class="shares">${!isObjectEmpty(post) ? post.shares : '0'} Shares</span>
             </div>
             <div class="action-buttons">
                 <button class="action-btn like">
@@ -245,15 +250,15 @@ function attachShareButtonFunctionality(newPost, user, post) {
             // Check if the user is already trying to share a post
             alert("you are already trying to share!"); // Alert if already sharing
         } else {
+
             const postToShare = e.target.closest(".post-box"); // Get the post box closest to the clicked share button
             preparePostToShare(postToShare); // Prepare the post for sharing
             userPostBox.scrollIntoView({behavior: "smooth"}); // Smooth scroll to the user post box
             sharingPost = true; // Set the flag to indicate a post is being shared
-            post.shares.amount += 1; // Increment the share count
-            newPost.querySelector(
-                ".shares"
-            ).textContent = `${post.shares.amount} Shares`; // Update the share count display
-            post.shares.users.push(user); // Add the user to the list of users who shared the post
+            postBeingShared=post
+            // newPost.querySelector(
+            //     ".shares"
+            // ).textContent = `${post.shares.amount} Shares`; // Update the share count display
         }
     });
 }
@@ -438,14 +443,30 @@ function attachLikesModalFunctionality(newPost, post_id) {
 
 
 // Function to attach event listener for shares modal
-function attachSharesModalFunctionality(newPost, post) {
+function attachSharesModalFunctionality(newPost, post_id) {
     const shares = newPost.querySelector(".shares"); // Get the shares element in the post
     shares.addEventListener("click", function () {
         content.innerHTML = ""; // Clear previous content in the modal
-        post.shares.users.forEach((usr) => {
-            userThatLiked(usr); // Same function as the ones for the likes, display each user who shared the post
+           // Fetch the list of users who liked the post
+        fetch(`/${post_id}/shares`)
+            .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+            .then(data => {
+            console.log(data)
+                // Iterate over each user in the response data
+            data.users.forEach((user) => {
+                // Call a function to handle displaying the user who liked the post
+                userThatLiked(user.user);
+            });
+            showModal();
+        })
+            .catch(error => {
+            console.log(error);
         });
-        showModal(); // Show the modal with the list of users who shared the post
     });
 }
 
@@ -518,6 +539,11 @@ function closeModal() {
 }
 
  function sendData(post) {
+    if(postBeingShared){
+        console.log(postBeingShared)
+        post.share=postBeingShared;
+        postBeingShared=''
+    }
     return fetch('/create_post', { // The "return" makes sure that this is not a void function and that an id value is returned
         method: 'POST',
         headers: {
@@ -558,3 +584,29 @@ const formattedDateTime = `${formattedDate} ${formattedTime}`;
 return formattedDateTime; // Outputs: YYYY-MM-DD HH:MM
 }
 
+function isObjectEmpty(obj) {
+    return Object.keys(obj).length === 0 && obj.constructor === Object;
+}
+
+async function sharebox(post) {
+        let share_id=postBeingShared
+        postBeingShared = document.querySelector(".about-to-share").innerHTML;; // Assuming you need the share ID from the response
+
+    try {
+        const response = await fetch('/create_share', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ shared: postBeingShared , shared_post_id: share_id })
+        });
+
+        const data = await response.json();
+        console.log(data);
+        console.log(postBeingShared)
+        // You can update the UI or perform other actions here if needed
+        removePostForShare(); // Remove the post sharing elements
+    } catch (error) {
+        console.error('Error sharing the post:', error);
+    }
+}
