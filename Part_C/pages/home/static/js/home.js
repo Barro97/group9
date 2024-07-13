@@ -16,6 +16,7 @@ let uploadingProj = false;
 let sharingPost = false;
 let currentPage = 1;  // Track the current page number for posts
 let user=''
+let postBeingShared=''
 
 
 
@@ -50,7 +51,7 @@ function loadPosts(page,observer) {
        const fragment = document.createDocumentFragment();
         data.posts.forEach(post => {
             console.log(post.likes);
-    const newPost= createPostElement(post.user,post.content,post.likes)
+    const newPost= createPostElement(post.user,post.content ,post)
             attachBtns(newPost,post.user,post._id)
     fragment.appendChild(newPost);
         })
@@ -129,7 +130,7 @@ function attachBtns(newPost, user, post) {
 }
 
 // Function to create a new post element based on user input and content
-function createPostElement(user, postContent,amount=0) {
+function createPostElement(user, postContent, post= {}) {
     const newPost = document.createElement("div");
     let image = "";
     let proj = "";
@@ -145,8 +146,12 @@ function createPostElement(user, postContent,amount=0) {
         removeProjectForUpload(); // Remove the project upload elements
     }
     if (sharingPost) {
-        share = document.querySelector(".about-to-share").innerHTML; // Get the HTML content of the post to share
-        removePostForShare(); // Remove the post sharing elements
+sharebox(post)
+        share=postBeingShared
+} // Closing the if statement
+    if ('share' in post){
+        sharingPost=true
+        share=post.share
     }
     newPost.className = "post-box"; // Assign the post-box class to the new post for better design
     newPost.innerHTML = `
@@ -156,7 +161,7 @@ function createPostElement(user, postContent,amount=0) {
             <a href="profile.html"><div class="user-name">${user.first_name} ${
         user.last_name
     }</div></a>
-                <div class="post-time">Just now</div>
+                <div class="post-time">${post ? post.DT : 'Just now'}</div>
             </div>
         </div>
         <div class="post-content">
@@ -175,9 +180,9 @@ function createPostElement(user, postContent,amount=0) {
         </div>
         <div class="post-footer">
             <div class="reaction-bar">
-                <span class="like">👍 ${amount}</span>
-                <span class="comments">0 Comments</span>
-                <span class="shares">0 Shares</span>
+                <span class="like">👍 ${!isObjectEmpty(post) ? post.likes : '0'}</span>
+                <span class="comments">${!isObjectEmpty(post) ? post.comments : '0'} Comments</span>
+                <span class="shares">${!isObjectEmpty(post) ? post.shares : '0'} Shares</span>
             </div>
             <div class="action-buttons">
                 <button class="action-btn like">
@@ -245,15 +250,15 @@ function attachShareButtonFunctionality(newPost, user, post) {
             // Check if the user is already trying to share a post
             alert("you are already trying to share!"); // Alert if already sharing
         } else {
+
             const postToShare = e.target.closest(".post-box"); // Get the post box closest to the clicked share button
             preparePostToShare(postToShare); // Prepare the post for sharing
             userPostBox.scrollIntoView({behavior: "smooth"}); // Smooth scroll to the user post box
             sharingPost = true; // Set the flag to indicate a post is being shared
-            post.shares.amount += 1; // Increment the share count
-            newPost.querySelector(
-                ".shares"
-            ).textContent = `${post.shares.amount} Shares`; // Update the share count display
-            post.shares.users.push(user); // Add the user to the list of users who shared the post
+            postBeingShared=post
+            // newPost.querySelector(
+            //     ".shares"
+            // ).textContent = `${post.shares.amount} Shares`; // Update the share count display
         }
     });
 }
@@ -277,11 +282,11 @@ function preparePostToShare(postToShare) {
 }
 
 // Function to add a comment box below a post
-function addCommentBox(newPost, user, post) {
+function addCommentBox(newPost, user, post_id) {
     const commentBoxHTML = `
         <div class="comment-box">
             <div class="post-input comment-input">
-                <img src="${user.pic}"
+                <img src="${user.profile_picture}"
                      alt="User Avatar" class="avatar" />
                 <textarea placeholder="Insert comment here"></textarea>
             </div>
@@ -297,18 +302,26 @@ function addCommentBox(newPost, user, post) {
                 .querySelector(".comment-input textarea")
                 .value.trim(); // Get the text entered in the comment box and trim whitespace
             if (commentText) {
-                // Check if there is any text to post
-                post.comments.amount += 1; // Increment the comment count
-                newPost.querySelector(
-                    ".comments"
-                ).textContent = `${post.comments.amount} Comments`; // Update the comment count display
-                post.comments.list.push({commenter: user, text: commentText}); // Add the new comment to the post's comment list
-                removeCommentBox(); // Remove the comment box after posting
+                fetch('/create_comment', { // The "return" makes sure that this is not a void function and that an id value is returned
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: post_id, comment: commentText, DT: dateTime() })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    newPost.querySelector(".comments").textContent = `${data.amount} Comments`; // Update the comment count display
+                    removeCommentBox(); // Remove the comment box after posting
+                })
+                .catch(error => console.log(error));
             } else {
                 alert("Please enter some text to post."); // Alert the user if no text was entered
             }
         });
 }
+
 
 // Function to remove the comment box from the DOM
 function removeCommentBox() {
@@ -430,14 +443,30 @@ function attachLikesModalFunctionality(newPost, post_id) {
 
 
 // Function to attach event listener for shares modal
-function attachSharesModalFunctionality(newPost, post) {
+function attachSharesModalFunctionality(newPost, post_id) {
     const shares = newPost.querySelector(".shares"); // Get the shares element in the post
     shares.addEventListener("click", function () {
         content.innerHTML = ""; // Clear previous content in the modal
-        post.shares.users.forEach((usr) => {
-            userThatLiked(usr); // Same function as the ones for the likes, display each user who shared the post
+           // Fetch the list of users who liked the post
+        fetch(`/${post_id}/shares`)
+            .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+            .then(data => {
+            console.log(data)
+                // Iterate over each user in the response data
+            data.users.forEach((user) => {
+                // Call a function to handle displaying the user who liked the post
+                userThatLiked(user.user);
+            });
+            showModal();
+        })
+            .catch(error => {
+            console.log(error);
         });
-        showModal(); // Show the modal with the list of users who shared the post
     });
 }
 
@@ -462,28 +491,37 @@ function attachCommentsModalFunctionality(newPost, post) {
     const comments = newPost.querySelector(".comments"); // Get the comments section of the post
     comments.addEventListener("click", function () {
         content.innerHTML = ""; // Clear previous content in the modal
-        post.comments.list.forEach(({commenter, text}) => {
-            usersThatCommented(commenter, text); // Add each comment to the modal
-        });
-        showModal(); // Show the modal with comments
+        fetch(`/${post}/comments`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data.users) {
+                    data.users.forEach((user) => {
+                        usersThatCommented(user.user, user.comment);
+                    });
+                }
+                showModal(); // Show the modal with comments
+            })
+            .catch(error => console.log(error));
     });
 }
+
 
 // Function to display the comment in the modal
 function usersThatCommented(user, comment) {
     const html = `<div class="commenters">
   <div class="post-header commenter">
      <img
-       src="${user.pic}"
+       src="${user.profile_picture}"
        alt="Profile Picture"
        class="profile-pic"
      />
      <div class="post-info">
-       <div class="user-name">${user.firstName} ${user.lastName}</div>
-       <div class="post-time">Just now</div>
+       <div class="user-name">${user.first_name} ${user.last_name}</div>
+       <div class="post-time">${comment.DT}</div>
      </div>
    </div>
-   <div class="comment-content"><p>${comment}</p></div>
+   <div class="comment-content"><p>${comment.comment}</p></div>
    </div>`;
     content.insertAdjacentHTML("afterbegin", html); // Insert the HTML for the comment
 }
@@ -501,6 +539,11 @@ function closeModal() {
 }
 
  function sendData(post) {
+    if(postBeingShared){
+        console.log(postBeingShared)
+        post.share=postBeingShared;
+        postBeingShared=''
+    }
     return fetch('/create_post', { // The "return" makes sure that this is not a void function and that an id value is returned
         method: 'POST',
         headers: {
@@ -539,4 +582,31 @@ const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString()
 const formattedDateTime = `${formattedDate} ${formattedTime}`;
 
 return formattedDateTime; // Outputs: YYYY-MM-DD HH:MM
+}
+
+function isObjectEmpty(obj) {
+    return Object.keys(obj).length === 0 && obj.constructor === Object;
+}
+
+async function sharebox(post) {
+        let share_id=postBeingShared
+        postBeingShared = document.querySelector(".about-to-share").innerHTML;; // Assuming you need the share ID from the response
+
+    try {
+        const response = await fetch('/create_share', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ shared: postBeingShared , shared_post_id: share_id })
+        });
+
+        const data = await response.json();
+        console.log(data);
+        console.log(postBeingShared)
+        // You can update the UI or perform other actions here if needed
+        removePostForShare(); // Remove the post sharing elements
+    } catch (error) {
+        console.error('Error sharing the post:', error);
+    }
 }
