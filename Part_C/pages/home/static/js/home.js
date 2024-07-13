@@ -17,6 +17,7 @@ let sharingPost = false;
 let currentPage = 1;  // Track the current page number for posts
 let user=''
 let postBeingShared=''
+let ImgBeingShared=''
 
 
 
@@ -138,6 +139,7 @@ function createPostElement(user, postContent, post= {}) {
     if (uploadingImage) {
         // Check if an image is being uploaded
         image = document.querySelector(".up-img-container").innerHTML; // Get the HTML content of the uploaded image
+        ImgBeingShared=image
         removeImageForUpload(); // Remove the image upload elements
     }
     if (uploadingProj) {
@@ -146,12 +148,16 @@ function createPostElement(user, postContent, post= {}) {
         removeProjectForUpload(); // Remove the project upload elements
     }
     if (sharingPost) {
-sharebox(post)
+    sharebox()
         share=postBeingShared
 } // Closing the if statement
     if ('share' in post){
         sharingPost=true
         share=post.share
+    }
+    if ('image' in post){
+        uploadingImage=true
+        image=post.image
     }
     newPost.className = "post-box"; // Assign the post-box class to the new post for better design
     newPost.innerHTML = `
@@ -539,6 +545,10 @@ function closeModal() {
 }
 
  function sendData(post) {
+    if (ImgBeingShared){
+        post.image=ImgBeingShared
+        ImgBeingShared=''
+    }
     if(postBeingShared){
         console.log(postBeingShared)
         post.share=postBeingShared;
@@ -588,7 +598,7 @@ function isObjectEmpty(obj) {
     return Object.keys(obj).length === 0 && obj.constructor === Object;
 }
 
-async function sharebox(post) {
+async function sharebox() {
         let share_id=postBeingShared
         postBeingShared = document.querySelector(".about-to-share").innerHTML;; // Assuming you need the share ID from the response
 
@@ -604,9 +614,31 @@ async function sharebox(post) {
         const data = await response.json();
         console.log(data);
         console.log(postBeingShared)
-        // You can update the UI or perform other actions here if needed
+
         removePostForShare(); // Remove the post sharing elements
     } catch (error) {
         console.error('Error sharing the post:', error);
     }
 }
+
+// async function imgbox() {
+//         ImgBeingShared = document.querySelector(".up-img-container").innerHTML;; // Assuming you need the share ID from the response
+//
+//     try {
+//         const response = await fetch('/create_image', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify({ Image: ImgBeingShared})
+//         });
+//
+//         const data = await response.json();
+//         console.log(data);
+//         console.log(ImgBeingShared)
+//
+//         removeImageForUpload();// Remove the image elements
+//     } catch (error) {
+//         console.error('Error sharing the post:', error);
+//     }
+// }

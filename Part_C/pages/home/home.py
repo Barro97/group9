@@ -156,3 +156,4 @@ def create_share():
         insertion = shares_collection.insert_one(new_share)
         response = {'status': 'Added', 'share_id': str(insertion.inserted_id)}
         return jsonify(response)
+
