@@ -1,5 +1,5 @@
 
-    {% if request.path == '/chat' %}
+    {% if request.path.startswith('/cchat') %}
     <script src="{{ url_for('chat.static', filename='js/chat.js') }}"></script>
     {% elif request.path == '/login' or request.path == '/' %}
     <script src="{{ url_for('login.static', filename='js/login.js') }}"></script>

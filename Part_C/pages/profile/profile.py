@@ -26,3 +26,7 @@ def view_profile(user_id):
         return render_template('profile.html', user=user, projects=projects)
     else:
         return "User not found", 404
+
+    # @profile.route('/chatpr/<user_email>/<profile_email>')
+    # def chat(user_email, profile_email):
+    #     return render_template('chat.html', user_email=user_email, profile_email=profile_email)

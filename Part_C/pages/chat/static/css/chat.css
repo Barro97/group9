@@ -1,8 +1,10 @@
+
 /* Chat container */
 .chat {
     display: flex;
     padding: 20px;
     height: 100%;
+    /*background-color: deeppink;*/
 }
 
 .chat-container {
