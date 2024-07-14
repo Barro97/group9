@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import *
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 from bson.objectid import ObjectId
@@ -18,11 +18,15 @@ mydb = myclient['user_database']
 users_collection = mydb['users']
 project_collection = mydb['projects']
 
-@profile.route('/profile/<user_id>')
-def view_profile(user_id):
-    user = users_collection.find_one({'_id': ObjectId(user_id)})
-    if user:
-        projects = project_collection.find({'owner': user_id})
-        return render_template('profile.html', user=user, projects=projects)
+@profile.route('/profile/<user_email>')
+def view_profile(user_email):
+    print(user_email,session.get('user')['email'])
+    if session.get('user')['email'] == user_email:
+        return redirect(url_for('my_profile.index'))
     else:
-        return "User not found", 404
+        user = users_collection.find_one({'email': user_email})
+        if user:
+            projects = project_collection.find({'owner': user_email})
+            return render_template('profile.html', user=user, projects=projects)
+        else:
+            return "User not found", 404
