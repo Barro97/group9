@@ -61,15 +61,17 @@
 
             <div class="new-comment">
                 <div class="profile-picture">
-                    <a href="/profile/{{ user._id }}">
-                        <img src="{{ user.profile_picture }}" alt="My Picture">
+                    <a href="/my_profile">
+                        <img src="{{ logged_in_user.profile_picture }}" alt="My Picture">
                     </a>
                 </div>
                 <form class="comment-form" action="/project/{{ project._id }}/comment" method="post">
                     <textarea name="content" placeholder="Add a comment..." rows="3"></textarea>
-                    <input type="hidden" name="user_id" value="{{ user._id }}">
+                    <input type="hidden" name="user_email" value="{{ logged_in_user.email }}">
                     <button type="submit">Submit</button>
                 </form>
+
+
             </div>
         </div>
     </div>

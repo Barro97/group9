@@ -8,11 +8,15 @@
 
 <main class="grid-container">
     <div class="left-section">
-         <section class="section" id="top-section">
+        <section class="section" id="top-section">
             <img src="{{ user['profile_picture'] }}" alt="{{ user['first_name'] }} {{ user['last_name'] }}"/>
             <div class="name">
                 <h1>{{ user['first_name'] }} {{ user['last_name'] }}</h1>
                 <h3>{{ user['role'] }}</h3>
+                <button id="chat-button"
+                        onclick="window.location.href='{{ url_for('chat.index', user_email=session['user']['email'], profile_email=user['email']) }}'">
+                    Chat
+                </button>
             </div>
             <div class="follows">
                 <button id="follow-button">+ Follow</button>
@@ -23,13 +27,18 @@
             <h1>Social media</h1>
             <div class="social">
                 {% if user.linkedin %}
-                <a href="{{ user.linkedin }}"><img src="https://blog.waalaxy.com/wp-content/uploads/2021/01/LinkedIn-Symbole.png" alt=""></a>
+                <a href="{{ user.linkedin }}"><img
+                        src="https://blog.waalaxy.com/wp-content/uploads/2021/01/LinkedIn-Symbole.png" alt=""></a>
                 {% endif %}
                 {% if user.github %}
-                <a href="{{ user.github }}"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png" alt=""></a>
+                <a href="{{ user.github }}"><img
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png"
+                        alt=""></a>
                 {% endif %}
                 {% if user.facebook %}
-                <a href="{{ user.facebook }}"><img src="https://static-00.iconduck.com/assets.00/facebook-color-icon-2048x2048-bfly1vxr.png" alt=""></a>
+                <a href="{{ user.facebook }}"><img
+                        src="https://static-00.iconduck.com/assets.00/facebook-color-icon-2048x2048-bfly1vxr.png"
+                        alt=""></a>
                 {% endif %}
             </div>
         </section>

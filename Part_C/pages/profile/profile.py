@@ -57,3 +57,9 @@ def check_for_following():
         return jsonify({'isFollowing': True})
     else:
         return jsonify({'isFollowing': False})
+
+
+    # @profile.route('/chatpr/<user_email>/<profile_email>')
+    # def chat(user_email, profile_email):
+    #     return render_template('chat.html', user_email=user_email, profile_email=profile_email)
+
