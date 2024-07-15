@@ -19,7 +19,7 @@ likes_collection = mydb['likes']
 users_collection = mydb['users']
 comments_collection = mydb['comments']
 shares_collection = mydb['shares']
-
+followers_collection = mydb['followers']
 
 # Routes
 
@@ -94,8 +94,11 @@ def show_posts():
     page = int(request.args.get('page', 1))  # Get the page number from the request, default to 1 if not provided
     per_page = 2  # Number of posts to show per page
     skip = (page - 1) * per_page  # Calculate the number of posts to skip based on the page number
-
-    posts_to_show = posts_collection.find({'owner': session.get('user')['email']}).sort('DT', -1).skip(skip).limit(
+    follows=list(followers_collection.find({'follower': session.get('user')['email']}))
+    followees = [f['followee'] for f in follows]
+    owners = followees + [session.get('user')['email']]
+    query = {'owner': {'$in': owners}}
+    posts_to_show = posts_collection.find(query).sort('DT', -1).skip(skip).limit(
         per_page)
     posts_list = list(posts_to_show)  # Convert the cursor to a list of dictionaries
     for post in posts_list:

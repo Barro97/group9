@@ -51,9 +51,8 @@ function loadPosts(page,observer) {
     fetch(`/show_posts?page=${page}`).then((response) => response.json()).then((data) => {console.log(data)
        const fragment = document.createDocumentFragment();
         data.posts.forEach(post => {
-            console.log(post.likes);
     const newPost= createPostElement(post.user,post.content ,post)
-            attachBtns(newPost,post.user,post._id)
+            attachBtns(newPost,post.user,post._id,post)
     fragment.appendChild(newPost);
         })
     postsContainer.appendChild(fragment)
@@ -121,10 +120,10 @@ function createPost(user, postsContainer) {
 // }
 
 // Function to attach buttons for likes, comments, shares, and modals to a post
-function attachBtns(newPost, user, post) {
+function attachBtns(newPost, user, post,postObj='') {
     attachLikeButtonFunctionality(newPost, user, post);
     attachCommentButtonFunctionality(newPost, user, post);
-    attachShareButtonFunctionality(newPost, user, post);
+    attachShareButtonFunctionality(newPost, user, post,postObj);
     attachLikesModalFunctionality(newPost, post);
     attachCommentsModalFunctionality(newPost, post);
     attachSharesModalFunctionality(newPost, post);
@@ -243,13 +242,13 @@ function attachCommentButtonFunctionality(newPost, user, post) {
             removeCommentBox(); // Remove the existing comment box
         } else {
             tryingToComment = true; // Set the flag to indicate a comment box is being added
-            addCommentBox(newPost, user, post); // Add a new comment box
+            addCommentBox(newPost, post); // Add a new comment box
         }
     });
 }
 
 // Function to attach event listener for the share button functionality
-function attachShareButtonFunctionality(newPost, user, post) {
+function attachShareButtonFunctionality(newPost, user, post,postObj) {
     const shareButton = newPost.querySelector(".action-btn.share"); // Get the share button element
     shareButton.addEventListener("click", function (e) {
         if (sharingPost) {
@@ -257,8 +256,18 @@ function attachShareButtonFunctionality(newPost, user, post) {
             alert("you are already trying to share!"); // Alert if already sharing
         } else {
 
-            const postToShare = e.target.closest(".post-box"); // Get the post box closest to the clicked share button
-            preparePostToShare(postToShare); // Prepare the post for sharing
+            let postToShare = ''; // Get the post box closest to the clicked share button
+            console.log(postObj)
+
+            if(postObj){
+                if(postObj.share){
+                     postToShare = postObj.share
+                }
+                else{
+                    postToShare = e.target.closest(".post-box")
+                }
+            }
+            preparePostToShare(postToShare,true); // Prepare the post for sharing
             userPostBox.scrollIntoView({behavior: "smooth"}); // Smooth scroll to the user post box
             sharingPost = true; // Set the flag to indicate a post is being shared
             postBeingShared=post
@@ -276,19 +285,26 @@ function removePostForShare() {
 }
 
 // Function to prepare a post for sharing by adding it to the user post box
-function preparePostToShare(postToShare) {
+function preparePostToShare(postToShare,wasShared=false) {
+    let html = ''
+    const postInput = userPostBox.querySelector(".post-input"); // Get the post input element
+    if (wasShared) {
+        html = `<div class="about-to-share">
+            ${postToShare}  
+            </div>`;
+    } else {
     const shareHeader = postToShare.querySelector(".post-header"); // Get the header of the post to share
     const shareContent = postToShare.querySelector(".post-content"); // Get the content of the post to share
-    const postInput = userPostBox.querySelector(".post-input"); // Get the post input element
-    const html = `<div class="about-to-share">
-  <div class="post-header">${shareHeader.innerHTML}</div>
-  <div class="post-content">${shareContent.innerHTML}</div>  
-    </div>`;
+    html = `<div class="about-to-share">
+            <div class="post-header">${shareHeader.innerHTML}</div>
+            <div class="post-content">${shareContent.innerHTML}</div>  
+            </div>`;
+}
     postInput.insertAdjacentHTML("afterend", html); // Insert the post to share after the post input
 }
 
 // Function to add a comment box below a post
-function addCommentBox(newPost, user, post_id) {
+function addCommentBox(newPost, post_id) {
     const commentBoxHTML = `
         <div class="comment-box">
             <div class="post-input comment-input">
