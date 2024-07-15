@@ -18,7 +18,6 @@ mydb = myclient['user_database']
 users_collection = mydb['users']
 project_collection = mydb['projects']
 followers_collection = mydb['followers']
-profile_owner = ''
 
 
 @profile.route('/profile/<user_email>')
