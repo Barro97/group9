@@ -33,8 +33,8 @@ def view_project(project_id):
             return redirect(url_for('login.index'))
         logged_in_user = session.get('user', {})
         print(logged_in_user)  # Debug print
-        user_id = project.get('owner')
-        user = users_collection.find_one({'_id': ObjectId(user_id)})
+        user_email = project.get('owner')
+        user = users_collection.find_one({'email': user_email})
         comments = list(project_comment_collection.find({'project_id': ObjectId(project_id)}))
         return render_template('project.html', project=project, user=user, comments=comments,
                                logged_in_user=logged_in_user)

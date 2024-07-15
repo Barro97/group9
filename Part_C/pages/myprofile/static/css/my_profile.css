@@ -71,6 +71,10 @@ h1 {
     color: #45d49d;
 }
 
+#background{
+    min-width: 500px;
+}
+
 #background img {
     height: 110px;
     width: 110px;

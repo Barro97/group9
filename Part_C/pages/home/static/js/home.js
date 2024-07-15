@@ -51,8 +51,9 @@ function loadPosts(page,observer) {
     fetch(`/show_posts?page=${page}`).then((response) => response.json()).then((data) => {console.log(data)
        const fragment = document.createDocumentFragment();
         data.posts.forEach(post => {
+            console.log(post.likes);
     const newPost= createPostElement(post.user,post.content ,post)
-            attachBtns(newPost,post.user,post._id,post)
+            attachBtns(newPost,post.user,post._id)
     fragment.appendChild(newPost);
         })
     postsContainer.appendChild(fragment)
@@ -120,10 +121,10 @@ function createPost(user, postsContainer) {
 // }
 
 // Function to attach buttons for likes, comments, shares, and modals to a post
-function attachBtns(newPost, user, post,postObj='') {
+function attachBtns(newPost, user, post) {
     attachLikeButtonFunctionality(newPost, user, post);
     attachCommentButtonFunctionality(newPost, user, post);
-    attachShareButtonFunctionality(newPost, user, post,postObj);
+    attachShareButtonFunctionality(newPost, user, post);
     attachLikesModalFunctionality(newPost, post);
     attachCommentsModalFunctionality(newPost, post);
     attachSharesModalFunctionality(newPost, post);
@@ -163,7 +164,7 @@ function createPostElement(user, postContent, post= {}) {
         <div class="post-header">
             <img src="${user.profile_picture}" alt="Profile Picture" class="profile-pic" />
             <div class="post-info">
-            <a href="/profile/${user.email}"><div class="user-name">${user.first_name} ${
+            <a href="profile.html"><div class="user-name">${user.first_name} ${
         user.last_name
     }</div></a>
                 <div class="post-time">${post ? post.DT : 'Just now'}</div>
@@ -242,13 +243,13 @@ function attachCommentButtonFunctionality(newPost, user, post) {
             removeCommentBox(); // Remove the existing comment box
         } else {
             tryingToComment = true; // Set the flag to indicate a comment box is being added
-            addCommentBox(newPost, post); // Add a new comment box
+            addCommentBox(newPost, user, post); // Add a new comment box
         }
     });
 }
 
 // Function to attach event listener for the share button functionality
-function attachShareButtonFunctionality(newPost, user, post,postObj) {
+function attachShareButtonFunctionality(newPost, user, post) {
     const shareButton = newPost.querySelector(".action-btn.share"); // Get the share button element
     shareButton.addEventListener("click", function (e) {
         if (sharingPost) {
@@ -256,18 +257,8 @@ function attachShareButtonFunctionality(newPost, user, post,postObj) {
             alert("you are already trying to share!"); // Alert if already sharing
         } else {
 
-            let postToShare = ''; // Get the post box closest to the clicked share button
-            console.log(postObj)
-
-            if(postObj){
-                if(postObj.share){
-                     postToShare = postObj.share
-                }
-                else{
-                    postToShare = e.target.closest(".post-box")
-                }
-            }
-            preparePostToShare(postToShare,true); // Prepare the post for sharing
+            const postToShare = e.target.closest(".post-box"); // Get the post box closest to the clicked share button
+            preparePostToShare(postToShare); // Prepare the post for sharing
             userPostBox.scrollIntoView({behavior: "smooth"}); // Smooth scroll to the user post box
             sharingPost = true; // Set the flag to indicate a post is being shared
             postBeingShared=post
@@ -285,26 +276,19 @@ function removePostForShare() {
 }
 
 // Function to prepare a post for sharing by adding it to the user post box
-function preparePostToShare(postToShare,wasShared=false) {
-    let html = ''
-    const postInput = userPostBox.querySelector(".post-input"); // Get the post input element
-    if (wasShared) {
-        html = `<div class="about-to-share">
-            ${postToShare}  
-            </div>`;
-    } else {
+function preparePostToShare(postToShare) {
     const shareHeader = postToShare.querySelector(".post-header"); // Get the header of the post to share
     const shareContent = postToShare.querySelector(".post-content"); // Get the content of the post to share
-    html = `<div class="about-to-share">
-            <div class="post-header">${shareHeader.innerHTML}</div>
-            <div class="post-content">${shareContent.innerHTML}</div>  
-            </div>`;
-}
+    const postInput = userPostBox.querySelector(".post-input"); // Get the post input element
+    const html = `<div class="about-to-share">
+  <div class="post-header">${shareHeader.innerHTML}</div>
+  <div class="post-content">${shareContent.innerHTML}</div>  
+    </div>`;
     postInput.insertAdjacentHTML("afterend", html); // Insert the post to share after the post input
 }
 
 // Function to add a comment box below a post
-function addCommentBox(newPost, post_id) {
+function addCommentBox(newPost, user, post_id) {
     const commentBoxHTML = `
         <div class="comment-box">
             <div class="post-input comment-input">
@@ -420,66 +404,19 @@ function removeProjectForUpload() {
 
 // Function to add project upload elements to the post box
 function prepareProjectForUpload() {
-    content.innerHTML=''
-    const html=`<div class="form-container">
-        <h2>Submit Your Project</h2>
-        <form id="projectForm" onsubmit="submitForm(event)" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="title">Project Title:</label>
-                <input type="text" id="title" name="title" required>
-            </div>
-            <div class="form-group">
-                <label for="description">Project Description:</label>
-                <textarea id="description" name="description" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="file">Upload File:</label>
-                <input type="file" id="file" name="file">
-            </div>
-            <div class="form-group">
-                <label for="photo">Upload Photo For Background :</label>
-                <input type="file" id="photo" name="photo" accept="image/*">
-            </div>
-            <div class="form-group">
-                <button type="submit">Submit</button>
-            </div>
-        </form>
-    </div>`
-    content.insertAdjacentHTML("afterbegin", html);
-    showModal()
+    const postInput = userPostBox.querySelector(".post-input"); // Get the post input element
+    const html = `
+        <div class="project-box">
+                    <div class="project-content">
+                      <div class="project-overlay"></div>
+                      <div class="project-title">My new project</div>
+                    </div>
+                  </div>
+                </div>`;
+    postInput.insertAdjacentHTML("afterend", html); // Insert the project upload HTML after the post input
+    uploadingProj = true; // Update the flag to indicate a project is being uploaded
 }
- function submitForm(event) {
-            event.preventDefault(); // Prevent the default form submission
-            const form = document.getElementById('projectForm');
-            const formData = new FormData(form);
 
-            fetch('/submit_project', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                      const postInput = userPostBox.querySelector(".post-input"); // Get the post input element
-                const html = `
-                        <div class="project-box">
-                        <div class="project-content">
-                        <div class="project-overlay"></div>
-                        <div class="project-title">My new project</div>
-                        </div>
-                        </div>
-                        </div>`;
-                postInput.insertAdjacentHTML("afterend", html); // Insert the project upload HTML after the post input
-                uploadingProj = true; // Update the flag to indicate a project is being uploaded
-                closeModal()
-                } else {
-                    alert('There was an error submitting the project.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
 // Function to attach event listener for likes modal
 function attachLikesModalFunctionality(newPost, post_id) {
     const likes = newPost.querySelector(".like"); // Get the like element in the post
@@ -684,4 +621,24 @@ async function sharebox() {
     }
 }
 
-
+// async function imgbox() {
+//         ImgBeingShared = document.querySelector(".up-img-container").innerHTML;; // Assuming you need the share ID from the response
+//
+//     try {
+//         const response = await fetch('/create_image', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify({ Image: ImgBeingShared})
+//         });
+//
+//         const data = await response.json();
+//         console.log(data);
+//         console.log(ImgBeingShared)
+//
+//         removeImageForUpload();// Remove the image elements
+//     } catch (error) {
+//         console.error('Error sharing the post:', error);
+//     }
+// }
