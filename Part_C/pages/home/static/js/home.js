@@ -420,19 +420,66 @@ function removeProjectForUpload() {
 
 // Function to add project upload elements to the post box
 function prepareProjectForUpload() {
-    const postInput = userPostBox.querySelector(".post-input"); // Get the post input element
-    const html = `
-        <div class="project-box">
-                    <div class="project-content">
-                      <div class="project-overlay"></div>
-                      <div class="project-title">My new project</div>
-                    </div>
-                  </div>
-                </div>`;
-    postInput.insertAdjacentHTML("afterend", html); // Insert the project upload HTML after the post input
-    uploadingProj = true; // Update the flag to indicate a project is being uploaded
+    content.innerHTML=''
+    const html=`<div class="form-container">
+        <h2>Submit Your Project</h2>
+        <form id="projectForm" onsubmit="submitForm(event)" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">Project Title:</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Project Description:</label>
+                <textarea id="description" name="description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="file">Upload File:</label>
+                <input type="file" id="file" name="file">
+            </div>
+            <div class="form-group">
+                <label for="photo">Upload Photo For Background :</label>
+                <input type="file" id="photo" name="photo" accept="image/*">
+            </div>
+            <div class="form-group">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>`
+    content.insertAdjacentHTML("afterbegin", html);
+    showModal()
 }
+ function submitForm(event) {
+            event.preventDefault(); // Prevent the default form submission
+            const form = document.getElementById('projectForm');
+            const formData = new FormData(form);
 
+            fetch('/submit_project', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                      const postInput = userPostBox.querySelector(".post-input"); // Get the post input element
+                const html = `
+                        <div class="project-box">
+                        <div class="project-content">
+                        <div class="project-overlay"></div>
+                        <div class="project-title">My new project</div>
+                        </div>
+                        </div>
+                        </div>`;
+                postInput.insertAdjacentHTML("afterend", html); // Insert the project upload HTML after the post input
+                uploadingProj = true; // Update the flag to indicate a project is being uploaded
+                closeModal()
+                } else {
+                    alert('There was an error submitting the project.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
 // Function to attach event listener for likes modal
 function attachLikesModalFunctionality(newPost, post_id) {
     const likes = newPost.querySelector(".like"); // Get the like element in the post
@@ -637,24 +684,4 @@ async function sharebox() {
     }
 }
 
-// async function imgbox() {
-//         ImgBeingShared = document.querySelector(".up-img-container").innerHTML;; // Assuming you need the share ID from the response
-//
-//     try {
-//         const response = await fetch('/create_image', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({ Image: ImgBeingShared})
-//         });
-//
-//         const data = await response.json();
-//         console.log(data);
-//         console.log(ImgBeingShared)
-//
-//         removeImageForUpload();// Remove the image elements
-//     } catch (error) {
-//         console.error('Error sharing the post:', error);
-//     }
-// }
+
