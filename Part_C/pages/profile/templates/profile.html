@@ -15,8 +15,8 @@
                 <h3>{{ user['role'] }}</h3>
             </div>
             <div class="follows">
-                <button id="follow-button">+follow</button>
-                <h5 class="follow-count">followers: {{ user.get('followers', 0) }}</h5>
+                <button id="follow-button">+ Follow</button>
+                <h5 class="follow-count">Followers: {{ count }}</h5>
             </div>
         </section>
         <section class="section" id="links">
@@ -96,4 +96,5 @@
         </section>
     </div>
 </main>
+<script src="{{ url_for('profile.static', filename='js/profile.js') }}"></script>
 {%endblock%}

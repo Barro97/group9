@@ -11,11 +11,11 @@
         <h1>You searched for: {{ query }}</h1>
         {% for doc in mydoc %}
         <div class="result-item">
-            <a href="{{ url_for('profile.view_profile', user_id=doc['_id']) }}">
+            <a href="{{ url_for('profile.view_profile', user_email=doc['email']) }}">
                 <img src="{{ doc['profile_picture'] }}" alt="{{ doc['first_name'] }} {{ doc['last_name'] }}">
             </a>
             <div class="result-content">
-                <h2><a href="{{ url_for('profile.view_profile', user_id=doc['_id']) }}">{{ doc['first_name'] }} {{ doc['last_name'] }}</a></h2>
+                <h2><a href="{{ url_for('profile.view_profile', user_email=doc['email']) }}">{{ doc['first_name'] }} {{ doc['last_name'] }}</a></h2>
                 <p>{{ doc['role'] }}</p>
             </div>
         </div>
