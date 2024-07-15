@@ -4,7 +4,7 @@
       href="{{ url_for('static', filename='media/uicons-regular-rounded/css/uicons-regular-rounded.css') }}"/>
 {% if request.path == '/aboutus' %}
 <link rel="stylesheet" href="{{ url_for('aboutus.static', filename='css/about us.css') }}"/>
-{% elif request.path == '/chat' %}
+{% elif request.path.startswith('/chat') %}
 <link rel="stylesheet" href="{{ url_for('chat.static', filename='css/chat.css') }}"/>
 {% elif request.path == '/login' or request.path == '/' %}
 <link rel="stylesheet" href="{{ url_for('login.static', filename='css/login.css') }}"/>
