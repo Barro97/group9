@@ -1,6 +1,9 @@
 from flask import *
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+from werkzeug.utils import secure_filename
+import os
+import gridfs
 
 # about blueprint definition
 home = Blueprint(
@@ -19,6 +22,9 @@ likes_collection = mydb['likes']
 users_collection = mydb['users']
 comments_collection = mydb['comments']
 shares_collection = mydb['shares']
+followers_collection = mydb['followers']
+projects_collection = mydb['projects']
+fs = gridfs.GridFS(mydb)
 
 
 # Routes
@@ -76,8 +82,6 @@ def show_shares(post_id):
     return jsonify({'users': users_that_shared})
 
 
-
-
 # Define route to create a new post
 @home.route('/create_post', methods=['POST'])
 def create_post():
@@ -94,8 +98,11 @@ def show_posts():
     page = int(request.args.get('page', 1))  # Get the page number from the request, default to 1 if not provided
     per_page = 2  # Number of posts to show per page
     skip = (page - 1) * per_page  # Calculate the number of posts to skip based on the page number
-
-    posts_to_show = posts_collection.find({'owner': session.get('user')['email']}).sort('DT', -1).skip(skip).limit(
+    follows = list(followers_collection.find({'follower': session.get('user')['email']}))
+    followees = [f['followee'] for f in follows]
+    owners = followees + [session.get('user')['email']]
+    query = {'owner': {'$in': owners}}
+    posts_to_show = posts_collection.find(query).sort('DT', -1).skip(skip).limit(
         per_page)
     posts_list = list(posts_to_show)  # Convert the cursor to a list of dictionaries
     for post in posts_list:
@@ -157,3 +164,41 @@ def create_share():
         response = {'status': 'Added', 'share_id': str(insertion.inserted_id)}
         return jsonify(response)
 
+
+@home.route('/submit_project', methods=['POST'])
+def submit_project():
+    title = request.form['title']
+    description = request.form['description']
+    file_id = None
+    photo_id = None
+
+    # Handle file upload
+    file = request.files.get('file')
+    photo = request.files.get('photo')
+
+    if file:
+        filename = secure_filename(file.filename)
+        file_id = fs.put(file, filename=filename)
+
+    if photo:
+        photo_filename = secure_filename(photo.filename)
+        photo_id = fs.put(photo, filename=photo_filename)
+
+    # Save description and file IDs to MongoDB
+    project_data = {
+        'title': title,
+        'description': description,
+        'file_id': file_id,
+        'photo_id': photo_id
+    }
+    projects_collection.insert_one(project_data)
+
+    return jsonify({'success': True})
+
+
+@home.route('/file/<file_id>')
+def get_file(file_id):
+    file = fs.get(file_id)
+    return Response(file.read(),
+                    mimetype='application/octet-stream',
+                    headers={"Content-Disposition": f"attachment;filename={file.filename}"})
