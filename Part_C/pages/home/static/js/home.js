@@ -164,7 +164,7 @@ function createPostElement(user, postContent, post= {}) {
         <div class="post-header">
             <img src="${user.profile_picture}" alt="Profile Picture" class="profile-pic" />
             <div class="post-info">
-            <a href="profile.html"><div class="user-name">${user.first_name} ${
+            <a href="/profile/${user.email}"><div class="user-name">${user.first_name} ${
         user.last_name
     }</div></a>
                 <div class="post-time">${post ? post.DT : 'Just now'}</div>
