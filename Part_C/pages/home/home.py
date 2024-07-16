@@ -220,6 +220,7 @@ def get_project(project_id):
     project = projects_collection.find_one({'_id': ObjectId(project_id)})
     print(project)
     project['_id']=str(project['_id'])
+    project['project_id']=str(project['_id'])
     project['file_id']=str(project['file_id'])
     project['photo_id']=str(project['photo_id'])
 

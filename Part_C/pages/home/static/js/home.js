@@ -172,6 +172,7 @@ function attachBtns(newPost, user, post,postObj='') {
         console.log(post.project)
         const projectData = await retrieveProj(post.project);
         proj = projectData.project;
+        console.log(proj)
         uploadingProj=true
 
     }
@@ -195,7 +196,7 @@ function attachBtns(newPost, user, post,postObj='') {
     }
              ${
         uploadingProj
-            ? `<a href="project.html">${displayProject(proj)}</a>`
+            ? `<a href="/project/${proj.project_id}">${displayProject(proj)}</a>`
             : ""
     }
              ${sharingPost ? `<div class="about-to-share">${share}</div>` : ""}

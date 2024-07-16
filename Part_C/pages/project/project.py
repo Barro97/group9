@@ -1,9 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, jsonify
+from flask import *
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 from bson.objectid import ObjectId
-from datetime import datetime
 from datetime import datetime, timezone, timedelta
+import gridfs
 
 project = Blueprint(
     'project',
@@ -19,6 +19,7 @@ mydb = myclient['user_database']
 project_collection = mydb['projects']
 users_collection = mydb['users']
 project_comment_collection = mydb['project_comments']
+fs = gridfs.GridFS(mydb)
 
 # Define local timezone offset
 local_tz_offset = timedelta(hours=3)  # Adjust according to your local timezone offset
@@ -27,6 +28,7 @@ local_tz_offset = timedelta(hours=3)  # Adjust according to your local timezone 
 # Route to view a project
 @project.route('/project/<project_id>')
 def view_project(project_id):
+    print(project_id)
     project = project_collection.find_one({'_id': ObjectId(project_id)})
     if project:
         if not session.get('logged_in'):
@@ -34,12 +36,32 @@ def view_project(project_id):
         logged_in_user = session.get('user', {})
         print(logged_in_user)  # Debug print
         user_id = project.get('owner')
-        user = users_collection.find_one({'_id': ObjectId(user_id)})
+        user = users_collection.find_one({'email': user_id})
         comments = list(project_comment_collection.find({'project_id': ObjectId(project_id)}))
+        print(comments)
+        image_url = None
+        if 'photo_id' in project:
+            try:
+                print(project['photo_id'])
+                image_id = ObjectId(project['photo_id'])
+                image_url = url_for('project.get_project_image', photo_id=image_id)
+            except Exception as e:
+                print(f'Error fetching image: {str(e)}')
+
         return render_template('project.html', project=project, user=user, comments=comments,
-                               logged_in_user=logged_in_user)
+                               logged_in_user=logged_in_user,image_url=image_url)
     else:
         return "Project not found", 404
+@project.route('/get_image/<photo_id>', methods=['GET'])
+def get_project_image(photo_id):
+    try:
+        photo_id = ObjectId(photo_id)  # Ensure photo_id is an ObjectId
+        photo = fs.get(photo_id)
+        content_type = photo.content_type if photo.content_type else 'application/octet-stream'
+        return send_file(photo, mimetype=content_type, download_name=photo.filename)
+    except Exception as e:
+        print(f'Error fetching image: {str(e)}')
+        return jsonify({'success': False, 'error': str(e)})
 
 
 @project.route('/project/<project_id>/comment', methods=['POST'])
