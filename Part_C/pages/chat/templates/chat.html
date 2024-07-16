@@ -2,7 +2,7 @@
 
 {% block page_head %}
 <title>Chat</title>
-{%endblock%}
+{% endblock %}
 
 {% block main %}
 <main>
@@ -21,9 +21,8 @@
             </div>
         </div>
 
-
         <div class="chat-container">
-            <div class="chat-header">chat with {{user_name}}</div>
+            <div class="chat-header">chat with {{ user_name }}</div>
             <div class="chat-messages" id="chat-messages">
                 <!-- Messages will be displayed here -->
             </div>
@@ -36,26 +35,11 @@
                 <button onclick="sendMessage()">Send</button>
             </div>
         </div>
-
-        <div class="chat-sidebar">
-            <div class="chat-sidebar-header">
-                Previous Chats!
-            </div>
-            <div class="chat-sidebar-user" data-user-id="1"
-                 onclick="selectUser('Adi Cohen', 'Software Engineer', 'https://cdn-icons-png.flaticon.com/512/3135/3135823.png', 'profile.html')">
-                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135823.png" alt="Adi Cohen">
-                <div class="chat-sidebar-user-info">
-                    <div class="chat-sidebar-user-name">Adi Cohen</div>
-                </div>
-            </div>
-            <div class="chat-sidebar-user" data-user-id="2"
-                 onclick="selectUser('Shalom Levi', 'Project Manager', 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', 'profile.html')">
-                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Shalom Levi">
-                <div class="chat-sidebar-user-info">
-                    <div class="chat-sidebar-user-name">Shalom Levi</div>
-                </div>
-            </div>
-        </div>
     </div>
+    <script>
+        // Pass user_email and profile_email from Flask to JavaScript
+        const userEmail = "{{ user_email }}";
+        const profileEmail = "{{ profile_email }}";
+    </script>
 </main>
-{%endblock%}
+{% endblock %}

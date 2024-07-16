@@ -40,5 +40,6 @@ def index():
 
     # Perform the query on the collection
     mydoc = list(users_collection.find(myquery))
+    print(mydoc)
 
     return render_template('search_results.html', mydoc=mydoc, query=query)

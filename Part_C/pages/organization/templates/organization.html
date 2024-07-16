@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block page_head %}
+<title>Organization</title>
+{%endblock%}
+
+{% block main %}
+<main>
+    <section class="organization-profile">
+        <div class="profile-header">
+            <img src="{{organization['logo']}}"
+                 alt="Ben Gurion University Logo">
+            <div>
+                <h1>{{organization['org_name']}}</h1>
+<!--                <h3 id="follower-count">{{organization['followers']}}</h3>-->
+<!--                <button class="follow-button">+ Follow</button>-->
+            </div>
+            <aside class="social">
+                <a href="{{organization['LinkedIn']}}"><img
+                        src="https://blog.waalaxy.com/wp-content/uploads/2021/01/LinkedIn-Symbole.png"
+                        alt="LinkedIn"></a>
+                <a href="{{organization['Instagram']}}"><img
+                        src="https://cdn4.iconfinder.com/data/icons/social-messaging-ui-color-shapes-2-free/128/social-instagram-new-circle-512.png"
+                        alt="Instagram"></a>
+                <a href="{{organization['Facebook']}}"><img
+                        src="https://static-00.iconduck.com/assets.00/facebook-color-icon-2048x2048-bfly1vxr.png"
+                        alt="Facebook"></a>
+                <a href="{{organization['Website']}}"><img
+                        src="https://p7.hiclipart.com/preview/621/487/813/website-development-world-wide-web-internet-computer-icons-web-standards-government-services.jpg"
+                        alt="Site"></a>
+            </aside>
+        </div>
+
+        <p>{{organization['about']}}</p>
+
+        <h2>Details</h2>
+        <ul>
+            <li><strong>Location: </strong>{{organization['location']}}</li>
+            <li><strong>Established: </strong>{{organization['established']}}</li>
+        </ul>
+
+        <h2>Contact</h2>
+        <ul>
+            <li><strong>Email: </strong>{{organization['email']}}</li>
+            <li><strong>Phone: </strong>{{organization['phone']}}</li>
+        </ul>
+    </section>
+</main>
+{%endblock%}
