@@ -4,9 +4,12 @@ import pymongo
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from bson.json_util import loads
+import datetime
+from datetime import datetime
 
 
-# About blueprint definition
+
+# Blueprint definition
 chat = Blueprint(
     'chat',
     __name__,
@@ -23,6 +26,7 @@ users_collection = mydb['users']
 project_collection = mydb['projects']
 messages_collection = mydb['messages']
 
+
 # Routes
 @chat.route('/chatt/<user_email>/<profile_email>')
 def index(user_email, profile_email):
@@ -36,42 +40,56 @@ def index(user_email, profile_email):
         user_role = user_data.get('role', '')
         user_picture = user_data.get('profile_picture', '')
 
+        # Fetch messages between the two users
+        messages = messages_collection.find({
+            '$or': [
+                {'sender_email': user_email, 'recipient_email': profile_email},
+                {'sender_email': profile_email, 'recipient_email': user_email}
+            ]
+        }).sort('timestamp')
+
+        messages = list(messages)  # Convert cursor to list
+        for message in messages:
+            message['_id'] = str(message['_id'])  # Convert ObjectId to string
+
         return render_template('chat.html', user_email=user_email, profile_email=profile_email,
-                               user_name=user_name, user_role=user_role, user_picture=user_picture, user_id=user_id)
+                               user_name=user_name, user_role=user_role, user_picture=user_picture, user_id=user_id,
+                               messages=messages)
     else:
         return "User not found", 404
 
+
 @chat.route('/send_message', methods=['POST'])
 def send_message():
-    data = request.get_json()
-    sender_email = data.get('sender_email')
-    receiver_email = data.get('receiver_email')
-    message = data.get('message')
-    timestamp = data.get('timestamp')
-    files = data.get('files', [])
+    sender_email = request.form['sender_email']
+    receiver_email = request.form['receiver_email']
+    message = request.form['message']
+    timestamp = datetime.now()
 
-    if not sender_email or not receiver_email or not message:
-        return jsonify({'error': 'Missing required fields'}), 400
-
-    # Save the message to the database
-    messages_collection.insert_one({
+    message_data = {
         'sender_email': sender_email,
-        'receiver_email': receiver_email,
+        'recipient_email': receiver_email,
         'message': message,
-        'timestamp': timestamp,
-        'files': files
-    })
+        'timestamp': timestamp
+    }
 
-    return jsonify({'success': True}), 200
+    messages_collection.insert_one(message_data)
+    return jsonify({'status': 'Message sent successfully!'})
 
-@chat.route('/get_messages/<sender_email>/<receiver_email>', methods=['GET'])
-def get_messages(sender_email, receiver_email):
-    # Fetch messages from the database
-    messages = list(messages_collection.find({
+@chat.route('/fetch_messages')
+def fetch_messages():
+    user_email = request.args.get('user_email')
+    profile_email = request.args.get('profile_email')
+
+    messages = messages_collection.find({
         '$or': [
-            {'sender_email': sender_email, 'receiver_email': receiver_email},
-            {'sender_email': receiver_email, 'receiver_email': sender_email}
+            {'sender_email': user_email, 'recipient_email': profile_email},
+            {'sender_email': profile_email, 'recipient_email': user_email}
         ]
-    }).sort('timestamp'))
+    }).sort('timestamp')
+
+    messages = list(messages)  # Convert cursor to list
+    for message in messages:
+        message['_id'] = str(message['_id'])  # Convert ObjectId to string
 
     return jsonify({'messages': messages})

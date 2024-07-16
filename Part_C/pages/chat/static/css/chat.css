@@ -1,4 +1,3 @@
-
 /* Chat container */
 .chat {
     display: flex;
@@ -39,9 +38,10 @@
 
 /* Individual messages */
 .message {
+    padding: 0;
     margin-bottom: 10px;
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Align items to the top */
 }
 
 .message.user {
@@ -49,16 +49,23 @@
 }
 
 .message-content {
-    min-width: 60px;
-    padding: 10px 10px 25px 10px;
+    margin: 0;
+    padding: 0;
+    min-width: 100px;
+    /*padding: 10px;*/
     border-radius: 10px;
     background-color: #dfdede;
     color: black;
     word-wrap: break-word;
     white-space: pre-wrap;
-    margin-bottom: 5px;
     display: inline-block;
     position: relative;
+}
+
+.message p {
+    /* Example styles; adjust as needed */
+    margin: 0;
+    padding: 0;
 }
 
 .message-content a {
@@ -265,8 +272,9 @@
     font-size: smaller;
     color: #605f5f;
     position: absolute;
-    bottom: 0;
+    bottom: 5px; /* Ensure timestamp is positioned at the bottom */
     right: 8px;
+    margin-top: 5px; /* Adjust margin as needed */
 }
 
 /* Date header */
