@@ -23,7 +23,7 @@ let projectBeingShared=''
 
 // Event listener for DOMContentLoaded to initialize the page when the document is fully loaded
 document.addEventListener("DOMContentLoaded", function () {
-    fetch('/user').then((response) => response.json()).then((data) => {console.log(data)
+    fetch('/user').then((response) => response.json()).then((data) => {
     user=data.user; // recieve user data
     initPage(user); // Call initPage function to set up the page
     ;}).catch(error => console.log(error));
@@ -48,7 +48,7 @@ loadPosts(currentPage,observer);
 
 function loadPosts(page,observer) {
       observer.unobserve(sentinel);
-    fetch(`/show_posts?page=${page}`).then((response) => response.json()).then((data) => {console.log(data)
+    fetch(`/show_posts?page=${page}`).then((response) => response.json()).then((data) => {
        const fragment = document.createDocumentFragment();
         data.posts.forEach(post => {
     createPostElement(post.user,post.content ,post).then(newPost => {
@@ -93,7 +93,6 @@ function createPost(user, postsContainer) {
     }
 
      createPostElement(user, postContent).then(newPost => {
-        console.log(newPost);
          postsContainer.insertBefore(newPost, postsContainer.firstChild);
      const post = {
         owner: user.email,
@@ -143,18 +142,15 @@ function attachBtns(newPost, user, post,postObj='') {
     let share = "";
     if (uploadingImage) {
         // Check if an image is being uploaded
-        image = document.querySelector(".up-img-container").innerHTML; // Get the HTML content of the uploaded image
-        ImgBeingShared=image
+        image = await setImage(ImgBeingShared)
         removeImageForUpload(); // Remove the image upload elements
     }
-    console.log(uploadingProj)
     if (uploadingProj) {
         // Check if a project is being uploaded
         // proj = document.querySelector(".project-box").innerHTML; // Get the HTML content of the uploaded project
 
         const projectData = await retrieveProj(projectBeingShared);
         proj = projectData.project;
-        console.log("Uploading", proj)
         removeProjectForUpload(); // Remove the project upload elements
     }
     if (sharingPost) {
@@ -167,14 +163,13 @@ function attachBtns(newPost, user, post,postObj='') {
     }
     if ('image' in post){
         uploadingImage=true
-        image=post.image
+        image=await setImage(post.image)
+
     }
-    console.log(uploadingProj)
+
     if ('project' in post){
-        console.log(post.project)
         const projectData = await retrieveProj(post.project);
         proj = projectData.project;
-        console.log(proj)
         uploadingProj=true
 
     }
@@ -193,7 +188,7 @@ function attachBtns(newPost, user, post,postObj='') {
             <p>${postContent}</p>
             ${
         uploadingImage
-            ? `<div class="up-img-container">${image}</div>`
+            ? `${createImage(image)}`
             : ""
     }
              ${
@@ -393,8 +388,19 @@ function attachFileSelectionFunctionality() {
         if (files.length > 0) {
             // Check if any file is selected
             const file = files[0]; // Get the first selected file
-            imgUrl = URL.createObjectURL(file); // Create a URL for the selected file
-            prepareImageForUpload(imgUrl); // Prepare the image for upload using the URL
+            const formData = new FormData();
+            formData.append('file', file);
+            fetch('/upload_image', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json()).then(data => {
+                ImgBeingShared=data.photo_id
+                 console.log(ImgBeingShared)
+                imgUrl = URL.createObjectURL(file); // Create a URL for the selected file
+                 prepareImageForUpload(imgUrl); // Prepare the image for upload using the URL
+             })
+
         }
     });
 }
@@ -402,14 +408,19 @@ function attachFileSelectionFunctionality() {
 // Function to display the image that is about to be uploaded in user post box
 function prepareImageForUpload(url) {
     const postInput = userPostBox.querySelector(".post-input"); // Get the post input element
+    const html = createImage(url)
+    postInput.insertAdjacentHTML("afterend", html); // Insert the image upload HTML including the uploaded picture after the post input
+    uploadingImage = true; // Update the flag to indicate an image is being uploaded
+}
+
+function createImage(url){
     const html = ` 
   <div class="up-img-container"><img
             src="${url}" 
             alt="Picture To Upload"
             class="Upload-img"
           /></div>`;
-    postInput.insertAdjacentHTML("afterend", html); // Insert the image upload HTML including the uploaded picture after the post input
-    uploadingImage = true; // Update the flag to indicate an image is being uploaded
+    return html;
 }
 
 // Function to remove image upload elements from the post box
@@ -495,7 +506,6 @@ function prepareProjectForUpload() {
             });
         }
 function displayProject(data){
-    console.log(data)
     const html = `
                         <div class="project-box">
                         <div class="project-content" id="${data.project_id}">
@@ -508,13 +518,11 @@ function displayProject(data){
     setPhoto(photoId,data.project_id)
     return html
 }
-        function setPhoto(photoId,project_id) {
+function setPhoto(photoId,project_id) {
      fetch(`/get_image/${photoId}` )
             .then(response => response.blob())
             .then(blob => {
-                console.log(project_id);
                 const projectContent = document.getElementById(`${project_id}`);
-                console.log(projectContent);
 
                 const imgURL = URL.createObjectURL(blob);
                  // console.log('Image URL created:', imgURL);
@@ -551,7 +559,17 @@ function attachLikesModalFunctionality(newPost, post_id) {
     });
 
     }
-
+async function setImage(photoId) {
+    try {
+        const response = await fetch(`/get_image/${photoId}`);
+        const blob = await response.blob();
+        const imgURL = URL.createObjectURL(blob);
+        return imgURL;
+    } catch (error) {
+        console.error('Error fetching image:', error);
+        throw error;
+    }
+}
 
 // Function to attach event listener for shares modal
 function attachSharesModalFunctionality(newPost, post_id) {
@@ -736,8 +754,6 @@ async function retrieveProj(project_id){
         const response = await fetch(`/get_project/${project_id}`);
 
         const data = await response.json();
-        console.log(data);
-        console.log(project_id)
         return data
     } catch (error) {
         console.error('Error fetching the project:', error);

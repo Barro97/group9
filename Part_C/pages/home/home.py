@@ -219,3 +219,14 @@ def get_project(project_id):
     project['photo_id'] = str(project['photo_id'])
 
     return jsonify({'success': True, 'project': project})
+
+@home.route('/upload_image', methods=['POST'])
+def upload_image():
+    photo_id = None
+    photo = request.files.get('file')
+    if photo:
+        photo_filename = secure_filename(photo.filename)
+        photo_id = fs.put(photo, filename=photo_filename)
+        return jsonify({'success': True, 'photo_id': str(photo_id)})
+    else:
+        return jsonify({'success': False})
