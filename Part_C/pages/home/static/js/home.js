@@ -151,7 +151,9 @@ function attachBtns(newPost, user, post,postObj='') {
     if (uploadingProj) {
         // Check if a project is being uploaded
         // proj = document.querySelector(".project-box").innerHTML; // Get the HTML content of the uploaded project
-        proj= await retrieveProj(projectBeingShared).project
+
+        const projectData = await retrieveProj(projectBeingShared);
+        proj = projectData.project;
         console.log("Uploading", proj)
         removeProjectForUpload(); // Remove the project upload elements
     }

@@ -192,17 +192,10 @@ def submit_project():
         'file_id': file_id,
         'photo_id': photo_id
     }
-    project=projects_collection.insert_one(project_data)
+    project = projects_collection.insert_one(project_data)
     project_id = str(project.inserted_id)
-    return jsonify({'success': True, 'title': title,'photo_id': str(photo_id),'project_id': project_id})
+    return jsonify({'success': True, 'title': title, 'photo_id': str(photo_id), 'project_id': project_id})
 
-
-@home.route('/file/<file_id>')
-def get_file(file_id):
-    file = fs.get(file_id)
-    return Response(file.read(),
-                    mimetype='application/octet-stream',
-                    headers={"Content-Disposition": f"attachment;filename={file.filename}"})
 
 @home.route('/get_image/<photo_id>', methods=['GET'])
 def get_image(photo_id):
@@ -215,13 +208,14 @@ def get_image(photo_id):
         print(f'Error fetching image: {str(e)}')
         return jsonify({'success': False, 'error': str(e)})
 
+
 @home.route('/get_project/<project_id>', methods=['GET'])
 def get_project(project_id):
     project = projects_collection.find_one({'_id': ObjectId(project_id)})
     print(project)
-    project['_id']=str(project['_id'])
-    project['project_id']=str(project['_id'])
-    project['file_id']=str(project['file_id'])
-    project['photo_id']=str(project['photo_id'])
+    project['_id'] = str(project['_id'])
+    project['project_id'] = str(project['_id'])
+    project['file_id'] = str(project['file_id'])
+    project['photo_id'] = str(project['photo_id'])
 
     return jsonify({'success': True, 'project': project})
