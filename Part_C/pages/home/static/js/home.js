@@ -18,7 +18,7 @@ let currentPage = 1;  // Track the current page number for posts
 let user=''
 let postBeingShared=''
 let ImgBeingShared=''
-
+let projectBeingShared=''
 
 
 // Event listener for DOMContentLoaded to initialize the page when the document is fully loaded
@@ -51,11 +51,13 @@ function loadPosts(page,observer) {
     fetch(`/show_posts?page=${page}`).then((response) => response.json()).then((data) => {console.log(data)
        const fragment = document.createDocumentFragment();
         data.posts.forEach(post => {
-    const newPost= createPostElement(post.user,post.content ,post)
-            attachBtns(newPost,post.user,post._id,post)
-    fragment.appendChild(newPost);
-        })
+    createPostElement(post.user,post.content ,post).then(newPost => {
+        attachBtns(newPost, post.user, post._id, post)
+        fragment.appendChild(newPost);
     postsContainer.appendChild(fragment)
+
+    })
+        })
  // Increment the current page for the next load
             currentPage++;
 observer.observe(sentinel);
@@ -89,10 +91,11 @@ function createPost(user, postsContainer) {
         alert("Please enter some text to post.");
         return; // Exit the function if no content
     }
-    const newPost = createPostElement(user, postContent);
-    postsContainer.insertBefore(newPost, postsContainer.firstChild);
 
-    const post = {
+     createPostElement(user, postContent).then(newPost => {
+        console.log(newPost);
+         postsContainer.insertBefore(newPost, postsContainer.firstChild);
+     const post = {
         owner: user.email,
         content: postContent,
         DT: dateTime()
@@ -101,6 +104,9 @@ function createPost(user, postsContainer) {
       sendData(post).then(id=>{
         attachBtns(newPost, user, id); // Attach buttons for likes, comments, and shares to the new post
       }).catch(err=>{console.log(err)});
+     })
+
+
 
 
 
@@ -130,7 +136,7 @@ function attachBtns(newPost, user, post,postObj='') {
 }
 
 // Function to create a new post element based on user input and content
-function createPostElement(user, postContent, post= {}) {
+ async function createPostElement(user, postContent, post= {}) {
     const newPost = document.createElement("div");
     let image = "";
     let proj = "";
@@ -141,9 +147,12 @@ function createPostElement(user, postContent, post= {}) {
         ImgBeingShared=image
         removeImageForUpload(); // Remove the image upload elements
     }
+    console.log(uploadingProj)
     if (uploadingProj) {
         // Check if a project is being uploaded
-        proj = document.querySelector(".project-box").innerHTML; // Get the HTML content of the uploaded project
+        // proj = document.querySelector(".project-box").innerHTML; // Get the HTML content of the uploaded project
+        proj= await retrieveProj(projectBeingShared).project
+        console.log("Uploading", proj)
         removeProjectForUpload(); // Remove the project upload elements
     }
     if (sharingPost) {
@@ -157,6 +166,14 @@ function createPostElement(user, postContent, post= {}) {
     if ('image' in post){
         uploadingImage=true
         image=post.image
+    }
+    console.log(uploadingProj)
+    if ('project' in post){
+        console.log(post.project)
+        const projectData = await retrieveProj(post.project);
+        proj = projectData.project;
+        uploadingProj=true
+
     }
     newPost.className = "post-box"; // Assign the post-box class to the new post for better design
     newPost.innerHTML = `
@@ -178,7 +195,7 @@ function createPostElement(user, postContent, post= {}) {
     }
              ${
         uploadingProj
-            ? `<a href="project.html"><div class="project-box">${proj}</div></a>`
+            ? `<a href="project.html">${displayProject(proj)}</a>`
             : ""
     }
              ${sharingPost ? `<div class="about-to-share">${share}</div>` : ""}
@@ -461,17 +478,11 @@ function prepareProjectForUpload() {
             .then(data => {
                 if (data.success) {
                       const postInput = userPostBox.querySelector(".post-input"); // Get the post input element
-                const html = `
-                        <div class="project-box">
-                        <div class="project-content">
-                        <div class="project-overlay"></div>
-                        <div class="project-title">My new project</div>
-                        </div>
-                        </div>
-                        </div>`;
-                postInput.insertAdjacentHTML("afterend", html); // Insert the project upload HTML after the post input
-                uploadingProj = true; // Update the flag to indicate a project is being uploaded
-                closeModal()
+                      const html = displayProject(data)
+                      postInput.insertAdjacentHTML("afterend", html); // Insert the project upload HTML after the post input
+                      uploadingProj = true; // Update the flag to indicate a project is being uploaded
+                      projectBeingShared=data.project_id
+                    closeModal()
                 } else {
                     alert('There was an error submitting the project.');
                 }
@@ -479,6 +490,32 @@ function prepareProjectForUpload() {
             .catch(error => {
                 console.error('Error:', error);
             });
+        }
+function displayProject(data){
+    console.log(data)
+    const html = `
+                        <div class="project-box">
+                        <div class="project-content">
+                        <div class="project-overlay"></div>
+                        <div class="project-title">${data.title}</div>
+                        </div>
+                        </div>
+                        </div>`;
+    const photoId = data.photo_id;
+    setPhoto(photoId)
+    return html
+}
+        function setPhoto(photoId) {
+     fetch(`/get_image/${photoId}` )
+            .then(response => response.blob())
+            .then(blob => {
+                // console.log('Blob received:', blob);
+                const projectContent = document.querySelector('.project-content');
+                const imgURL = URL.createObjectURL(blob);
+                 // console.log('Image URL created:', imgURL);
+                 projectContent.style.backgroundImage = `url(${imgURL})`;
+            })
+            .catch(error => console.error('Error fetching image:', error));
         }
 // Function to attach event listener for likes modal
 function attachLikesModalFunctionality(newPost, post_id) {
@@ -617,6 +654,11 @@ function closeModal() {
         post.share=postBeingShared;
         postBeingShared=''
     }
+    if(projectBeingShared){
+        post.project=projectBeingShared;
+        projectBeingShared=''
+    }
+
     return fetch('/create_post', { // The "return" makes sure that this is not a void function and that an id value is returned
         method: 'POST',
         headers: {
@@ -684,4 +726,15 @@ async function sharebox() {
     }
 }
 
+async function retrieveProj(project_id){
+    try {
+        const response = await fetch(`/get_project/${project_id}`);
 
+        const data = await response.json();
+        console.log(data);
+        console.log(project_id)
+        return data
+    } catch (error) {
+        console.error('Error fetching the project:', error);
+    }
+}
