@@ -498,22 +498,24 @@ function displayProject(data){
     console.log(data)
     const html = `
                         <div class="project-box">
-                        <div class="project-content">
+                        <div class="project-content" id="${data.project_id}">
                         <div class="project-overlay"></div>
                         <div class="project-title">${data.title}</div>
                         </div>
                         </div>
                         </div>`;
     const photoId = data.photo_id;
-    setPhoto(photoId)
+    setPhoto(photoId,data.project_id)
     return html
 }
-        function setPhoto(photoId) {
+        function setPhoto(photoId,project_id) {
      fetch(`/get_image/${photoId}` )
             .then(response => response.blob())
             .then(blob => {
-                // console.log('Blob received:', blob);
-                const projectContent = document.querySelector('.project-content');
+                console.log(project_id);
+                const projectContent = document.getElementById(`${project_id}`);
+                console.log(projectContent);
+
                 const imgURL = URL.createObjectURL(blob);
                  // console.log('Image URL created:', imgURL);
                  projectContent.style.backgroundImage = `url(${imgURL})`;
