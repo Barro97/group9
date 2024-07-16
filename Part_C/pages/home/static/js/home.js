@@ -266,6 +266,7 @@ function attachCommentButtonFunctionality(newPost, user, post) {
 function attachShareButtonFunctionality(newPost, user, post,postObj) {
     const shareButton = newPost.querySelector(".action-btn.share"); // Get the share button element
     shareButton.addEventListener("click", function (e) {
+       let wasShared=false
         if (sharingPost) {
             // Check if the user is already trying to share a post
             alert("you are already trying to share!"); // Alert if already sharing
@@ -277,12 +278,13 @@ function attachShareButtonFunctionality(newPost, user, post,postObj) {
             if(postObj){
                 if(postObj.share){
                      postToShare = postObj.share
+                    wasShared=true
                 }
                 else{
                     postToShare = e.target.closest(".post-box")
                 }
             }
-            preparePostToShare(postToShare,true); // Prepare the post for sharing
+            preparePostToShare(postToShare,wasShared); // Prepare the post for sharing
             userPostBox.scrollIntoView({behavior: "smooth"}); // Smooth scroll to the user post box
             sharingPost = true; // Set the flag to indicate a post is being shared
             postBeingShared=post
