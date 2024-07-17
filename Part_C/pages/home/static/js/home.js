@@ -317,7 +317,12 @@ function preparePostToShare(postToShare,wasShared=false) {
             <div class="post-content">${shareContent.innerHTML}</div>  
             </div>`;
 }
+
     postInput.insertAdjacentHTML("afterend", html); // Insert the post to share after the post input
+const projectContent=document.querySelector(".project-content");
+    if(projectContent){
+        projectContent.style.width='170px'
+    }
 }
 
 // Function to add a comment box below a post
@@ -731,7 +736,7 @@ function isObjectEmpty(obj) {
 async function sharebox() {
         let share_id=postBeingShared
         postBeingShared = document.querySelector(".about-to-share").innerHTML;; // Assuming you need the share ID from the response
-
+console.log('hi')
     try {
         const response = await fetch('/create_share', {
             method: 'POST',
