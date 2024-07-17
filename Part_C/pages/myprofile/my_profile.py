@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session, redirect, url_for, request
+from flask import *
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 from bson.objectid import ObjectId
@@ -60,3 +60,61 @@ def index():
             edu['logo'] = org.get('logo', '')
 
     return render_template('my profile.html', full_name=full_name, role=role, followers=followers, profile_picture=profile_picture, linkedin=linkedin, github=github, facebook=facebook, about_me=about_me, projects=projects, experiences=experiences, educations=educations)
+
+@my_profile.route('/update_profile', methods=['POST'])
+def update_profile():
+    if not session.get('logged_in'):
+        return jsonify({'status': 'error', 'message': 'User not logged in'})
+
+    user = session.get('user', {})
+    email = user.get('email')
+
+    # Determine which section is being updated
+    section_id = request.form.get('sectionId')
+    update_data = {}
+
+    if section_id == 'top-section':
+        # Get form data for top-section
+        first_name = request.form.get('firstName')
+        last_name = request.form.get('lastName')
+        position = request.form.get('position')
+
+        update_data = {
+            'first_name': first_name,
+            'last_name': last_name,
+            'role': position,
+        }
+
+    elif section_id == 'links':
+        # Get form data for links
+        linkedin = request.form.get('linkedin')
+        github = request.form.get('github')
+        facebook = request.form.get('facebook')
+
+        update_data = {
+            'linkedin': linkedin,
+            'github': github,
+            'facebook': facebook,
+        }
+
+    users_collection.update_one({'email': email}, {'$set': update_data})
+
+    # Update session
+    session['user'] = users_collection.find_one({'email': email})
+    session['user']['_id'] = str(session['user']['_id'])  # Convert ObjectId to string
+
+    response_data = {'status': 'success', 'message': 'Profile updated successfully'}
+    if 'first_name' in update_data:
+        response_data['first_name'] = update_data['first_name']
+    if 'last_name' in update_data:
+        response_data['last_name'] = update_data['last_name']
+    if 'role' in update_data:
+        response_data['role'] = update_data['role']
+    if 'linkedin' in update_data:
+        response_data['linkedin'] = update_data['linkedin']
+    if 'github' in update_data:
+        response_data['github'] = update_data['github']
+    if 'facebook' in update_data:
+        response_data['facebook'] = update_data['facebook']
+
+    return jsonify(response_data)
