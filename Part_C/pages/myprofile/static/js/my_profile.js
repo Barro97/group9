@@ -22,6 +22,9 @@
             
             <label for="position">Position:</label>
             <input type="text" id="position" name="position" required>
+            
+            <label for="profilePicture">Profile Picture:</label>
+            <input type="file" id="profilePicture" name="profilePicture">>
         `;
 
 
@@ -166,7 +169,11 @@
     formData.append('firstName', document.getElementById('firstName').value);
     formData.append('lastName', document.getElementById('lastName').value);
     formData.append('position', document.getElementById('position').value);
-} else if (sectionId === 'links') {
+    const profilePicture = document.getElementById('profilePicture').files[0];
+    if (profilePicture) {
+        formData.append('profilePicture', profilePicture);
+    }
+    } else if (sectionId === 'links') {
     formData.append('linkedin', document.getElementById('linkedin').value);
     formData.append('github', document.getElementById('github').value);
     formData.append('facebook', document.getElementById('facebook').value);

@@ -2,6 +2,9 @@ from flask import *
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 from bson.objectid import ObjectId
+import os
+from werkzeug.utils import secure_filename
+from app import app, allowed_file
 
 # about blueprint definition
 my_profile = Blueprint(
@@ -23,6 +26,8 @@ experience_collection = mydb['experience']
 education_collection = mydb['education']
 org_collection = mydb['organizations']
 posts_collection = mydb['posts']
+UPLOAD_FOLDER = 'static/uploads'
+
 
 # Routes
 @my_profile.route('/my_profile')
@@ -84,6 +89,15 @@ def update_profile():
             'last_name': last_name,
             'role': position,
         }
+        # Handle file upload
+        if 'profilePicture' in request.files:
+            file = request.files['profilePicture']
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file.save(file_path)
+                profile_picture_url = url_for('static', filename='uploads/' + filename)
+                update_data['profile_picture'] = profile_picture_url
 
     elif section_id == 'links':
         # Get form data for links
