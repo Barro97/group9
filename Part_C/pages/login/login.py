@@ -38,9 +38,10 @@ def check_user():
 
         query = {"email": email, "password": password}
         user = users_collection.find_one(query)  # Try to find the user that was input in the DB
+        print(user)
         if user:
+            user['_id']=str(user['_id'])
             session['user'] = user  # Save the current user
-            user.pop('_id', None)  # Removing the "_id" key
             session['logged_in'] = True  # A boolean for page interaction
             return jsonify({"success": True, "redirect": "/home"})  # A JSON for successful log in attempt
         else:
