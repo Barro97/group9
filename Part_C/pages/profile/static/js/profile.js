@@ -1,70 +1,47 @@
 "use strict";
+const user = JSON.parse(localStorage.getItem("activeUser"));
 const followButton = document.getElementById("follow-button");
 const followCount = document.querySelector(".follow-count");
-let isFollowing = ''
-
+let isFollowing = false;
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("DOMContentLoaded");
-    checkFollow()
     followButton.addEventListener("click", function () {
+        const followeeId = document.getElementById("followee-id").value; // נניח שיש input עם id זה בפרופיל
         if (isFollowing) {
-            unfollow()
-        } else {
-            follow()
-        }
-    });
-});
-
-function updateUI(){
-    isFollowing? followingUI():notFollowingUI()
-}
-function followingUI(){
-    followButton.textContent = "Following";
-    followButton.classList.add("pressed");
-
-}
-
-function notFollowingUI(){
-    followButton.textContent = "+ Follow";
-    followButton.classList.remove("pressed");
-}
-
-async function checkFollow() {
-    try {
-        let response = await fetch('/check_for_following');
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-        }
-        let data = await response.json();
-        isFollowing = data.isFollowing;
-        updateUI()
-    } catch (error) {
-        console.error('There has been a problem with your fetch operation:', error);
-    }
-}
-
-function unfollow(){
-    // UnFollow logic
-            fetch('/unfollow')
+            // UnFollow logic
+            fetch('/unfollow', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ follower_id: user._id, followee_id: followeeId })
+            })
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
                     isFollowing = false;
-                    updateUI()
-                    followCount.textContent = `Followers: ${!data.count ? '0' : data.count}`;
+                    followButton.textContent = "+ Follow";
+                    followButton.classList.remove("pressed");
+                    followCount.textContent = `Followers: ${parseInt(followCount.textContent.split(': ')[1]) - 1}`;
                 }
             });
-}
-
-function follow(){
-    // Follow logic
-            fetch('/follow')
+        } else {
+            // Follow logic
+            fetch('/follow', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ follower_id: user._id, followee_id: followeeId })
+            })
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
                     isFollowing = true;
-                    updateUI()
-                    followCount.textContent = `Followers: ${data.count}`;
+                    followButton.textContent = "Following";
+                    followButton.classList.add("pressed");
+                    followCount.textContent = `Followers: ${parseInt(followCount.textContent.split(': ')[1]) + 1}`;
                 }
             });
-}
+        }
+    });
+});

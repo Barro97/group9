@@ -51,9 +51,11 @@ function loadPosts(page,observer) {
     fetch(`/show_posts?page=${page}`).then((response) => response.json()).then((data) => {
        const fragment = document.createDocumentFragment();
         data.posts.forEach(post => {
+
     createPostElement(post.user,post.content ,post).then(newPost => {
         attachBtns(newPost, post.user, post._id, post)
         fragment.appendChild(newPost);
+
     postsContainer.appendChild(fragment)
 
     })
@@ -142,7 +144,8 @@ function attachBtns(newPost, user, post,postObj='') {
     let share = "";
     if (uploadingImage) {
         // Check if an image is being uploaded
-        image = await setImage(ImgBeingShared)
+        image = document.querySelector(".up-img-container").innerHTML; // Get the HTML content of the uploaded image
+        ImgBeingShared=image
         removeImageForUpload(); // Remove the image upload elements
     }
     if (uploadingProj) {
@@ -317,7 +320,6 @@ function preparePostToShare(postToShare,wasShared=false) {
             <div class="post-content">${shareContent.innerHTML}</div>  
             </div>`;
 }
-
     postInput.insertAdjacentHTML("afterend", html); // Insert the post to share after the post input
 const projectContent=document.querySelector(".project-content");
     if(projectContent){
@@ -736,7 +738,7 @@ function isObjectEmpty(obj) {
 async function sharebox() {
         let share_id=postBeingShared
         postBeingShared = document.querySelector(".about-to-share").innerHTML;; // Assuming you need the share ID from the response
-console.log('hi')
+
     try {
         const response = await fetch('/create_share', {
             method: 'POST',

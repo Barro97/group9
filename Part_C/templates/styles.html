@@ -24,6 +24,6 @@
 <link rel="stylesheet" href="{{ url_for('search_results.static', filename='css/search results.css') }}"/>
 {% elif request.path == '/signup' %}
 <link rel="stylesheet" href="{{ url_for('signup.static', filename='css/signup.css') }}"/>
-{% elif request.path == '/organization' %}
+{% elif request.path.startswith('/organization') %}
 <link rel="stylesheet" href="{{ url_for('organization.static', filename='css/organization.css') }}"/>
 {% endif %}

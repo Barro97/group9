@@ -29,7 +29,6 @@ local_tz_offset = timedelta(hours=3)  # Adjust according to your local timezone 
 # Route to view a project
 @project.route('/project/<project_id>')
 def view_project(project_id):
-    print(project_id)
     project = project_collection.find_one({'_id': ObjectId(project_id)})
     if project:
         if not session.get('logged_in'):
