@@ -101,6 +101,51 @@
             alert('An error occurred while fetching the projects');
         });
 }
+    else if (sectionId === 'background') {
+    // Fetch organizations to populate the dropdown
+    fetch('/get_organizations')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                let orgOptions = '';
+                data.organizations.forEach(org => {
+                    orgOptions += `<option value="${org.org_name}">${org.org_name}</option>`;
+                });
+
+                modalFields.innerHTML = `
+                    <label for="type">Type:</label>
+                    <select id="type" name="type" required>
+                        <option value="experience">Experience</option>
+                        <option value="education">Education</option>
+                    </select>
+                    
+                    <label for="organization">Organization:</label>
+                    <select id="organization" name="organization" required>
+                        ${orgOptions}
+                    </select>
+                    
+                    <label for="position">Position/Description:</label>
+                    <input type="text" id="position" name="position" required>
+                    
+                    <label for="period">Period:</label>
+                    <input type="text" id="period" name="period" required>
+                `;
+
+                // Add the sectionId as a hidden input field
+                modalFields.innerHTML += `<input type="hidden" name="sectionId" value="${sectionId}">`;
+
+                // Add the sectionId to the modal form to send it on submit
+                document.getElementById('editForm').dataset.sectionId = sectionId;
+            } else {
+                alert('Error fetching organizations: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while fetching the organizations');
+        });
+}
+
 
 
     // Add the sectionId to the modal form to send it on submit
@@ -129,6 +174,13 @@
     else if (sectionId === 'about') {
     formData.append('aboutMe', document.getElementById('aboutMe').value);
 }
+    else if (sectionId === 'background') {
+    formData.append('type', document.getElementById('type').value);
+    formData.append('organization', document.getElementById('organization').value);
+    formData.append('position', document.getElementById('position').value);
+    formData.append('period', document.getElementById('period').value);
+}
+
 
     formData.append('sectionId', sectionId);
     fetch('/update_profile', {

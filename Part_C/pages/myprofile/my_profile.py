@@ -103,6 +103,29 @@ def update_profile():
         update_data = {
             'about_me': about_me,
         }
+    elif section_id == 'background':
+        # Get form data for background section
+        type_ = request.form.get('type')
+        organization = request.form.get('organization')
+        position = request.form.get('position')
+        period = request.form.get('period')
+
+        org = org_collection.find_one({'org_name': organization})
+        if not org:
+            return jsonify({'status': 'error', 'message': 'Organization not found'})
+
+        background_data = {
+            'user_email': email,
+            'org_name': organization,
+            'description': position,
+            'period': period,
+            'logo': org['logo'],
+        }
+
+        if type_ == 'experience':
+            experience_collection.insert_one(background_data)
+        elif type_ == 'education':
+            education_collection.insert_one(background_data)
     print(update_data)
     users_collection.update_one({'email': email}, {'$set': update_data})
 
@@ -158,3 +181,12 @@ def delete_project():
     posts_collection.delete_one({'project': project_id})
 
     return jsonify({'status': 'success', 'message': 'Project and related posts deleted successfully'})
+
+@my_profile.route('/get_organizations', methods=['GET'])
+def get_organizations():
+    if not session.get('logged_in'):
+        return jsonify({'status': 'error', 'message': 'User not logged in'})
+
+    organizations = list(org_collection.find({}, {'_id': 0, 'org_name': 1}))
+
+    return jsonify({'status': 'success', 'organizations': organizations})
