@@ -63,7 +63,7 @@ app.register_blueprint(signup)
 
 @app.route('/')
 def home():
-    return render_template('login.html')
+    return redirect(url_for('login.index'))
 
 
 if __name__ == '__main__':
