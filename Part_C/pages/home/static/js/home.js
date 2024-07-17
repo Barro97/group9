@@ -23,7 +23,7 @@ let projectBeingShared=''
 
 // Event listener for DOMContentLoaded to initialize the page when the document is fully loaded
 document.addEventListener("DOMContentLoaded", function () {
-    fetch('/user').then((response) => response.json()).then((data) => {console.log(data)
+    fetch('/user').then((response) => response.json()).then((data) => {
     user=data.user; // recieve user data
     initPage(user); // Call initPage function to set up the page
     ;}).catch(error => console.log(error));
@@ -48,7 +48,7 @@ loadPosts(currentPage,observer);
 
 function loadPosts(page,observer) {
       observer.unobserve(sentinel);
-    fetch(`/show_posts?page=${page}`).then((response) => response.json()).then((data) => {console.log(data)
+    fetch(`/show_posts?page=${page}`).then((response) => response.json()).then((data) => {
        const fragment = document.createDocumentFragment();
         data.posts.forEach(post => {
 
@@ -95,7 +95,6 @@ function createPost(user, postsContainer) {
     }
 
      createPostElement(user, postContent).then(newPost => {
-        console.log(newPost);
          postsContainer.insertBefore(newPost, postsContainer.firstChild);
      const post = {
         owner: user.email,
@@ -128,10 +127,10 @@ function createPost(user, postsContainer) {
 // }
 
 // Function to attach buttons for likes, comments, shares, and modals to a post
-function attachBtns(newPost, user, post) {
+function attachBtns(newPost, user, post,postObj='') {
     attachLikeButtonFunctionality(newPost, user, post);
     attachCommentButtonFunctionality(newPost, user, post);
-    attachShareButtonFunctionality(newPost, user, post);
+    attachShareButtonFunctionality(newPost, user, post,postObj);
     attachLikesModalFunctionality(newPost, post);
     attachCommentsModalFunctionality(newPost, post);
     attachSharesModalFunctionality(newPost, post);
@@ -149,12 +148,12 @@ function attachBtns(newPost, user, post) {
         ImgBeingShared=image
         removeImageForUpload(); // Remove the image upload elements
     }
-    console.log(uploadingProj)
     if (uploadingProj) {
         // Check if a project is being uploaded
         // proj = document.querySelector(".project-box").innerHTML; // Get the HTML content of the uploaded project
-        proj= await retrieveProj(projectBeingShared).project
-        console.log("Uploading", proj)
+
+        const projectData = await retrieveProj(projectBeingShared);
+        proj = projectData.project;
         removeProjectForUpload(); // Remove the project upload elements
     }
     if (sharingPost) {
@@ -167,11 +166,11 @@ function attachBtns(newPost, user, post) {
     }
     if ('image' in post){
         uploadingImage=true
-        image=post.image
+        image=await setImage(post.image)
+
     }
-    console.log(uploadingProj)
+
     if ('project' in post){
-        console.log(post.project)
         const projectData = await retrieveProj(post.project);
         proj = projectData.project;
         uploadingProj=true
@@ -182,7 +181,7 @@ function attachBtns(newPost, user, post) {
         <div class="post-header">
             <img src="${user.profile_picture}" alt="Profile Picture" class="profile-pic" />
             <div class="post-info">
-            <a href="profile.html"><div class="user-name">${user.first_name} ${
+            <a href="/profile/${user.email}"><div class="user-name">${user.first_name} ${
         user.last_name
     }</div></a>
                 <div class="post-time">${post ? post.DT : 'Just now'}</div>
@@ -192,12 +191,12 @@ function attachBtns(newPost, user, post) {
             <p>${postContent}</p>
             ${
         uploadingImage
-            ? `<div class="up-img-container">${image}</div>`
+            ? `${createImage(image)}`
             : ""
     }
              ${
         uploadingProj
-            ? `<a href="project.html">${displayProject(proj)}</a>`
+            ? `<a href="/project/${proj.project_id}">${displayProject(proj)}</a>`
             : ""
     }
              ${sharingPost ? `<div class="about-to-share">${share}</div>` : ""}
@@ -261,22 +260,34 @@ function attachCommentButtonFunctionality(newPost, user, post) {
             removeCommentBox(); // Remove the existing comment box
         } else {
             tryingToComment = true; // Set the flag to indicate a comment box is being added
-            addCommentBox(newPost, user, post); // Add a new comment box
+            addCommentBox(newPost, post); // Add a new comment box
         }
     });
 }
 
 // Function to attach event listener for the share button functionality
-function attachShareButtonFunctionality(newPost, user, post) {
+function attachShareButtonFunctionality(newPost, user, post,postObj) {
     const shareButton = newPost.querySelector(".action-btn.share"); // Get the share button element
     shareButton.addEventListener("click", function (e) {
+       let wasShared=false
         if (sharingPost) {
             // Check if the user is already trying to share a post
             alert("you are already trying to share!"); // Alert if already sharing
         } else {
 
-            const postToShare = e.target.closest(".post-box"); // Get the post box closest to the clicked share button
-            preparePostToShare(postToShare); // Prepare the post for sharing
+            let postToShare = ''; // Get the post box closest to the clicked share button
+            console.log(postObj)
+
+            if(postObj){
+                if(postObj.share){
+                     postToShare = postObj.share
+                    wasShared=true
+                }
+                else{
+                    postToShare = e.target.closest(".post-box")
+                }
+            }
+            preparePostToShare(postToShare,wasShared); // Prepare the post for sharing
             userPostBox.scrollIntoView({behavior: "smooth"}); // Smooth scroll to the user post box
             sharingPost = true; // Set the flag to indicate a post is being shared
             postBeingShared=post
@@ -294,19 +305,30 @@ function removePostForShare() {
 }
 
 // Function to prepare a post for sharing by adding it to the user post box
-function preparePostToShare(postToShare) {
+function preparePostToShare(postToShare,wasShared=false) {
+    let html = ''
+    const postInput = userPostBox.querySelector(".post-input"); // Get the post input element
+    if (wasShared) {
+        html = `<div class="about-to-share">
+            ${postToShare}  
+            </div>`;
+    } else {
     const shareHeader = postToShare.querySelector(".post-header"); // Get the header of the post to share
     const shareContent = postToShare.querySelector(".post-content"); // Get the content of the post to share
-    const postInput = userPostBox.querySelector(".post-input"); // Get the post input element
-    const html = `<div class="about-to-share">
-  <div class="post-header">${shareHeader.innerHTML}</div>
-  <div class="post-content">${shareContent.innerHTML}</div>  
-    </div>`;
+    html = `<div class="about-to-share">
+            <div class="post-header">${shareHeader.innerHTML}</div>
+            <div class="post-content">${shareContent.innerHTML}</div>  
+            </div>`;
+}
     postInput.insertAdjacentHTML("afterend", html); // Insert the post to share after the post input
+const projectContent=document.querySelector(".project-content");
+    if(projectContent){
+        projectContent.style.width='170px'
+    }
 }
 
 // Function to add a comment box below a post
-function addCommentBox(newPost, user, post_id) {
+function addCommentBox(newPost, post_id) {
     const commentBoxHTML = `
         <div class="comment-box">
             <div class="post-input comment-input">
@@ -375,8 +397,19 @@ function attachFileSelectionFunctionality() {
         if (files.length > 0) {
             // Check if any file is selected
             const file = files[0]; // Get the first selected file
-            imgUrl = URL.createObjectURL(file); // Create a URL for the selected file
-            prepareImageForUpload(imgUrl); // Prepare the image for upload using the URL
+            const formData = new FormData();
+            formData.append('file', file);
+            fetch('/upload_image', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json()).then(data => {
+                ImgBeingShared=data.photo_id
+                 console.log(ImgBeingShared)
+                imgUrl = URL.createObjectURL(file); // Create a URL for the selected file
+                 prepareImageForUpload(imgUrl); // Prepare the image for upload using the URL
+             })
+
         }
     });
 }
@@ -384,14 +417,19 @@ function attachFileSelectionFunctionality() {
 // Function to display the image that is about to be uploaded in user post box
 function prepareImageForUpload(url) {
     const postInput = userPostBox.querySelector(".post-input"); // Get the post input element
+    const html = createImage(url)
+    postInput.insertAdjacentHTML("afterend", html); // Insert the image upload HTML including the uploaded picture after the post input
+    uploadingImage = true; // Update the flag to indicate an image is being uploaded
+}
+
+function createImage(url){
     const html = ` 
   <div class="up-img-container"><img
             src="${url}" 
             alt="Picture To Upload"
             class="Upload-img"
           /></div>`;
-    postInput.insertAdjacentHTML("afterend", html); // Insert the image upload HTML including the uploaded picture after the post input
-    uploadingImage = true; // Update the flag to indicate an image is being uploaded
+    return html;
 }
 
 // Function to remove image upload elements from the post box
@@ -422,19 +460,34 @@ function removeProjectForUpload() {
 
 // Function to add project upload elements to the post box
 function prepareProjectForUpload() {
-    const postInput = userPostBox.querySelector(".post-input"); // Get the post input element
-    const html = `
-        <div class="project-box">
-                    <div class="project-content">
-                      <div class="project-overlay"></div>
-                      <div class="project-title">My new project</div>
-                    </div>
-                  </div>
-                </div>`;
-    postInput.insertAdjacentHTML("afterend", html); // Insert the project upload HTML after the post input
-    uploadingProj = true; // Update the flag to indicate a project is being uploaded
+    content.innerHTML=''
+    const html=`<div class="form-container">
+        <h2>Submit Your Project</h2>
+        <form id="projectForm" onsubmit="submitForm(event)" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">Project Title:</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Project Description:</label>
+                <textarea id="description" name="description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="file">Upload File:</label>
+                <input type="file" id="file" name="file">
+            </div>
+            <div class="form-group">
+                <label for="photo">Upload Photo For Background :</label>
+                <input type="file" id="photo" name="photo" accept="image/*">
+            </div>
+            <div class="form-group">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>`
+    content.insertAdjacentHTML("afterbegin", html);
+    showModal()
 }
-
  function submitForm(event) {
             event.preventDefault(); // Prevent the default form submission
             const form = document.getElementById('projectForm');
@@ -462,32 +515,30 @@ function prepareProjectForUpload() {
             });
         }
 function displayProject(data){
-    console.log(data)
     const html = `
                         <div class="project-box">
-                        <div class="project-content">
+                        <div class="project-content" id="${data.project_id}">
                         <div class="project-overlay"></div>
                         <div class="project-title">${data.title}</div>
                         </div>
                         </div>
                         </div>`;
     const photoId = data.photo_id;
-    setPhoto(photoId)
+    setPhoto(photoId,data.project_id)
     return html
 }
-        function setPhoto(photoId) {
+function setPhoto(photoId,project_id) {
      fetch(`/get_image/${photoId}` )
             .then(response => response.blob())
             .then(blob => {
-                // console.log('Blob received:', blob);
-                const projectContent = document.querySelector('.project-content');
+                const projectContent = document.getElementById(`${project_id}`);
+
                 const imgURL = URL.createObjectURL(blob);
                  // console.log('Image URL created:', imgURL);
                  projectContent.style.backgroundImage = `url(${imgURL})`;
             })
             .catch(error => console.error('Error fetching image:', error));
         }
-
 // Function to attach event listener for likes modal
 function attachLikesModalFunctionality(newPost, post_id) {
     const likes = newPost.querySelector(".like"); // Get the like element in the post
@@ -517,7 +568,17 @@ function attachLikesModalFunctionality(newPost, post_id) {
     });
 
     }
-
+async function setImage(photoId) {
+    try {
+        const response = await fetch(`/get_image/${photoId}`);
+        const blob = await response.blob();
+        const imgURL = URL.createObjectURL(blob);
+        return imgURL;
+    } catch (error) {
+        console.error('Error fetching image:', error);
+        throw error;
+    }
+}
 
 // Function to attach event listener for shares modal
 function attachSharesModalFunctionality(newPost, post_id) {
@@ -697,17 +758,13 @@ async function sharebox() {
     }
 }
 
-
 async function retrieveProj(project_id){
     try {
         const response = await fetch(`/get_project/${project_id}`);
 
         const data = await response.json();
-        console.log(data);
-        console.log(project_id)
         return data
     } catch (error) {
         console.error('Error fetching the project:', error);
     }
 }
-
