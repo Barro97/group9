@@ -94,3 +94,7 @@ button[type="submit"] {
     width: fit-content;
     align-self: flex-end;
 }
+
+.flashes{
+    color: deeppink;
+}

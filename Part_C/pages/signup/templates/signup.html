@@ -11,7 +11,16 @@
 <body>
 <div class="container">
     <h1>Sign Up</h1>
-    <form method="post" action="/signup">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <form class="signup-form" method="post" action="/signup">
        <div class="form-group">
             <label for="first_name">First name</label>
             <input type="text" id="first_name" name="first_name"/>
