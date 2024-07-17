@@ -22,7 +22,7 @@ project_collection = mydb['projects']
 experience_collection = mydb['experience']
 education_collection = mydb['education']
 org_collection = mydb['organizations']
-
+posts_collection = mydb['posts']
 
 # Routes
 @my_profile.route('/my_profile')
@@ -127,3 +127,34 @@ def update_profile():
         response_data['about_me'] = update_data['about_me']
 
     return jsonify(response_data)
+
+@my_profile.route('/get_projects', methods=['GET'])
+def get_projects():
+    if not session.get('logged_in'):
+        return jsonify({'status': 'error', 'message': 'User not logged in'})
+
+    user = session.get('user', {})
+    email = user.get('email')
+    projects = list(project_collection.find({'owner': email}, {'_id': 1, 'title': 1}))
+
+    for project in projects:
+        project['_id'] = str(project['_id'])  # Convert ObjectId to string
+
+    return jsonify({'status': 'success', 'projects': projects})
+
+@my_profile.route('/delete_project', methods=['POST'])
+def delete_project():
+    if not session.get('logged_in'):
+        return jsonify({'status': 'error', 'message': 'User not logged in'})
+
+    project_id = request.json.get('projectId')
+    if not project_id:
+        return jsonify({'status': 'error', 'message': 'Project ID is required'})
+
+    # Delete the project
+    project_collection.delete_one({'_id': ObjectId(project_id)})
+
+    # Delete the post containing the project ID
+    posts_collection.delete_one({'project': project_id})
+
+    return jsonify({'status': 'success', 'message': 'Project and related posts deleted successfully'})

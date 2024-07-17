@@ -47,6 +47,61 @@
         <textarea id="aboutMe" name="aboutMe" required></textarea>
     `;
     }
+    else if (sectionId === 'projects') {
+    // Fetch and display projects
+    fetch('/get_projects')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                let projectsHtml = '<ul>';
+                data.projects.forEach(project => {
+                    projectsHtml += `
+                        <li>
+                            ${project.title}
+                            <button class="delete-project-button" data-project-id="${project._id}">X</button>
+                        </li>
+                    `;
+                });
+                projectsHtml += '</ul>';
+                modalFields.innerHTML = projectsHtml;
+
+                // Add event listeners to delete buttons
+                document.querySelectorAll('.delete-project-button').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const projectId = this.dataset.projectId;
+                        fetch('/delete_project', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ projectId: projectId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                alert('Project deleted successfully');
+                                // Remove the project from the list
+                                this.parentElement.remove();
+                            } else {
+                                alert('Error deleting project: ' + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred while deleting the project');
+                        });
+                    });
+                });
+            } else {
+                alert('Error fetching projects: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while fetching the projects');
+        });
+}
+
 
     // Add the sectionId to the modal form to send it on submit
     document.getElementById('editForm').dataset.sectionId = sectionId;
