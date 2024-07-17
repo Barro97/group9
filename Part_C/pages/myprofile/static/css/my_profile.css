@@ -641,3 +641,38 @@ right: 70px;
     position: relative;
 
 }
+
+.project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+}
+
+.project-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #444;
+    border-radius: 5px;
+}
+
+.project-title {
+    color: #fff;
+    font-size: 1.2em;
+}
+
+.project-item .delete-project-button {
+    background-color: #e74c3c !important;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.project-item .delete-project-button:hover {
+    background-color: #c0392b !important;
+}

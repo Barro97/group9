@@ -56,13 +56,13 @@
                 let projectsHtml = '<ul>';
                 data.projects.forEach(project => {
                     projectsHtml += `
-                        <li>
-                            ${project.title}
+                        <div class="project-item">
+                            <span class="project-title">${project.title}</span>
                             <button class="delete-project-button" data-project-id="${project._id}">X</button>
-                        </li>
+                        </div>
                     `;
                 });
-                projectsHtml += '</ul>';
+                projectsHtml += '</div>';
                 modalFields.innerHTML = projectsHtml;
 
                 // Add event listeners to delete buttons
