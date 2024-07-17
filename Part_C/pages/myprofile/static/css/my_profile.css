@@ -56,8 +56,13 @@
 }
 
 #about {
+
+    min-width: 550px;
+    max-width: 550px;
     height: 173px;
     overflow-y: auto;
+    overflow-x: hidden;
+  word-wrap: break-word; /* Ensures long words break and wrap to the next line */
 }
 
 #about h1 {

@@ -102,9 +102,11 @@ body {
 }
 
 #about {
+
     min-width: 550px;
     height: 173px;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #about h1 {

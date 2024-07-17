@@ -96,7 +96,14 @@ def update_profile():
             'github': github,
             'facebook': facebook,
         }
+    elif section_id == 'about':
+        # Get form data for about section
+        about_me = request.form.get('aboutMe')
 
+        update_data = {
+            'about_me': about_me,
+        }
+    print(update_data)
     users_collection.update_one({'email': email}, {'$set': update_data})
 
     # Update session
@@ -116,5 +123,7 @@ def update_profile():
         response_data['github'] = update_data['github']
     if 'facebook' in update_data:
         response_data['facebook'] = update_data['facebook']
+    if 'about_me' in update_data:
+        response_data['about_me'] = update_data['about_me']
 
     return jsonify(response_data)

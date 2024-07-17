@@ -40,6 +40,13 @@
 
 
 }
+    else if (sectionId === 'about') {
+    // Set the fields for about section
+    modalFields.innerHTML = `
+        <label for="aboutMe">About Me:</label>
+        <textarea id="aboutMe" name="aboutMe" required></textarea>
+    `;
+    }
 
     // Add the sectionId to the modal form to send it on submit
     document.getElementById('editForm').dataset.sectionId = sectionId;
@@ -64,7 +71,11 @@
     formData.append('github', document.getElementById('github').value);
     formData.append('facebook', document.getElementById('facebook').value);
 }
+    else if (sectionId === 'about') {
+    formData.append('aboutMe', document.getElementById('aboutMe').value);
+}
 
+    formData.append('sectionId', sectionId);
     fetch('/update_profile', {
     method: 'POST',
     body: formData,
@@ -87,6 +98,9 @@
     if (linkedinElement) linkedinElement.href = data.linkedin;
     if (githubElement) githubElement.href = data.github;
     if (facebookElement) facebookElement.href = data.facebook;
+}
+    else if (sectionId === 'about') {
+    document.querySelector('#about div').textContent = data.about_me;
 }
 } else {
     alert('Error updating profile: ' + data.message);
