@@ -1,0 +1,22 @@
+Flask==2.0.2
+
+
+pymongo==3.12.0
+
+
+gridfs==2.0.1
+# GridFS is a specification for storing and retrieving large files, such as
+# images, audio files, video files, etc., in MongoDB. It is used to handle
+# storage of large files that exceed the BSON-document size limit of 16MB in MongoDB.
+
+bson==0.5.10
+# BSON (Binary JSON) is a binary representation of JSON-like documents.
+# It is used to represent simple data structures and associative arrays
+# (documents) in MongoDB. It is used for handling ObjectId and other BSON
+# types within the application.
+
+Werkzeug==2.0.2
+# Werkzeug is a comprehensive WSGI web application library. It is often
+# used as a utility library for various tasks such as request and response
+# handling, and it provides a built-in development server. It is used for
+# secure handling of file uploads and other utility functions in Flask applications.
