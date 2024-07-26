@@ -184,7 +184,7 @@ function attachBtns(newPost, user, post,postObj='') {
             <a href="/profile/${user.email}"><div class="user-name">${user.first_name} ${
         user.last_name
     }</div></a>
-                <div class="post-time">${post ? post.DT : 'Just now'}</div>
+                <div class="post-time">${!isObjectEmpty(post) ? post.DT : 'Just now'}</div>
             </div>
         </div>
         <div class="post-content">

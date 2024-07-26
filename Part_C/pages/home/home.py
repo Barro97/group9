@@ -53,28 +53,28 @@ def show_likes(post_id):
             users_that_liked.append(user)  # Add the user to the list
     return jsonify({'users': users_that_liked})  # Return the list of users who liked the post as JSON
 
-
+# Route to show comments for a specific post
 @home.route('/<post_id>/comments')
 def show_comments(post_id):
-    comments = comments_collection.find({'post_id': post_id})
+    comments = comments_collection.find({'post_id': post_id})  # Find comments for the given post ID
     users_that_commented = []
     for comment in comments:
-        comment['_id'] = str(comment['_id'])
-        user = users_collection.find_one({'email': comment['commenter']})
+        comment['_id'] = str(comment['_id'])  # Convert ObjectId to string for JSON serialization
+        user = users_collection.find_one({'email': comment['commenter']})  # Find the user who commented
         if user:
             user['_id'] = ''  # Remove the '_id' field from the user document
-            users_that_commented.append({'user': user, 'comment': comment})  # Add the user to the list
+            users_that_commented.append({'user': user, 'comment': comment})  # Add the user and comment to the list
     print(users_that_commented)
-    return jsonify({'users': users_that_commented})
+    return jsonify({'users': users_that_commented})  # Return the list of users who commented as JSON
 
 
 @home.route('/<post_id>/shares')
 def show_shares(post_id):
-    shares = shares_collection.find({'post_id': post_id})
+    shares = shares_collection.find({'post_id': post_id}) # Find shares for the given post ID
     users_that_shared = []
     for share in shares:
-        share['_id'] = str(share['_id'])
-        user = users_collection.find_one({'email': share['sharer']})
+        share['_id'] = str(share['_id']) # Convert ObjectId to string for JSON serialization
+        user = users_collection.find_one({'email': share['sharer']}) # Find the user who shared the post
         if user:
             user['_id'] = ''  # Remove the '_id' field from the user document
             users_that_shared.append({'user': user, 'share': share})  # Add the user to the list
@@ -141,14 +141,14 @@ def create_like():
 @home.route('/create_comment', methods=['POST'])
 def create_comment():
     if request.method == "POST":
-        active_user = session.get('user')
-        data = request.get_json()
-        post_id = data['id']
-        comment = data['comment']
-        new_comment = {'post_id': post_id, 'commenter': active_user['email'], 'comment': comment, 'DT': data['DT']}
-        comments_collection.insert_one(new_comment)
-        count = comments_collection.count_documents({'post_id': post_id})
-        response = {'status': 'Added', 'comment': comment, 'amount': count}
+        active_user = session.get('user') # Get the current user's session data
+        data = request.get_json() # Get the JSON data from the request
+        post_id = data['id'] # Get the post ID from the data
+        comment = data['comment'] # Get the comment text from the data
+        new_comment = {'post_id': post_id, 'commenter': active_user['email'], 'comment': comment, 'DT': data['DT']} # Create a new comment
+        comments_collection.insert_one(new_comment) # Insert the new comment into the database
+        count = comments_collection.count_documents({'post_id': post_id}) # Count the number of comments for the post
+        response = {'status': 'Added', 'comment': comment, 'amount': count} # Prepare the response
         return jsonify(response)
 
 
@@ -201,9 +201,9 @@ def submit_project():
 def get_image(photo_id):
     try:
         photo_id = ObjectId(photo_id)  # Ensure photo_id is an ObjectId
-        photo = fs.get(photo_id)
-        content_type = photo.content_type if photo.content_type else 'application/octet-stream'
-        return send_file(photo, mimetype=content_type, download_name=photo.filename)
+        photo = fs.get(photo_id) # Ensure photo_id is an ObjectId
+        content_type = photo.content_type if photo.content_type else 'application/octet-stream' # Determine the content type
+        return send_file(photo, mimetype=content_type, download_name=photo.filename) # Send the file
     except Exception as e:
         print(f'Error fetching image: {str(e)}')
         return jsonify({'success': False, 'error': str(e)})

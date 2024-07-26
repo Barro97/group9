@@ -8,31 +8,24 @@
 <main class="grid-container">
     <div class="left-section">
         <section class="section" id="top-section">
-            <img
-                    src={{profile_picture}}
-                    alt="profile picture"
-            />
+            <img src={{profile_picture}} alt="profile picture"/>
             <div class="my-details">
                 <h1>{{full_name}}</h1>
                 <h3>{{role}}</h3>
                 <h5 class="follow-count">followers: {{followers}}</h5>
             </div>
+            <button class="edit-button for-info" onclick="editSection('top-section')">Edit</button>
         </section>
         <section class="section" id="links">
             <h1>Social media</h1>
             <div class="social">
-                <a href={{linkedin}}><img
-                        src="https://blog.waalaxy.com/wp-content/uploads/2021/01/LinkedIn-Symbole.png" alt=""></a>
-                <a href={{github}}><img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png"
-                        alt=""></a>
-                <a href={{facebook}}><img
-                        src="https://static-00.iconduck.com/assets.00/facebook-color-icon-2048x2048-bfly1vxr.png"
-                        alt=""></a>
+                <a href={{linkedin}}><img src="https://blog.waalaxy.com/wp-content/uploads/2021/01/LinkedIn-Symbole.png" alt=""></a>
+                <a href={{github}}><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png" alt=""></a>
+                <a href={{facebook}}><img src="https://static-00.iconduck.com/assets.00/facebook-color-icon-2048x2048-bfly1vxr.png" alt=""></a>
             </div>
+            <button class="edit-button for-social" onclick="editSection('links')">Edit</button>
         </section>
-
-         <section class="section" id="background">
+        <section class="section" id="background">
             <div class="experience">
                 <h1>Experience</h1>
                 {% for exp in experiences %}
@@ -67,32 +60,45 @@
                 </div>
                 {% endfor %}
             </div>
+            <button class="edit-button for-desc" onclick="editSection('background')">Edit</button>
         </section>
     </div>
 
     <div class="right-section">
         <section class="section scrollable" id="about">
             <h1>About me</h1>
-            <div>
-                {{about_me}}
-            </div>
+            <div>{{about_me}}</div>
+            <button class="edit-button for-about" onclick="editSection('about')">Edit</button>
         </section>
-           <section class="section scrollable" id="projects">
+        <section class="section scrollable" id="projects">
             <h1>Projects</h1>
-
             <div class="projects">
                 {% for project in projects %}
                 <a href=/project/{{ project._id }} class="project-box">
                     <div class="project-content">
                         <div class="project-overlay">
-                            <img src="{{ project.image_url }}" alt="Project"/>
+<!--                            <img src="{{ project.image_url }}" alt="Project"/>-->
                         </div>
                         <div class="project-title">{{ project.title }}</div>
                     </div>
                 </a>
                 {% endfor %}
             </div>
+            <button class="edit-button for-proj" onclick="editSection('projects')">Edit</button>
         </section>
     </div>
+    <!-- Modal structure -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeModal()">&times;</span>
+        <form id="editForm">
+            <div id="modal-fields">
+                <!-- Dynamic fields will be inserted here -->
+            </div>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</div>
+
 </main>
 {%endblock%}

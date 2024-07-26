@@ -14,23 +14,3 @@ except Exception as e:
 print(pymongo.version)
 
 
-# mydb = myclient['user_database']
-# users_collection = mydb['users']
-#
-# mydict = {'username': 'Rinak', 'email': 'fmklmk@gmail.com', 'password': '123456'}
-# x=users_collection.insert_one(mydict)
-
-#
-# mydb = myclient["sample_mflix"]
-#
-# dblist = myclient.list_database_names()
-# # if "sample_mflix" in dblist:
-# #     print("The database exists.")
-#
-# print(myclient.list_database_names())
-# collist = mydb.list_collection_names()
-# print(collist)
-#
-#
-# mydb = myclient['user_database']
-# users_collection = mydb['users']

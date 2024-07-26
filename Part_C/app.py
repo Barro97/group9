@@ -1,10 +1,16 @@
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-
 from flask import *
 
 app = Flask(__name__)
 app.secret_key = '123'
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 from pages.aboutus.aboutus import about_us
 
@@ -57,7 +63,7 @@ app.register_blueprint(signup)
 
 @app.route('/')
 def home():
-    return render_template('login.html')
+    return redirect(url_for('login.index'))
 
 
 if __name__ == '__main__':
