@@ -12,6 +12,7 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
 from pages.aboutus.aboutus import about_us
 
 app.register_blueprint(about_us)
@@ -31,10 +32,6 @@ app.register_blueprint(home)
 from pages.myprofile.my_profile import my_profile
 
 app.register_blueprint(my_profile)
-
-from pages.notifications.notifications import notifications
-
-app.register_blueprint(notifications)
 
 from pages.organization.organization import organization
 
@@ -76,10 +73,6 @@ users_collection = mydb['users']
 messages_collection = mydb['messages']
 
 
-# @app.route('/MongoDB')
-# def MongoDB_func():
-#     name = 'Rina'
-
 @app.route('/follow', methods=['POST'])
 def follow():
     follower_id = request.json['follower_id']
@@ -108,6 +101,6 @@ def unfollow():
     return jsonify({'status': 'success'})
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# if __name__ == '__main__':
+#     app.run(debug=True)
 
