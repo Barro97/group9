@@ -144,8 +144,7 @@ function attachBtns(newPost, user, post,postObj='') {
     let share = "";
     if (uploadingImage) {
         // Check if an image is being uploaded
-        image = document.querySelector(".up-img-container").innerHTML; // Get the HTML content of the uploaded image
-        ImgBeingShared=image
+        image = await setImage(ImgBeingShared)
         removeImageForUpload(); // Remove the image upload elements
     }
     if (uploadingProj) {
