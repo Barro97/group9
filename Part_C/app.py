@@ -32,9 +32,7 @@ from pages.myprofile.my_profile import my_profile
 
 app.register_blueprint(my_profile)
 
-from pages.notifications.notifications import notifications
 
-app.register_blueprint(notifications)
 
 from pages.organization.organization import organization
 
