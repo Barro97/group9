@@ -29,9 +29,10 @@
             <div class="project-header">
                 <h2>{{ project.title }}</h2>
                 <div class="like-container">
-                    <div class="like-button">
+                    <div class="like-button" data-project-id="{{ project._id }}">
                         <img src="https://cdn-icons-png.flaticon.com/512/169/169778.png" alt="like"/>
                     </div>
+
                     <div class="like-count">{{ project.likes }}</div>
                 </div>
             </div>
@@ -70,8 +71,6 @@
                     <input type="hidden" name="user_email" value="{{ logged_in_user.email }}">
                     <button type="submit">Submit</button>
                 </form>
-
-
             </div>
         </div>
     </div>
