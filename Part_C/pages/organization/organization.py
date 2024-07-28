@@ -26,7 +26,6 @@ org_collection = mydb['organizations']
 def index(org_name):
     organization = org_collection.find_one({'org_name': org_name})
     if organization:
-        # projects = org_collection.find({'owner': user_id})
         return render_template('organization.html', organization=organization)
     else:
         return "User not found", 404

@@ -4,11 +4,6 @@ Flask==2.0.2
 pymongo==3.12.0
 
 
-gridfs==2.0.1
-# GridFS is a specification for storing and retrieving large files, such as
-# images, audio files, video files, etc., in MongoDB. It is used to handle
-# storage of large files that exceed the BSON-document size limit of 16MB in MongoDB.
-
 bson==0.5.10
 # BSON (Binary JSON) is a binary representation of JSON-like documents.
 # It is used to represent simple data structures and associative arrays
