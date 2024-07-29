@@ -1,12 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     const likeButton = document.querySelector('.like-button');
     const likeCount = document.querySelector('.like-count');
-    const projectId = "{{ project._id }}"; // Correctly rendered project ID
-    let liked = false;
+    const projectId = likeButton.getAttribute('data-project-id'); // Get the project ID from the attribute
 
     likeButton.addEventListener('click', function () {
-        liked = !liked;
-
         // Toggle the 'pressed' class for visual feedback
         likeButton.classList.toggle('pressed');
 
@@ -15,8 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ liked: liked }),
+            }
         })
         .then(response => response.json())
         .then(data => {

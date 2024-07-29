@@ -201,7 +201,6 @@ footer {
 
 .project-content {
     position: relative;
-    background: url("https://searchengineland.com/wp-content/seloads/2020/03/code-SS_634574354-1920x1080-1.jpg") no-repeat center center;
     background-size: cover;
     height: 150px;
     display: flex;
@@ -231,6 +230,13 @@ footer {
 /* Make the overlay lighter on hover */
 .project-box:hover .project-overlay {
     background: rgba(0, 0, 0, 0.4);
+}
+
+.project-overlay img{
+    width: 100%;
+    object-fit: cover;
+    filter: brightness(1.1);
+    transition: filter 0.3s, transform 0.3s;
 }
 
 .project-title {

@@ -20,6 +20,7 @@ mydb = myclient['user_database']
 project_collection = mydb['projects']
 users_collection = mydb['users']
 project_comment_collection = mydb['project_comments']
+pro_likes_collection = mydb['project_likes']
 fs = gridfs.GridFS(mydb)
 
 # Define local timezone offset
@@ -40,6 +41,7 @@ def view_project(project_id):
         comments = list(project_comment_collection.find({'project_id': ObjectId(project_id)}))
         print(comments)
         image_url = None
+        file_url = None  # Initialize file_url to avoid UnboundLocalError
         if 'photo_id' in project:
             try:
                 print(project['photo_id'])
@@ -59,6 +61,47 @@ def view_project(project_id):
                                logged_in_user=logged_in_user, image_url=image_url, file_url=file_url)
     else:
         return "Project not found", 404
+
+
+@project.route('/<post_id>/likes')
+def show_likes(project_id):
+    likes = pro_likes_collection.find({'project_id': project_id})  # Find likes for the given post ID
+    users_that_liked = []
+    for like in likes:
+        user = users_collection.find_one({'email': like['liker']})  # Find the user who liked the post
+        if user:
+            user['_id'] = ''  # Remove the '_id' field from the user document
+            users_that_liked.append(user)  # Add the user to the list
+    return jsonify({'users': users_that_liked})  # Return the list of users who liked the post as JSON
+
+
+@project.route('/project/<project_id>/like', methods=['POST'])
+def like_project(project_id):
+    if not session.get('logged_in'):
+        return redirect(url_for('login.index'))
+    logged_in_user = session.get('user', {})
+
+    # Check if the user has already liked the project
+    existing_like = pro_likes_collection.find_one(
+        {'project_id': ObjectId(project_id), 'liker': logged_in_user['email']})
+
+    if existing_like:
+        # User already liked the project, so remove the like
+        pro_likes_collection.delete_one({'_id': existing_like['_id']})
+        project_collection.update_one({'_id': ObjectId(project_id)}, {'$inc': {'likes': -1}})
+    else:
+        # User has not liked the project yet, so add the like
+        like = {
+            'project_id': ObjectId(project_id),
+            'liker': logged_in_user['email']
+        }
+        pro_likes_collection.insert_one(like)
+        project_collection.update_one({'_id': ObjectId(project_id)}, {'$inc': {'likes': 1}})
+
+    # Get updated likes count
+    project = project_collection.find_one({'_id': ObjectId(project_id)})
+    return jsonify({'likes': project['likes']})
+
 
 
 @project.route('/get_image/<photo_id>', methods=['GET'])
@@ -129,28 +172,4 @@ def add_comment(project_id):
     return "Failed to add comment", 400
 
 
-@project.route('/project/<project_id>/like', methods=['POST'])
-def like_project(project_id):
-    try:
-        liked = request.json.get('liked')
-        project = project_collection.find_one({'_id': ObjectId(project_id)})
 
-        if project:
-            current_likes = project.get('likes', 0)
-            new_likes = current_likes + 1 if liked else max(0, current_likes - 1)
-
-            # Update project likes in the database
-            project_collection.update_one(
-                {'_id': ObjectId(project_id)},
-                {'$set': {'likes': new_likes}}
-            )
-
-            # Return a JSON response with the updated likes count
-            return jsonify({'likes': new_likes}), 200
-        else:
-            return jsonify({'error': 'Project not found'}), 404
-    except Exception as e:
-        # Log the exception for debugging purposes
-        print(f"Exception occurred: {str(e)}")
-        # Return a JSON response with an error message
-        return jsonify({'error': 'Internal Server Error'}), 500

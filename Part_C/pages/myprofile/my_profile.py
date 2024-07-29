@@ -53,6 +53,19 @@ def index():
     educations = list(education_collection.find({'user_email': email}))
 
     # Fetch logos for experiences
+    for project in projects:
+        # photo = mydb['organizations'].find_one({'org_name': exp['org_name']})
+        # if photo:
+        #     pro['photo'] = photo.get('logo', '')
+        if 'photo_id' in project:
+            try:
+                print(project['photo_id'])
+                image_id = ObjectId(project['photo_id'])
+                project['image_url'] = url_for('project.get_project_image', photo_id=image_id)
+            except Exception as e:
+                print(f'Error fetching image: {str(e)}')
+
+    # Fetch logos for experiences
     for exp in experiences:
         org = mydb['organizations'].find_one({'org_name': exp['org_name']})
         if org:
