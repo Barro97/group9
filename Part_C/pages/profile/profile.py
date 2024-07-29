@@ -20,40 +20,22 @@ project_collection = mydb['projects']
 followers_collection = mydb['followers']
 profile_owner = ''
 
-# MongoDB setup
-uri = "mongodb+srv://rinak:SbSaxSwP6TEHmWGw@workfolio.w1hkpdf.mongodb.net/?retryWrites=true&w=majority&appName=Workfolio"
-myclient = MongoClient(uri, server_api=ServerApi('1'))
-mydb = myclient['user_database']
-users_collection = mydb['users']
-project_collection = mydb['projects']
-experience_collection = mydb['experience']
-education_collection = mydb['education']
-org_collection = mydb['organizations']
-
 
 @profile.route('/profile/<user_email>')
 def view_profile(user_email):
-    user = users_collection.find_one({'email': user_email})
-    if user:
-        projects = list(project_collection.find({'owner': user_email}))
-        experiences = list(experience_collection.find({'user_email': user_email}))
-        educations = list(education_collection.find({'user_email': user_email}))
-
-        # Fetch logos for experiences
-        for exp in experiences:
-            org = mydb['organizations'].find_one({'org_name': exp['org_name']})
-            if org:
-                exp['logo'] = org.get('logo', '')
-
-        # Fetch logos for educations
-        for edu in educations:
-            org = mydb['organizations'].find_one({'org_name': edu['org_name']})
-            if org:
-                edu['logo'] = org.get('logo', '')
-
-        return render_template('profile.html', user=user, projects=projects, experiences=experiences, educations=educations)
+    print(user_email, session.get('user')['email'])
+    if session.get('user')['email'] == user_email:
+        return redirect(url_for('my_profile.index'))
     else:
-        return "User not found", 404
+        user = users_collection.find_one({'email': user_email})
+        if user:
+            session['profile_owner'] = user_email
+            projects = project_collection.find({'owner': user_email})
+            count = followers_collection.count_documents({'followee': session.get('profile_owner')})
+            return render_template('profile.html', user=user, projects=projects, count=count)
+        else:
+            return "User not found", 404
+
 
 @profile.route('/follow')
 def follow():
